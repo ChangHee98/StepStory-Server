@@ -27,7 +27,7 @@ StepStory 서버 레포지토리입니다.
 | 🗃      | :card_file_box             | 데이버베이스 관련 수정   |
 
 
-## Code 작성 규칙
+## Code Convention
 
 - 기본 : 카멜 표기법
 - 전역 변수 : 어퍼케이스 표기법
