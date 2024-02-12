@@ -502,7 +502,32 @@ pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/java,intellij,python,django,git,maven,eclipse
 
+# Maven
+!**/src/main/**/maven-wrapper.jar
+
+
+
+# NetBeans
+/nbproject/private/
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# VS Code
+.vscode/
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
 # Application-specific files
 # 예를 들어, 민감한 정보를 포함한 설정 파일
-/application.properties
-/application.yml
+src/main/resources/application.properties
+src/main/resources/application.yml
