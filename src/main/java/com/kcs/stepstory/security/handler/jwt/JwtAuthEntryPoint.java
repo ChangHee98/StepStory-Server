@@ -1,9 +1,9 @@
-package org.donnguk.emodiary.security.handler.jwt;
+package com.kcs.stepstory.security.handler.jwt;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.donnguk.emodiary.dto.type.ErrorCode;
-import org.donnguk.emodiary.security.info.AbstractAuthenticationFailure;
+import com.kcs.stepstory.dto.type.ErrorCode;
+import com.kcs.stepstory.security.info.AbstractAuthenticationFailure;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;

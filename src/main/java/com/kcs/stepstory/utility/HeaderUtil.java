@@ -1,9 +1,8 @@
-package org.donnguk.emodiary.utility;
+package com.kcs.stepstory.utility;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.donnguk.emodiary.contrant.Constants;
-import org.donnguk.emodiary.dto.type.ErrorCode;
-import org.donnguk.emodiary.exception.CommonException;
+import com.kcs.stepstory.dto.type.ErrorCode;
+import com.kcs.stepstory.exception.CommonException;
 import org.springframework.util.StringUtils;
 
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package org.donnguk.emodiary.security.filter;
+package com.kcs.stepstory.security.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

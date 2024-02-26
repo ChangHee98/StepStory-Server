@@ -1,11 +1,11 @@
-package org.donnguk.emodiary.dto.response;
+package com.kcs.stepstory.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import org.donnguk.emodiary.domain.User;
-import org.donnguk.emodiary.dto.type.EProvider;
+import com.kcs.stepstory.domain.User;
+import com.kcs.stepstory.dto.type.EProvider;
 
 @Builder
 public record UserDetailDto(
@@ -13,7 +13,7 @@ public record UserDetailDto(
         @NotNull(message = "유저 ID가 없습니다.")
         Long id,
 
-        @Schema(description = "닉네임", example = "동국이")
+        @Schema(description = "닉네임", example = "개똥이")
         @NotNull(message = "닉네임이 없습니다.")
         String nickname,
 

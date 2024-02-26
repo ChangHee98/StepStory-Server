@@ -1,9 +1,9 @@
-package com.kcs.stepstory.dto.constants;
+package com.kcs.stepstory.constants;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.extern.slf4j.Slf4j;
-import com.kcs.stepstory.dto.annotation.Date;
+import com.kcs.stepstory.annotation.Date;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

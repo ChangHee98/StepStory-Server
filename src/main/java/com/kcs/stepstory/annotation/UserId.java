@@ -1,4 +1,4 @@
-package org.donnguk.emodiary.annotation;
+package com.kcs.stepstory.annotation;
 
 import java.lang.annotation.*;
 

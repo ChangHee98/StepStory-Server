@@ -1,20 +1,20 @@
-package org.donnguk.emodiary.controller;
+package com.kcs.stepstory.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.donnguk.emodiary.annotation.UserId;
-import org.donnguk.emodiary.constants.Constants;
-import org.donnguk.emodiary.dto.common.ResponseDto;
-import org.donnguk.emodiary.dto.request.AuthSignUpDto;
-import org.donnguk.emodiary.dto.response.JwtTokenDto;
-import org.donnguk.emodiary.dto.type.ErrorCode;
-import org.donnguk.emodiary.exception.CommonException;
-import org.donnguk.emodiary.service.AuthService;
-import org.donnguk.emodiary.utility.CookieUtil;
-import org.donnguk.emodiary.utility.HeaderUtil;
+import com.kcs.stepstory.annotation.UserId;
+import com.kcs.stepstory.constants.Constants;
+import com.kcs.stepstory.dto.common.ResponseDto;
+import com.kcs.stepstory.dto.request.AuthSignUpDto;
+import com.kcs.stepstory.dto.response.JwtTokenDto;
+import com.kcs.stepstory.dto.type.ErrorCode;
+import com.kcs.stepstory.exception.CommonException;
+import com.kcs.stepstory.service.AuthService;
+import com.kcs.stepstory.utility.CookieUtil;
+import com.kcs.stepstory.utility.HeaderUtil;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +34,7 @@ public class AuthController {
 
         return ResponseDto.ok(null);
     }
+
 
     @PostMapping("/reissue")
     public ResponseDto<?> reissue(

@@ -1,6 +1,6 @@
-package org.donnguk.emodiary.intercepter.post;
+package com.kcs.stepstory.intercepter.post;
 
-import org.donnguk.emodiary.dto.common.ResponseDto;
+import com.kcs.stepstory.dto.common.ResponseDto;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -9,7 +9,7 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
-@RestControllerAdvice(basePackages = "org.donnguk.emodiary")
+@RestControllerAdvice(basePackages = "com.kcs.stepstory")
 public class ResponseInterceptor implements ResponseBodyAdvice {
 
     @Override

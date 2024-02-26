@@ -1,4 +1,4 @@
-package org.donnguk.emodiary.intercepter.pre;
+package com.kcs.stepstory.intercepter.pre;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

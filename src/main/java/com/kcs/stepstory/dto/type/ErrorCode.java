@@ -1,6 +1,5 @@
-package org.donnguk.emodiary.dto.type;
+package com.kcs.stepstory.dto.type;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

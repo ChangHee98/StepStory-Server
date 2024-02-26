@@ -1,10 +1,10 @@
-package org.donnguk.emodiary.security.handler.signin;
+package com.kcs.stepstory.security.handler.signin;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import net.minidev.json.JSONValue;
-import org.donnguk.emodiary.dto.common.ExceptionDto;
-import org.donnguk.emodiary.dto.type.ErrorCode;
+import com.kcs.stepstory.dto.common.ExceptionDto;
+import com.kcs.stepstory.dto.type.ErrorCode;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;

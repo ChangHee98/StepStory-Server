@@ -1,8 +1,8 @@
-package org.donnguk.emodiary.annotation;
+package com.kcs.stepstory.annotation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-import org.donnguk.emodiary.contrant.LocalDateValidator;
+import com.kcs.stepstory.constants.LocalDateValidator;
 
 import java.lang.annotation.*;
 

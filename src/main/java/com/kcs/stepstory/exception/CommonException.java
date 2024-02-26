@@ -1,8 +1,8 @@
-package org.donnguk.emodiary.exception;
+package com.kcs.stepstory.exception;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.donnguk.emodiary.dto.type.ErrorCode;
+import com.kcs.stepstory.dto.type.ErrorCode;
 
 @Getter
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package org.donnguk.emodiary.security.filter;
+package com.kcs.stepstory.security.filter;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -9,9 +9,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.donnguk.emodiary.contrant.Constants;
-import org.donnguk.emodiary.dto.type.ErrorCode;
-import org.donnguk.emodiary.exception.CommonException;
+import com.kcs.stepstory.constants.Constants;
+import com.kcs.stepstory.dto.type.ErrorCode;
+import com.kcs.stepstory.exception.CommonException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;

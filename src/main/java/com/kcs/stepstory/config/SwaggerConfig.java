@@ -1,4 +1,4 @@
-package org.donnguk.emodiary.config;
+package com.kcs.stepstory.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

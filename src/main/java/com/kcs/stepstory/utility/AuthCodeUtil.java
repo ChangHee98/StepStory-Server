@@ -1,4 +1,4 @@
-package org.donnguk.emodiary.utility;
+package com.kcs.stepstory.utility;
 
 import org.springframework.stereotype.Component;
 

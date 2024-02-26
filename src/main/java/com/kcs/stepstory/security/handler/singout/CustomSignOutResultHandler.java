@@ -1,13 +1,13 @@
-package org.donnguk.emodiary.security.handler.singout;
+package com.kcs.stepstory.security.handler.singout;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONValue;
-import org.donnguk.emodiary.dto.common.ExceptionDto;
-import org.donnguk.emodiary.dto.type.ErrorCode;
-import org.donnguk.emodiary.utility.CookieUtil;
+import com.kcs.stepstory.dto.common.ExceptionDto;
+import com.kcs.stepstory.dto.type.ErrorCode;
+import com.kcs.stepstory.utility.CookieUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
