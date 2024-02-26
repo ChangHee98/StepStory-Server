@@ -1,4 +1,4 @@
-package com.kcs.stepstory.dto.constants;
+package com.kcs.stepstory.constants;
 
 import java.util.List;
 

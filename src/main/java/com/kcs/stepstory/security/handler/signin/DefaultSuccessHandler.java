@@ -1,15 +1,15 @@
-package org.donnguk.emodiary.security.handler.signin;
+package com.kcs.stepstory.security.handler.signin;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONValue;
 import org.apache.commons.lang3.StringUtils;
-import org.donnguk.emodiary.dto.response.JwtTokenDto;
-import org.donnguk.emodiary.repository.UserRepository;
-import org.donnguk.emodiary.security.info.UserPrincipal;
-import org.donnguk.emodiary.utility.CookieUtil;
-import org.donnguk.emodiary.utility.JwtUtil;
+import com.kcs.stepstory.dto.response.JwtTokenDto;
+import com.kcs.stepstory.repository.UserRepository;
+import com.kcs.stepstory.security.info.UserPrincipal;
+import com.kcs.stepstory.utility.CookieUtil;
+import com.kcs.stepstory.utility.JwtUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;

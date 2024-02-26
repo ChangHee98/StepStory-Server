@@ -1,12 +1,12 @@
-package org.donnguk.emodiary.domain;
+package com.kcs.stepstory.domain;
 
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.donnguk.emodiary.dto.request.AuthSignUpDto;
-import org.donnguk.emodiary.dto.type.EProvider;
-import org.donnguk.emodiary.dto.type.ERole;
+import com.kcs.stepstory.dto.request.AuthSignUpDto;
+import com.kcs.stepstory.dto.type.EProvider;
+import com.kcs.stepstory.dto.type.ERole;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDate;
@@ -62,13 +62,6 @@ public class User {
 
     @Column(name = "device_token")
     private String deviceToken;
-
-    /* Relation Parent Mapping */
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Diary> diaryList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Album> albumList = new ArrayList<>();
 
     @Builder
     public User(String serialId, String password, EProvider provider, ERole role) {

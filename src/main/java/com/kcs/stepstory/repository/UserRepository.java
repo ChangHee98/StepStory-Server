@@ -1,7 +1,7 @@
-package org.donnguk.emodiary.repository;
+package com.kcs.stepstory.repository;
 
-import org.donnguk.emodiary.domain.User;
-import org.donnguk.emodiary.dto.type.ERole;
+import com.kcs.stepstory.domain.User;
+import com.kcs.stepstory.dto.type.ERole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

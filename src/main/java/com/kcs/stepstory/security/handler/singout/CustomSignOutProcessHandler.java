@@ -1,10 +1,10 @@
-package org.donnguk.emodiary.security.handler.singout;
+package com.kcs.stepstory.security.handler.singout;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.donnguk.emodiary.repository.UserRepository;
-import org.donnguk.emodiary.security.info.UserPrincipal;
+import com.kcs.stepstory.repository.UserRepository;
+import com.kcs.stepstory.security.info.UserPrincipal;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package org.donnguk.emodiary.dto.type;
+package com.kcs.stepstory.dto.type;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

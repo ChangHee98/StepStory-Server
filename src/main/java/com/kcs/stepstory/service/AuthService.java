@@ -1,4 +1,4 @@
-package com.kcs.stepstory.security.service;
+package com.kcs.stepstory.service;
 
 import lombok.RequiredArgsConstructor;
 import com.kcs.stepstory.domain.User;

@@ -1,4 +1,4 @@
-package org.donnguk.emodiary.utility;
+package com.kcs.stepstory.utility;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
@@ -6,11 +6,10 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.AccessLevel;
 import lombok.Getter;
-import org.donnguk.emodiary.contrant.Constants;
-import org.donnguk.emodiary.dto.response.JwtTokenDto;
-import org.donnguk.emodiary.dto.type.ERole;
+import com.kcs.stepstory.constants.Constants;
+import com.kcs.stepstory.dto.response.JwtTokenDto;
+import com.kcs.stepstory.dto.type.ERole;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

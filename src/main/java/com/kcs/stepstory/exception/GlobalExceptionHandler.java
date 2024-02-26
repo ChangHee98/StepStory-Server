@@ -1,9 +1,8 @@
-package org.donnguk.emodiary.exception;
+package com.kcs.stepstory.exception;
 
-import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
-import org.donnguk.emodiary.dto.common.ResponseDto;
-import org.donnguk.emodiary.dto.type.ErrorCode;
+import com.kcs.stepstory.dto.common.ResponseDto;
+import com.kcs.stepstory.dto.type.ErrorCode;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;

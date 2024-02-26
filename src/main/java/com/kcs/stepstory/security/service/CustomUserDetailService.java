@@ -1,10 +1,10 @@
-package org.donnguk.emodiary.security.service;
+package com.kcs.stepstory.security.service;
 
 import lombok.RequiredArgsConstructor;
-import org.donnguk.emodiary.dto.type.ErrorCode;
-import org.donnguk.emodiary.exception.CommonException;
-import org.donnguk.emodiary.repository.UserRepository;
-import org.donnguk.emodiary.security.info.UserPrincipal;
+import com.kcs.stepstory.dto.type.ErrorCode;
+import com.kcs.stepstory.exception.CommonException;
+import com.kcs.stepstory.repository.UserRepository;
+import com.kcs.stepstory.security.info.UserPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

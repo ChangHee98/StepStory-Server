@@ -1,14 +1,13 @@
-package org.donnguk.emodiary.service;
+package com.kcs.stepstory.service;
 
 import lombok.RequiredArgsConstructor;
-import org.donnguk.emodiary.domain.User;
-import org.donnguk.emodiary.dto.request.AuthSignUpDto;
-import org.donnguk.emodiary.dto.request.UserUpdateDto;
-import org.donnguk.emodiary.dto.response.UserDetailDto;
-import org.donnguk.emodiary.dto.type.ErrorCode;
-import org.donnguk.emodiary.exception.CommonException;
-import org.donnguk.emodiary.repository.UserRepository;
-import org.donnguk.emodiary.utility.ImageUtil;
+import com.kcs.stepstory.domain.User;
+import com.kcs.stepstory.dto.request.UserUpdateDto;
+import com.kcs.stepstory.dto.response.UserDetailDto;
+import com.kcs.stepstory.dto.type.ErrorCode;
+import com.kcs.stepstory.exception.CommonException;
+import com.kcs.stepstory.repository.UserRepository;
+import com.kcs.stepstory.utility.ImageUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;

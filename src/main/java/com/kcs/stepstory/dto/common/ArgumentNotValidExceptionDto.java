@@ -1,9 +1,9 @@
-package org.donnguk.emodiary.dto.common;
+package com.kcs.stepstory.dto.common;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.Getter;
-import org.donnguk.emodiary.dto.type.ErrorCode;
+import com.kcs.stepstory.dto.type.ErrorCode;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 

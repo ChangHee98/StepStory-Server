@@ -1,9 +1,9 @@
-package org.donnguk.emodiary.dto.common;
+package com.kcs.stepstory.dto.common;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import org.donnguk.emodiary.dto.type.ErrorCode;
+import com.kcs.stepstory.dto.type.ErrorCode;
 
 @Getter
 @Schema(name = "ExceptionDto", description = "API 예외 발생 시 응답 DTO")

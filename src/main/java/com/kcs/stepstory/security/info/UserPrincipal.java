@@ -1,11 +1,11 @@
-package org.donnguk.emodiary.security.info;
+package com.kcs.stepstory.security.info;
 
+import com.kcs.stepstory.repository.UserRepository;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.donnguk.emodiary.domain.User;
-import org.donnguk.emodiary.dto.type.ERole;
-import org.donnguk.emodiary.repository.UserRepository;
+import com.kcs.stepstory.dto.type.ERole;
+import com.kcs.stepstory.repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

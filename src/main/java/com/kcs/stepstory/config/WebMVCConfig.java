@@ -1,9 +1,9 @@
-package org.donnguk.emodiary.config;
+package com.kcs.stepstory.config;
 
 import lombok.RequiredArgsConstructor;
-import org.donnguk.emodiary.contrant.Constants;
-import org.donnguk.emodiary.intercepter.pre.UserIdArgumentResolver;
-import org.donnguk.emodiary.intercepter.pre.UserIdInterceptor;
+import com.kcs.stepstory.constants.Constants;
+import com.kcs.stepstory.intercepter.pre.UserIdArgumentResolver;
+import com.kcs.stepstory.intercepter.pre.UserIdInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;

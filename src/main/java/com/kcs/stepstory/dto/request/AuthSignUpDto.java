@@ -1,4 +1,4 @@
-package com.kcs.stepstory.dto.reqeust;
+package com.kcs.stepstory.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -20,7 +20,7 @@ public record AuthSignUpDto(
         @NotNull(message = "password는 null이 될 수 없습니다.")
         String password,
 
-        @Schema(description = "닉네임", example = "동국이")
+        @Schema(description = "닉네임", example = "개똥이")
         @Size(min = 2, max = 10, message = "닉네임은 2~10자리로 입력해주세요.")
         @NotNull(message = "provider는 null이 될 수 없습니다.")
         String nickname,

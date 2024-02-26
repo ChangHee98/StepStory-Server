@@ -1,4 +1,4 @@
-package org.donnguk.emodiary.security.filter;
+package com.kcs.stepstory.security.filter;
 
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -7,11 +7,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.donnguk.emodiary.contrant.Constants;
-import org.donnguk.emodiary.security.info.UserPrincipal;
-import org.donnguk.emodiary.security.service.CustomUserDetailService;
-import org.donnguk.emodiary.utility.HeaderUtil;
-import org.donnguk.emodiary.utility.JwtUtil;
+import com.kcs.stepstory.constants.Constants;
+import com.kcs.stepstory.security.info.UserPrincipal;
+import com.kcs.stepstory.security.service.CustomUserDetailService;
+import com.kcs.stepstory.utility.HeaderUtil;
+import com.kcs.stepstory.utility.JwtUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
