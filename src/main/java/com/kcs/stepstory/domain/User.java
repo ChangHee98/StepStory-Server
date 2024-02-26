@@ -10,6 +10,7 @@ import com.kcs.stepstory.dto.type.ERole;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -18,15 +19,15 @@ import java.util.Objects;
 @Getter
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 @DynamicUpdate
-@Table(name = "users")
+@Table(name = "user")
 public class User {
     /* Default Column */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "serial_id", nullable = false, unique = true)
+    @Column(name = "serialId", nullable = false, unique = true)
     private String serialId;
 
     @Column(name = "password", nullable = false)
@@ -40,27 +41,33 @@ public class User {
     @Enumerated(EnumType.STRING)
     private ERole role;
 
-    @Column(name = "created_date")
-    private LocalDate createdDate;
+    @Column(name = "createdAt", nullable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updatedAt", nullable = false)
+    private LocalDateTime updatedAt;
 
     /* User Info */
-    @Column(name = "nickname")
+    @Column(name = "nickname", nullable = false)
     private String nickname;
 
-    @Column(name = "phone_number")
+    @Column(name = "phoneNumber")
     private String phoneNumber;
 
-    @Column(name = "profile_image_name")
-    private String profileImageName = "default_profile.png";
+    @Column(name = "profileImgUrl", nullable = false)
+    private String profileImgUrl = "default_profile.png";
+
+    @Column(name = "selfIntro",nullable = true)
+    private String selfIntro;
 
     /* User Status */
-    @Column(name = "is_login", columnDefinition = "TINYINT(1)")
+    @Column(name = "isLogin", columnDefinition = "TINYINT(1)")
     private Boolean isLogin;
 
-    @Column(name = "refresh_Token")
+    @Column(name = "refreshToken")
     private String refreshToken;
 
-    @Column(name = "device_token")
+    @Column(name = "deviceToken")
     private String deviceToken;
 
     @Builder
@@ -69,8 +76,10 @@ public class User {
         this.password = password;
         this.provider = provider;
         this.role = role;
-        this.createdDate = LocalDate.now();
-        this.profileImageName = "default_profile.png";
+        this.createdAt = LocalDateTime.now();
+        this.nickname = "";
+        this.selfIntro = "";
+        this.profileImgUrl = "default_profile.png";
         this.isLogin = false;
     }
 
@@ -93,8 +102,8 @@ public class User {
             this.phoneNumber = phoneNumber;
         }
 
-        if (profileImageName != null && (!Objects.equals(this.profileImageName, profileImageName))) {
-            this.profileImageName = profileImageName;
+        if (profileImageName != null && (!Objects.equals(this.profileImgUrl, profileImageName))) {
+            this.profileImgUrl = profileImageName;
         }
     }
 
