@@ -1,2 +1,4 @@
-package com.kcs.stepstory.dto.response;public interface StepCountDto {
+package com.kcs.stepstory.dto.response;
+
+public interface StepCountDto {
 }

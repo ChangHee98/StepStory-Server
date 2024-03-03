@@ -29,5 +29,5 @@ public record StepCountForSeoulDto(
         Integer jongno,
         Integer jung,
         Integer jungnang
-) {
+) implements StepCountDto{
 }

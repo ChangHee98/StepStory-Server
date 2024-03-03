@@ -1,6 +1,8 @@
 package com.kcs.stepstory.repository;
 
 import com.kcs.stepstory.dto.response.StepCountForAllDto;
+import com.kcs.stepstory.dto.response.StepCountForBusanDto;
+import com.kcs.stepstory.dto.response.StepCountForGyeonggiDto;
 import com.kcs.stepstory.dto.response.StepCountForSeoulDto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -49,23 +51,23 @@ public class StepRepositoryCustomImpl implements StepRepositoryCustom {
                 case "Gangwon":
                     builder.gangwon(count);
                     break;
-                case "North Chungcheong":
-                    builder.northChungcheong(count);
+                case "Chungbuk":
+                    builder.chungbuk(count);
                     break;
-                case "South Chungcheong":
-                    builder.southChungcheong(count);
+                case "Chungnam":
+                    builder.chungnam(count);
                     break;
-                case "North Jeolla":
-                    builder.northJeolla(count);
+                case "Jeonbuk":
+                    builder.jeonbuk(count);
                     break;
-                case "South Jeolla":
-                    builder.southJeolla(count);
+                case "Jeonnam":
+                    builder.jeonnam(count);
                     break;
-                case "North Gyeongsang":
-                    builder.northGyeongsang(count);
+                case "Gyeongbuk":
+                    builder.gyeongbuk(count);
                     break;
-                case "South Gyeongsang":
-                    builder.southGyeongsang(count);
+                case "Gyeongnam":
+                    builder.gyeongnam(count);
                     break;
                 case "Jeju":
                     builder.jeju(count);
@@ -152,6 +154,168 @@ public class StepRepositoryCustomImpl implements StepRepositoryCustom {
                     break;
                 case "Eunpyeong":
                     builder.eunpyeong(count);
+            }
+        }
+        return builder.build();
+    }
+    public StepCountForBusanDto countStepsForBusan() {
+        List<Object[]> results = entityManager.createQuery(
+                        "SELECT s.district, COUNT(s) FROM Step s WHERE s.province = 'Busan' GROUP BY s.district", Object[].class)
+                .getResultList();
+
+        StepCountForBusanDto.StepCountForBusanDtoBuilder builder = StepCountForBusanDto.builder();
+
+        for(Object[] result : results){
+            String district = (String) result[0];
+            Integer count = ((Number) result[1]).intValue();
+            switch (district){
+                case "Haeundae":
+                    builder.haeundae(count);
+                    break;
+                case "Gangseo":
+                    builder.gangseo(count);
+                    break;
+                case "Geumjeong":
+                    builder.geumjeong(count);
+                    break;
+                case "Gijang":
+                    builder.gijang(count);
+                    break;
+                case "Busanjin":
+                    builder.busanjin(count);
+                    break;
+                case "Dongrae":
+                    builder.dongrae(count);
+                    break;
+                case "Dong":
+                    builder.dong(count);
+                    break;
+                case "Nam":
+                    builder.nam(count);
+                    break;
+                case "Saha":
+                    builder.saha(count);
+                    break;
+                case "Sasang":
+                    builder.sasang(count);
+                    break;
+                case "Seo":
+                    builder.seo(count);
+                    break;
+                case "Suyeong":
+                    builder.suyeong(count);
+                    break;
+                case "Yeongdo":
+                    builder.yeongdo(count);
+                    break;
+            }
+        }
+        return builder.build();
+    }
+    public StepCountForGyeonggiDto countStepsForGyeonggi() {
+        List<Object[]> results = entityManager.createQuery(
+                        "SELECT s.district, COUNT(s) FROM Step s WHERE s.province = 'Gyeonggi' GROUP BY s.district", Object[].class)
+                .getResultList();
+
+        StepCountForGyeonggiDto.StepCountForGyeonggiDtoBuilder builder = StepCountForGyeonggiDto.builder();
+
+        for(Object[] result : results) {
+            String district = (String) result[0];
+            Integer count = ((Number) result[1]).intValue();
+            switch (district) {
+                case "Goyang":
+                    builder.goyang(count);
+                    break;
+                case "Paju":
+                    builder.paju(count);
+                    break;
+                case "Guri":
+                    builder.guri(count);
+                    break;
+                case "Gwangmyeong":
+                    builder.gwangmyeong(count);
+                    break;
+                case "Gunpo":
+                    builder.gunpo(count);
+                    break;
+                case "Gwacheon":
+                    builder.gwacheon(count);
+                    break;
+                case "Gwangju":
+                    builder.gwangju(count);
+                    break;
+                case "Gimpo":
+                    builder.gimpo(count);
+                    break;
+                case "Namyangju":
+                    builder.namyangju(count);
+                    break;
+                case "Dongducheon":
+                    builder.dongducheon(count);
+                    break;
+                case "Bucheon":
+                    builder.bucheon(count);
+                    break;
+                case "Seongnam":
+                    builder.seongnam(count);
+                    break;
+                case "Siheung":
+                    builder.siheung(count);
+                    break;
+                case "Ansan":
+                    builder.ansan(count);
+                    break;
+                case "Anyang":
+                    builder.anyang(count);
+                    break;
+                case "Yangju":
+                    builder.yangju(count);
+                    break;
+                case "Yongin":
+                    builder.yongin(count);
+                    break;
+                case "Yeoju":
+                    builder.yeoju(count);
+                    break;
+                case "Icheon":
+                    builder.icheon(count);
+                    break;
+                case "Uiwang":
+                    builder.uiwang(count);
+                    break;
+                case "Hanam":
+                    builder.hanam(count);
+                    break;
+                case "Hwaseong":
+                    builder.hwaseong(count);
+                    break;
+                case "Anseong":
+                    builder.anseong(count);
+                    break;
+                case "Osan":
+                    builder.osan(count);
+                    break;
+                case "Pyeongtaek":
+                    builder.pyeongtaek(count);
+                    break;
+                case "Pocheon":
+                    builder.pocheon(count);
+                    break;
+                case "Gapyeong":
+                    builder.gapyeong(count);
+                    break;
+                case "Yeoncheon":
+                    builder.yeoncheon(count);
+                    break;
+                case "Yangpyeong":
+                    builder.yangpyeong(count);
+                    break;
+                case "Suwon":
+                    builder.suwon(count);
+                    break;
+                case "Uijeongbu":
+                    builder.uijeongbu(count);
+                    break;
             }
         }
         return builder.build();
