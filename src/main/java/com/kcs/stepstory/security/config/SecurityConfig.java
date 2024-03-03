@@ -1,6 +1,5 @@
 package com.kcs.stepstory.security.config;
 
-import lombok.RequiredArgsConstructor;
 import com.kcs.stepstory.constants.Constants;
 import com.kcs.stepstory.security.filter.GlobalLoggerFilter;
 import com.kcs.stepstory.security.filter.JwtAuthenticationFilter;
@@ -8,21 +7,25 @@ import com.kcs.stepstory.security.filter.JwtExceptionFilter;
 import com.kcs.stepstory.security.handler.jwt.JwtAccessDeniedHandler;
 import com.kcs.stepstory.security.handler.jwt.JwtAuthEntryPoint;
 import com.kcs.stepstory.security.handler.signin.DefaultFailureHandler;
-import com.kcs.stepstory.security.handler.signin.DefaultSuccessHandler;
-import com.kcs.stepstory.security.handler.singout.CustomSignOutProcessHandler;
-import com.kcs.stepstory.security.handler.singout.CustomSignOutResultHandler;
+import com.kcs.stepstory.security.handler.signout.CustomSignOutProcessHandler;
+import com.kcs.stepstory.security.handler.signout.CustomSignOutResultHandler;
 import com.kcs.stepstory.security.service.CustomUserDetailService;
 import com.kcs.stepstory.utility.JwtUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import com.kcs.stepstory.security.handler.signin.DefaultSuccessHandler;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 
+@ComponentScan("com.kcs.stepstory")
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -31,10 +34,8 @@ public class SecurityConfig {
     private final DefaultFailureHandler defaultFailureHandler;
     private final CustomSignOutProcessHandler customSignOutProcessHandler;
     private final CustomSignOutResultHandler customSignOutResultHandler;
-
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final JwtAuthEntryPoint jwtAuthEntryPoint;
-
     private final CustomUserDetailService customUserDetailService;
     private final JwtUtil jwtUtil;
 
