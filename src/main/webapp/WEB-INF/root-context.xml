@@ -46,14 +46,13 @@
           class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
-
     <!-- Transaction 어노테이션 활성화 -->
     <tx:annotation-driven />
 
     <jpa:repositories base-package="com.kcs.stepstory.repository" />
 
     <!-- Root Context: defines shared resources visible to all other web components -->
-    <context:component-scan base-package="com.kcs.stepstory" />
-
-
+    <context:component-scan base-package="com.kcs.stepstory.service, com.kcs.stepstory.annotation
+,com.kcs.stepstory.repository, com.kcs.stepstory.constants, com.kcs.stepstory.domain
+,com.kcs.stepstory.dto, com.kcs.stepstory.exception, com.kcs.stepstory.utility, com.kcs.stepstory.security"/>
 </beans>

@@ -35,7 +35,7 @@ public record UserDetailDto(
                     .nickname(user.getNickname())
                     .phoneNumber(user.getPhoneNumber())
                     .provider(user.getProvider())
-                    .profileImageUrl(user.getProfileImageName())
+                    .profileImageUrl(user.getProfileImgUrl())
                     .build();
         }
 }

@@ -1,4 +1,4 @@
-package com.kcs.stepstory.security.handler.singout;
+package com.kcs.stepstory.security.handler.signout;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

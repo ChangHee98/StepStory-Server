@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import com.kcs.stepstory.dto.type.ErrorCode;
 import com.kcs.stepstory.security.info.AbstractAuthenticationFailure;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
+@RequiredArgsConstructor
 public class JwtAuthEntryPoint extends AbstractAuthenticationFailure implements AuthenticationEntryPoint {
     @Override
     public void commence(

@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.*;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -14,7 +15,9 @@ import java.sql.Timestamp;
 @Table(name = "TravelBody")
 public class TravelBody {
     @Id
+    private long travelReportId;
     @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
     @JoinColumn(name = "travelReportId", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private TravelReport travelReport;
@@ -37,5 +40,17 @@ public class TravelBody {
         this.readPermission = readPermission;
         this.createdAt = new Timestamp(System.currentTimeMillis());
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TravelBody that)) return false;
+        return getReadPermission() == that.getReadPermission() && getTravelReport().equals(that.getTravelReport()) && getBody().equals(that.getBody()) && getCreatedAt().equals(that.getCreatedAt()) && getUpdatedAt().equals(that.getUpdatedAt());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTravelReport(), getBody(), getReadPermission(), getCreatedAt(), getUpdatedAt());
     }
 }
