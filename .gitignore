@@ -270,6 +270,8 @@ local.properties
 .idea/**/contentModel.xml
 
 # Sensitive or high-churn files
+# Git 추적에서 제외할 파일
+.idea/dataSources.xml
 .idea/**/dataSources/
 .idea/**/dataSources.ids
 .idea/**/dataSources.local.xml
