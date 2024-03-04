@@ -32,6 +32,10 @@ public class UserService {
 
         String profileImageName = imageUtil.uploadImageFile(imgFile);
 
-        user.updateInfo(requestDto.nickname(), requestDto.phoneNumber(), profileImageName);
+        user.updateInfo(requestDto.nickname(), requestDto.selfIntro(), profileImageName);
+    }
+
+    public boolean checkDuplicate(String nickname) {
+        return userRepository.existsByNickname(nickname);
     }
 }
