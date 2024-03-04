@@ -1,4 +1,4 @@
-package com.kcs.stepstory.repository;
+package com.kcs.stepstory.repository.custom;
 
 import com.kcs.stepstory.dto.response.StepCountForAllDto;
 import com.kcs.stepstory.dto.response.StepCountForBusanDto;
