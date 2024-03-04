@@ -12,10 +12,8 @@ public record UserUpdateDto(
         @Size(min = 2, max = 10, message = "닉네임은 2~10자리로 입력해주세요.")
         @NotNull(message = "닉네임은 null이 될 수 없습니다.")
         String nickname,
-        @JsonProperty("phone_number") @Schema(description = "전화번호", example = "010-1234-5678")
-        @Pattern(
-                regexp = "^\\d{3}-\\d{4}-\\d{4}$",
-                message = "전화번호 형식(000-0000-0000)이 올바르지 않습니다.")
-        String phoneNumber
+        @Schema(description = "자기 소개", example = "안녕하세요. 개똥이입니다.")
+        @Size(min = 0, max = 100, message = "자기 소개는 1자 이상 100자 이하로 입력해주세요.")
+        String selfIntro
 ) {
 }

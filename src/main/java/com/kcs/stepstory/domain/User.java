@@ -19,13 +19,13 @@ import java.util.Objects;
 @Getter
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 @DynamicUpdate
-@Table(name = "user")
+@Table(name = "User")
 public class User {
     /* Default Column */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
+    @Column(name = "userId", nullable = false)
+    private Long userId;
 
     @Column(name = "serialId", nullable = false, unique = true)
     private String serialId;
@@ -49,10 +49,7 @@ public class User {
 
     /* User Info */
     @Column(name = "nickname", nullable = false)
-    private String nickname;
-
-    @Column(name = "phoneNumber")
-    private String phoneNumber;
+    private String nickname="";
 
     @Column(name = "profileImgUrl", nullable = false)
     private String profileImgUrl = "default_profile.png";
@@ -67,9 +64,6 @@ public class User {
     @Column(name = "refreshToken")
     private String refreshToken;
 
-    @Column(name = "deviceToken")
-    private String deviceToken;
-
     @Builder
     public User(String serialId, String password, EProvider provider, ERole role) {
         this.serialId = serialId;
@@ -83,9 +77,8 @@ public class User {
         this.isLogin = false;
     }
 
-    public void register(String nickname, String phoneNumber) {
+    public void register(String nickname) {
         this.nickname = nickname;
-        this.phoneNumber = phoneNumber;
         this.role = ERole.USER;
     }
 
@@ -93,30 +86,26 @@ public class User {
         this.refreshToken = refreshToken;
     }
 
-    public void updateInfo(String nickname, String phoneNumber, String profileImageName) {
+    public void updateInfo(String nickname, String selfIntro, String profileImageName) {
         if (nickname != null && (!Objects.equals(this.nickname, nickname))) {
             this.nickname = nickname;
-        }
-
-        if (phoneNumber != null && (!Objects.equals(this.phoneNumber, phoneNumber))) {
-            this.phoneNumber = phoneNumber;
         }
 
         if (profileImageName != null && (!Objects.equals(this.profileImgUrl, profileImageName))) {
             this.profileImgUrl = profileImageName;
         }
+
+        if (!Objects.equals(this.selfIntro, selfIntro)) {
+            this.selfIntro = selfIntro;
+        }
     }
 
     public static User signUp(AuthSignUpDto authSignUpDto, String encodedPassword) {
-        User user = User.builder()
+        return User.builder()
                 .serialId(authSignUpDto.serialId())
                 .password(encodedPassword)
                 .provider(EProvider.DEFAULT)
                 .role(ERole.USER)
                 .build();
-
-        user.register(authSignUpDto.nickname(), authSignUpDto.phoneNumber());
-
-        return user;
     }
 }
