@@ -16,14 +16,14 @@ import java.util.Collections;
 @Builder
 @RequiredArgsConstructor
 public class UserPrincipal implements UserDetails {
-    @Getter private final Long id;
+    @Getter private final Long userId;
     @Getter private final ERole role;
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
 
     public static UserPrincipal create(UserRepository.UserSecurityForm form) {
         return UserPrincipal.builder()
-                .id(form.getId())
+                .userId(form.getUserId())
                 .role(form.getRole())
                 .password(form.getPassword())
                 .authorities(Collections.singleton(new SimpleGrantedAuthority(form.getRole().getSecurityName())))
@@ -32,7 +32,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public String getUsername() {
-        return id.toString();
+        return userId.toString();
     }
 
     @Override
