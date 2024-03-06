@@ -3,7 +3,6 @@ package com.kcs.stepstory.dto.common;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
-import com.kcs.stepstory.dto.type.ErrorCode;
 import com.kcs.stepstory.exception.CommonException;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;

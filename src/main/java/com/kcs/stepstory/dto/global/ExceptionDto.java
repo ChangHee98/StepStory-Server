@@ -1,9 +1,9 @@
 package com.kcs.stepstory.dto.common;
 
+import com.kcs.stepstory.exception.ErrorCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import com.kcs.stepstory.dto.type.ErrorCode;
 
 @Getter
 @Schema(name = "ExceptionDto", description = "API 예외 발생 시 응답 DTO")

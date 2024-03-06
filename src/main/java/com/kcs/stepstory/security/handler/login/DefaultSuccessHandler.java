@@ -63,7 +63,7 @@ public class DefaultSuccessHandler implements AuthenticationSuccessHandler {
 
     private void setSuccessWebResponse(HttpServletResponse response, JwtTokenDto tokenDto) throws IOException {
         CookieUtil.addCookie(response, "access_token", tokenDto.accessToken());
-        CookieUtil.addSecureCookie(response, "refresh_token", tokenDto.refreshToken(), jwtUtil.getRefreshTokenExpirePeriod());
+        CookieUtil.addSecureCookie(response, "refresh_token", tokenDto.refreshToken(), jwtUtil.getRefreshExpiration());
 
         response.sendRedirect("http://localhost:5173");
     }

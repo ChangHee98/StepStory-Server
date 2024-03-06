@@ -1,10 +1,10 @@
 package com.kcs.stepstory.security.handler.signin;
 
+import com.kcs.stepstory.exception.ErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import net.minidev.json.JSONValue;
-import com.kcs.stepstory.dto.common.ExceptionDto;
-import com.kcs.stepstory.dto.type.ErrorCode;
+import com.kcs.stepstory.dto.global.ExceptionDto;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;

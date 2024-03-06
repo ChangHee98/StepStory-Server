@@ -1,12 +1,12 @@
 package com.kcs.stepstory.security.handler.signout;
 
+import com.kcs.stepstory.exception.ErrorCode;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONValue;
-import com.kcs.stepstory.dto.common.ExceptionDto;
-import com.kcs.stepstory.dto.type.ErrorCode;
+import com.kcs.stepstory.dto.global.ExceptionDto;
 import com.kcs.stepstory.utility.CookieUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
