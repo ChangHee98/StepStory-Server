@@ -4,16 +4,16 @@ import java.util.List;
 
 
 public class Constants {
-    public static String USER_ID_CLAIM_NAME = "uid";
-    public static String USER_ROLE_CLAIM_NAME = "rol";
+    public static String CLAIM_USER_ID = "uuid";
+    public static String CLAIM_USER_ROLE = "role";
+    public static String ACCESS_COOKIE_NAME = "access_token";
+    public static String REFRESH_COOKIE_NAME = "refresh_token";
     public static String BEARER_PREFIX = "Bearer ";
     public static String AUTHCODE_PREFIX = "AuthCD ";
     public static String AUTHORIZATION_HEADER = "Authorization";
 
     public static List<String> NO_NEED_AUTH_URLS = List.of(
-            "/guest/**",
-            "/auth/sign-in",
-            "/auth/sign-up",
+            "/api/v1/no-auth/**",
             "/oauth2/authorization/kakao",
             "/oauth2/authorization/google",
             "/login/oauth2/code/kakao",
@@ -24,8 +24,6 @@ public class Constants {
             "/swagger-ui/**");
 
     public static List<String> USER_URLS = List.of(
-            "/**");
+            "/api/v1/users/**");
 
-    public static List<String> ADMIN_URLS = List.of(
-            "/admin/**");
 }

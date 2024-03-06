@@ -1,7 +1,7 @@
 package com.kcs.stepstory.utility;
 
-import com.kcs.stepstory.dto.type.ErrorCode;
 import com.kcs.stepstory.exception.CommonException;
+import com.kcs.stepstory.exception.ErrorCode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;

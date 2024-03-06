@@ -1,5 +1,7 @@
-package com.kcs.stepstory.dto.common;
+package com.kcs.stepstory.dto.global;
 
+import com.kcs.stepstory.dto.global.ExceptionDto;
+import com.kcs.stepstory.exception.ErrorCode;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.Getter;

@@ -1,6 +1,6 @@
 package com.kcs.stepstory.intercepter.post;
 
-import com.kcs.stepstory.dto.common.ResponseDto;
+import com.kcs.stepstory.dto.global.ResponseDto;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

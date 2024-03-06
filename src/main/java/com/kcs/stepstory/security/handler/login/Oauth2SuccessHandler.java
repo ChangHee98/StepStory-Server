@@ -1,10 +1,9 @@
-package com.kcs.stepstory.security.handler.signin;
+package com.kcs.stepstory.security.handler.login;
 
 import com.kcs.stepstory.dto.response.JwtTokenDto;
 import com.kcs.stepstory.repository.UserRepository;
 import com.kcs.stepstory.security.info.AuthenticationResponse;
 import com.kcs.stepstory.security.info.UserPrincipal;
-import com.kcs.stepstory.utility.CookieUtil;
 import com.kcs.stepstory.utility.JwtUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

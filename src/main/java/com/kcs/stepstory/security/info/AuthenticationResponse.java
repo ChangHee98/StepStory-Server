@@ -1,10 +1,10 @@
-package dont.forget.springsecurity.security.info;
+package com.kcs.stepstory.security.info;
 
-import dont.forget.springsecurity.constant.Constants;
-import dont.forget.springsecurity.dto.global.ExceptionDto;
-import dont.forget.springsecurity.dto.response.JwtTokenDto;
-import dont.forget.springsecurity.exception.ErrorCode;
-import dont.forget.springsecurity.util.CookieUtil;
+import com.kcs.stepstory.constants.Constants;
+import com.kcs.stepstory.dto.global.ExceptionDto;
+import com.kcs.stepstory.dto.response.JwtTokenDto;
+import com.kcs.stepstory.exception.ErrorCode;
+import com.kcs.stepstory.utility.CookieUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import net.minidev.json.JSONValue;
 import org.springframework.http.HttpStatus;

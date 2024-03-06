@@ -1,4 +1,4 @@
-package com.kcs.stepstory.security.handler.signin;
+package com.kcs.stepstory.security.handler.login;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

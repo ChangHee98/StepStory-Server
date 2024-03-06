@@ -1,4 +1,4 @@
-package com.kcs.stepstory.security.handler.signout;
+package com.kcs.stepstory.security.handler.logout;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
-public class CustomSignOutProcessHandler implements LogoutHandler {
+public class CustomLogoutProcessHandler implements LogoutHandler {
     private final UserRepository userRepository;
 
     @Override

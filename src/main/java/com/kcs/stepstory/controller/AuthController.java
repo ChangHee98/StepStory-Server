@@ -1,5 +1,6 @@
 package com.kcs.stepstory.controller;
 
+import com.kcs.stepstory.dto.request.OauthSignUpDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -7,12 +8,12 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import com.kcs.stepstory.annotation.UserId;
 import com.kcs.stepstory.constants.Constants;
-import com.kcs.stepstory.dto.common.ResponseDto;
+import com.kcs.stepstory.dto.global.ResponseDto;
 import com.kcs.stepstory.dto.request.AuthSignUpDto;
 import com.kcs.stepstory.dto.response.JwtTokenDto;
-import com.kcs.stepstory.dto.type.ErrorCode;
 import com.kcs.stepstory.exception.CommonException;
 import com.kcs.stepstory.service.AuthService;
+import com.kcs.stepstory.exception.ErrorCode;
 import com.kcs.stepstory.utility.CookieUtil;
 import com.kcs.stepstory.utility.HeaderUtil;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,11 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/")
 public class AuthController {
     private final AuthService authService;
 
-    @PostMapping("/sign-up")
+    @PostMapping("/auth/sign-up")
     public ResponseDto<?> signUp(
             @RequestBody @Valid AuthSignUpDto authSignUpDto
             ) {
@@ -34,7 +35,11 @@ public class AuthController {
 
         return ResponseDto.ok(null);
     }
-
+    @PostMapping("/oauth2/sign-up")
+    public ResponseDto<?> signUp(@UserId Long userId, @RequestBody OauthSignUpDto oauthSignUpDto){
+        authService.signUp(userId, oauthSignUpDto);
+        return ResponseDto.ok(null);
+    }
 
     @PostMapping("/reissue")
     public ResponseDto<?> reissue(

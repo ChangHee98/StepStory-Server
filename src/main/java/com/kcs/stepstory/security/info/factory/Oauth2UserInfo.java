@@ -1,4 +1,4 @@
-package dont.forget.springsecurity.security.info.factory;
+package com.kcs.stepstory.security.info.factory;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

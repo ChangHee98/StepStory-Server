@@ -1,6 +1,6 @@
-package dont.forget.springsecurity.security.info;
+package com.kcs.stepstory.security.info;
 
-import dont.forget.springsecurity.security.info.factory.Oauth2UserInfo;
+import com.kcs.stepstory.security.info.factory.Oauth2UserInfo;
 
 import java.util.Map;
 

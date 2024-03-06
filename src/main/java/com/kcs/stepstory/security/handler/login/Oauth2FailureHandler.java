@@ -1,4 +1,4 @@
-package com.kcs.stepstory.security.handler.signin;
+package com.kcs.stepstory.security.handler.login;
 
 import com.kcs.stepstory.exception.ErrorCode;
 import com.kcs.stepstory.security.info.AuthenticationResponse;

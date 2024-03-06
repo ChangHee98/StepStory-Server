@@ -1,4 +1,4 @@
-package com.kcs.stepstory.dto.common;
+package com.kcs.stepstory.dto.global;
 
 import com.kcs.stepstory.exception.ErrorCode;
 import io.swagger.v3.oas.annotations.media.Schema;

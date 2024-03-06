@@ -1,6 +1,6 @@
-package dont.forget.springsecurity.security.info;
+package com.kcs.stepstory.security.info;
 
-import dont.forget.springsecurity.dto.type.ERole;
+import com.kcs.stepstory.dto.type.ERole;
 
 public record JwtUserInfo(Long userId, ERole role) {
 }

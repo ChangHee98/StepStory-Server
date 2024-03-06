@@ -1,4 +1,4 @@
-package com.kcs.stepstory.security.handler.signout;
+package com.kcs.stepstory.security.handler.logout;
 
 import com.kcs.stepstory.exception.ErrorCode;
 import jakarta.servlet.ServletException;
@@ -19,7 +19,7 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class CustomSignOutResultHandler implements LogoutSuccessHandler {
+public class CustomLogoutResultHandler implements LogoutSuccessHandler {
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         // 애초에 로그인이 안된 경우
