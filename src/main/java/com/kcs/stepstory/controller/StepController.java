@@ -1,31 +1,29 @@
 package com.kcs.stepstory.controller;
 
-import com.kcs.stepstory.annotation.UserId;
-import com.kcs.stepstory.dto.common.ResponseDto;
+import com.kcs.stepstory.dto.global.ResponseDto;
 import com.kcs.stepstory.dto.response.StepCountDto;
 import com.kcs.stepstory.dto.response.StepCountForAllDto;
-import com.kcs.stepstory.dto.type.ErrorCode;
 import com.kcs.stepstory.exception.CommonException;
 import com.kcs.stepstory.service.StepService;
+import com.kcs.stepstory.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/api/v1/no-auth/step")
 @RequiredArgsConstructor
 public class StepController {
     private final StepService stepService;
-    @GetMapping("/api/v1/step/main")
-    public ResponseDto<StepCountForAllDto> getStepCountForall(
-            @UserId Long userId
-    ){
+    @GetMapping("/main")
+    public ResponseDto<StepCountForAllDto> getStepCountForall(){
         return ResponseDto.ok(stepService.getStepCountForAll());
     }
 
-    @GetMapping("/api/v1/step/main/{provinceId}")
+    @GetMapping("/main/{provinceId}")
     public ResponseDto<StepCountDto> getStepCountForProvince(
-            @UserId Long userId,
             @PathVariable("provinceId") Long provinceId
     ){
         switch (provinceId.intValue()){
@@ -64,7 +62,7 @@ public class StepController {
 //            case 17:
 //                return ResponseDto.ok(stepService.getStepCountForJeju());
             default:
-                throw new CommonException(ErrorCode.BAD_REQUEST_PARAMETER);
+                throw new CommonException(ErrorCode.BAD_REQUEST_JSON);
         }
     }
 }

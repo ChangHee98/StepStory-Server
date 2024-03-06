@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import com.kcs.stepstory.annotation.UserId;
-import com.kcs.stepstory.dto.common.ResponseDto;
+import com.kcs.stepstory.dto.global.ResponseDto;
 import com.kcs.stepstory.dto.request.UserUpdateDto;
 import com.kcs.stepstory.service.UserService;
 import org.springframework.http.MediaType;
@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "User", description = "유저 관련 API")
-@RequestMapping("/user")
+@RequestMapping("/api/v1/users/user")
 public class UserController {
     private final UserService userService;
 
