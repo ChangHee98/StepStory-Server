@@ -1,8 +1,8 @@
 package com.kcs.stepstory.security.handler.jwt;
 
+import com.kcs.stepstory.exception.ErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import com.kcs.stepstory.dto.type.ErrorCode;
 import com.kcs.stepstory.security.info.AbstractAuthenticationFailure;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;

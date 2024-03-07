@@ -1,10 +1,10 @@
 package com.kcs.stepstory.service;
 
+import com.kcs.stepstory.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import com.kcs.stepstory.domain.User;
 import com.kcs.stepstory.dto.request.UserUpdateDto;
 import com.kcs.stepstory.dto.response.UserDetailDto;
-import com.kcs.stepstory.dto.type.ErrorCode;
 import com.kcs.stepstory.exception.CommonException;
 import com.kcs.stepstory.repository.UserRepository;
 import com.kcs.stepstory.utility.ImageUtil;

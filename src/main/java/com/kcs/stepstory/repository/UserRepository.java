@@ -29,5 +29,23 @@ public interface UserRepository extends JpaRepository<User, Long> {
         Long getUserId();
         ERole getRole();
         String getPassword();
+        static UserSecurityForm invoke(User user) {
+            return new UserSecurityForm() {
+                @Override
+                public Long getUserId() {
+                    return user.getUserId();
+                }
+
+                @Override
+                public ERole getRole() {
+                    return user.getRole();
+                }
+
+                @Override
+                public String getPassword() {
+                    return user.getPassword();
+                }
+            };
+        }
     }
 }

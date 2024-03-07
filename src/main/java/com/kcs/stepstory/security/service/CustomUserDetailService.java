@@ -1,7 +1,7 @@
 package com.kcs.stepstory.security.service;
 
+import com.kcs.stepstory.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
-import com.kcs.stepstory.dto.type.ErrorCode;
 import com.kcs.stepstory.exception.CommonException;
 import com.kcs.stepstory.repository.UserRepository;
 import com.kcs.stepstory.security.info.UserPrincipal;

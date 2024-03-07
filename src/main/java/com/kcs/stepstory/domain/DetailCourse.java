@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
 @IdClass(DetailCourseId.class)
 @Table(name = "DetailCourse")

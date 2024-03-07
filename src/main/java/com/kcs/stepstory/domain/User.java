@@ -9,10 +9,7 @@ import com.kcs.stepstory.dto.type.EProvider;
 import com.kcs.stepstory.dto.type.ERole;
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -71,6 +68,7 @@ public class User {
         this.provider = provider;
         this.role = role;
         this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
         this.nickname = "";
         this.selfIntro = "";
         this.profileImgUrl = "default_profile.png";

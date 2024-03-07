@@ -1,7 +1,7 @@
 package com.kcs.stepstory.utility;
 
+import com.kcs.stepstory.exception.ErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
-import com.kcs.stepstory.dto.type.ErrorCode;
 import com.kcs.stepstory.exception.CommonException;
 import org.springframework.util.StringUtils;
 

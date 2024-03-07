@@ -2,7 +2,6 @@ package com.kcs.stepstory.exception;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import com.kcs.stepstory.dto.type.ErrorCode;
 
 @Getter
 @RequiredArgsConstructor
