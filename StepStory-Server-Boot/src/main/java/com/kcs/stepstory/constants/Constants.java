@@ -18,9 +18,10 @@ public class Constants {
             "/oauth2/authorization/google",
             "/login/oauth2/code/kakao",
             "/login/oauth2/code/google",
-
             "/api-docs.html",
             "/api-docs/**",
+            "/swagger-resources/**",
+            "v3/api-docs/**",
             "/swagger-ui/**");
 
     public static List<String> USER_URLS = List.of(
