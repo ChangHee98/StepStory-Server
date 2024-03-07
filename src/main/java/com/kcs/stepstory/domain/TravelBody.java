@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
 @Table(name = "TravelBody")
 public class TravelBody {

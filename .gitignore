@@ -1,6 +1,14 @@
 # Created by https://www.toptal.com/developers/gitignore/api/java,intellij,python,django,git,maven,eclipse
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,intellij,python,django,git,maven,eclipse
 
+#SpringBoot
+*.application.yml
+*.lock
+*.bin
+*.probe
+*.properties
+*.build.bin
+
 ### Django ###
 *.log
 *.pot

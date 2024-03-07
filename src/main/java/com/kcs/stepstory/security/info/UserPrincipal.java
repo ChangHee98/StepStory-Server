@@ -1,48 +1,65 @@
 package com.kcs.stepstory.security.info;
 
+import com.kcs.stepstory.dto.type.ERole;
 import com.kcs.stepstory.repository.UserRepository;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import com.kcs.stepstory.dto.type.ERole;
-import com.kcs.stepstory.repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 
+@Getter
 @Builder
 @RequiredArgsConstructor
-public class UserPrincipal implements UserDetails {
-    @Getter private final Long userId;
-    @Getter private final ERole role;
+public class UserPrincipal implements UserDetails, OAuth2User {
+    private final Long userId;
     private final String password;
+    private final ERole role;
+    private final Map<String, Object> attributes;
     private final Collection<? extends GrantedAuthority> authorities;
-
-    public static UserPrincipal create(UserRepository.UserSecurityForm form) {
+    public static UserPrincipal create(UserRepository.UserSecurityForm securityForm){
         return UserPrincipal.builder()
-                .userId(form.getUserId())
-                .role(form.getRole())
-                .password(form.getPassword())
-                .authorities(Collections.singleton(new SimpleGrantedAuthority(form.getRole().getSecurityName())))
+                .userId(securityForm.getUserId())
+                .password(securityForm.getPassword())
+                .role(securityForm.getRole())
+                .attributes(Collections.emptyMap())
+                .authorities(Collections.singleton(new SimpleGrantedAuthority(securityForm.getRole().getSecurityName())))
                 .build();
     }
 
-    @Override
-    public String getUsername() {
-        return userId.toString();
+    public static UserPrincipal create(UserRepository.UserSecurityForm securityForm, Map<String, Object> attributes){
+        return UserPrincipal.builder()
+                .userId(securityForm.getUserId())
+                .password(securityForm.getPassword())
+                .role(securityForm.getRole())
+                .attributes(attributes)
+                .authorities(Collections.singleton(new SimpleGrantedAuthority(securityForm.getRole().getSecurityName())))
+                .build();
     }
-
     @Override
-    public String getPassword() {
-        return password;
+    public Map<String, Object> getAttributes() {
+        return attributes;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return this.authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.userId.toString();
     }
 
     @Override
@@ -63,5 +80,10 @@ public class UserPrincipal implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String getName() {
+        return userId.toString();
     }
 }

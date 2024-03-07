@@ -1,8 +1,8 @@
 package com.kcs.stepstory.intercepter.pre;
 
 import com.kcs.stepstory.annotation.UserId;
-import com.kcs.stepstory.dto.type.ErrorCode;
 import com.kcs.stepstory.exception.CommonException;
+import com.kcs.stepstory.exception.ErrorCode;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;

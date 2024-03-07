@@ -1,12 +1,13 @@
 package com.kcs.stepstory.service;
 
+import com.kcs.stepstory.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import com.kcs.stepstory.domain.User;
 import com.kcs.stepstory.dto.request.AuthSignUpDto;
 import com.kcs.stepstory.dto.response.JwtTokenDto;
-import com.kcs.stepstory.dto.type.ErrorCode;
 import com.kcs.stepstory.exception.CommonException;
 import com.kcs.stepstory.repository.UserRepository;
+import com.kcs.stepstory.dto.request.OauthSignUpDto;
 import com.kcs.stepstory.utility.JwtUtil;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,13 @@ public class AuthService {
                 User.signUp(authSignUpDto, bCryptPasswordEncoder.encode(authSignUpDto.password()))
         );
     }
+    @Transactional
+    public void signUp(Long userId, OauthSignUpDto oauthSignUpDto){
+        User oauthUser = userRepository.findById(userId)
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_USER));
 
+        oauthUser.register(oauthSignUpDto.nickname());
+    }
     @Transactional
     public JwtTokenDto reissue(Long userId, String refreshToken) {
         User user = userRepository.findByUserIdAndRefreshTokenAndIsLogin(userId, refreshToken, true)

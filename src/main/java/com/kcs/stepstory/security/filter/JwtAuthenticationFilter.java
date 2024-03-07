@@ -33,7 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Claims claims = jwtUtil.validateToken(token);
 
         UserPrincipal userPrincipal = (UserPrincipal) customUserDetailService.loadUserById(
-                claims.get(Constants.USER_ID_CLAIM_NAME, Long.class));
+                claims.get(Constants.CLAIM_USER_ID, Long.class));
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 userPrincipal, null, userPrincipal.getAuthorities());
