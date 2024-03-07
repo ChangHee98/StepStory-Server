@@ -17,22 +17,21 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
 
 
     /**
-     *  친구 목록 조회 및 친구 요청 목록 기능
-     * 베어러 토큰 있는 값이 파라미터 값
+     *  친구 목록 조회 & 친구 요청 목록 기능 & 친구 닉네임 검색 기능
      */
 
     @Query("select FriendListDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl) " +
-            "from Friend f JOIN f.user2 u  where f.user1 = :userId and f.status = 1")
+            "from Friend f join f.user2 u  where f.user1 = :userId and f.status = 1")
     List<Friend> findBySendFriendList(@Param("userId") Long userId);
 
 
     @Query("select FriendListDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl) " +
-            "from Friend f JOIN f.user2 u  where f.user2 = :userId and f.status = 1")
+            "from Friend f join f.user2 u  where f.user2 = :userId and f.status = 1")
     List<FriendDto> findByReceiveFriendList(@Param("userId") Long userId);
 
-    // 친구 요청 목록 기능
+    // 친구요청 목록 기능
     @Query("select FriendListDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl)" +
-            "from Friend f JOIN f.user1 u  where f.user1 = :friendId, f.user2 = :userId and f.status = 1")
+            "from Friend f join f.user1 u  where f.user1 = :friendId, f.user2 = :userId and f.status = 1")
     List<Friend> findFriendRequestsByUserId(@Param("userId") Long userId, @Param("friendId") Long friendId, @Param("status") int status);
 
 
@@ -48,11 +47,8 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
     /**
      *  친구 삭제 기능
      */
-//    @Modifying
-//    @Query("delete from Friend f where (f.userId1 = :userId OR f.userId2 = :userId) AND f.status = 1")
-//    void deleteFriendByUserId(@Param("friendId") Long friendId);
     @Modifying
-    @Query("delete from Friend f where (f.user1 = :userId AND f.user2 = :friendId OR f.userId1 = :friendId AND f.userId2 = :userId) AND f.status = 1")
+    @Query("delete from Friend f where (f.user1 = :userId and f.user2 = :friendId or f.userId1 = :friendId and f.userId2 = :userId) and f.status = 1")
     void deleteFriendByUserId(@Param("userId") Long userId, @Param("friendId") Long friendId);
 
 
@@ -60,7 +56,7 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
      *  친구 요청 기능
      */
     @Modifying
-    @Query("insert into Friend f (f.user1, f.user2, f.status) VALUES (:userId1, :friendId, :status)")
+    @Query("insert into Friend f (f.user1, f.user2, f.status) values (:userId1, :friendId, :status)")
     void insertFriendByUserId(@Param("userId1") Long userId1, @Param("friendId") Long friendId, @Param("status") int status);
 
 
@@ -77,8 +73,22 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
      *  친구요청 거절 기능
      */
     @Modifying
-    @Query("delete from Friend f where (f.user1 = :friendId AND f.user2 = :userId AND f.status = 0")
-    void rejectFriendByUserId(@Param("userId") Long userId, @Param("friendId") Long friendId);
+    @Query("delete from Friend f where (f.user1 = :friendId and f.user2 = :userId AND f.status = 0")
+    void refuseFriendByUserId(@Param("userId") Long userId, @Param("friendId") Long friendId);
+
+    /**
+     * 친구 닉네임 검색 기능
+     */
+    @Query("select FriendDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl) " +
+            "from Friend f join f.user2 u  where f.user1 = :userId and f.user2 = :friendId f.status = 1 or f.user1 = :friendId and f.user2 = :userId  f.status = 1")
+    FriendDto findByFriend(@Param("userId") Long userId, @Param("friendId") Long friendId);
+
+    /**
+     * 친구요청 목록조회 기능
+     */
+    @Query("select FriendDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl) " +
+            "from Friend f join f.user2 u where f.user1 = :friendId and f.user2 = :userId and f.status =0")
+    List<Friend> findBySendFriend(@Param("userId") Long userId, @Param("friendId") Long friendId);
 
 
 }
