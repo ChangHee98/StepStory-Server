@@ -1,5 +1,5 @@
-# StepStory-Client
-StepStory 서비스 클라이언트 레포지토리 서비스입니다.
+# StepStory-Server
+StepStory 서버 레포지토리입니다.
 
 ## Commit Convention
 -   feat : 새로운 기능 추가
