@@ -1,6 +1,10 @@
 package com.kcs.stepstory.controller;
 
+import com.kcs.stepstory.annotation.UserId;
 import com.kcs.stepstory.dto.global.ResponseDto;
+import com.kcs.stepstory.dto.request.AddDetailCourseDto;
+import com.kcs.stepstory.dto.request.PostTravelImageListDto;
+import com.kcs.stepstory.dto.response.CheckTravelImageListDto;
 import com.kcs.stepstory.dto.response.TravelReportListDto;
 import com.kcs.stepstory.exception.CommonException;
 import com.kcs.stepstory.exception.ErrorCode;
@@ -9,6 +13,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/no-auth/travel-report")
@@ -39,5 +46,34 @@ public class TravelReportController {
         }
         return ResponseDto.ok(travelReportService.getTravelReportList(province, city, district));
     }
+
+    @GetMapping("/api/v1/travel-report/detail-course/view-check/{travelReportId}")
+    public ResponseDto<CheckTravelImageListDto> viewReportImagesAndCourses(
+            @UserId Long userId,
+            @RequestParam Long travelReportId
+    ){
+        return ResponseDto.ok(travelReportService.getCheckTravelImageList(travelReportId));
+    }
+
+    public ResponseDto<PostTravelImageListDto> ReportImagesAndCourses(
+            @UserId Long userId,
+            @RequestBody PostTravelImageListDto postTravelImageListDto
+            ){
+        return ResponseDto.ok(travelReportService.updateImages(postTravelImageListDto));
+    }
+
+    @PostMapping("/api/v1/users/travel-report/detail-course")
+    public Map<String, String> addDetailCourse(
+            @UserId Long userId,
+            @RequestBody AddDetailCourseDto addDetailCourseDto
+    ){
+        travelReportService.addDetailCourse(addDetailCourseDto);
+        Map<String, String> response = new HashMap<>();
+        response.put("message","코스가 추가되었습니다.");
+
+        return response;
+
+    }
+
 
 }

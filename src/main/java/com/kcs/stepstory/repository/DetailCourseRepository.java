@@ -5,6 +5,11 @@ import com.kcs.stepstory.domain.DetailCourseId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface DetailCourseRepository extends JpaRepository<DetailCourse, DetailCourseId> {
+    public List<DetailCourse> getDetailCoursesByDetailCourse(Long travelReportId);
+
+    DetailCourse findById(Long detailCourseId);
 }

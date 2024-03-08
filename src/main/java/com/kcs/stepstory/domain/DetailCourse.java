@@ -43,4 +43,11 @@ public class DetailCourse {
         this.sequence = sequence;
         this.locationName = locationName;
     }
+
+    public void updateDetailCourse(Timestamp travelDate, String gps, int sequence, String locationName){
+        this.travelDate = travelDate;
+        this.gps = gps;
+        this.sequence = sequence;
+        this.locationName = locationName;
+    }
 }
