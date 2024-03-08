@@ -1,6 +1,7 @@
 package com.kcs.stepstory.controller;
 
 import com.kcs.stepstory.annotation.UserId;
+import com.kcs.stepstory.domain.User;
 import com.kcs.stepstory.dto.global.ResponseDto;
 import com.kcs.stepstory.dto.request.AddDetailCourseDto;
 import com.kcs.stepstory.dto.request.PostTravelImageListDto;
@@ -10,6 +11,7 @@ import com.kcs.stepstory.dto.response.TravelReportListDto;
 import com.kcs.stepstory.dto.response.WriteReportTravelImageListDto;
 import com.kcs.stepstory.exception.CommonException;
 import com.kcs.stepstory.exception.ErrorCode;
+import com.kcs.stepstory.intercepter.pre.UserIdArgumentResolver;
 import com.kcs.stepstory.service.TravelReportService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -91,6 +93,8 @@ public class TravelReportController {
             @RequestBody PostWriteTravelReportDto postWriteTravelReportDto
     ){
         travelReportService.updateFinalTravelReport(postWriteTravelReportDto);
+
+
         Map<String, String> response = new HashMap<>();
         response.put("message", "게시글 작성을 완료했습니다.");
         return response;
