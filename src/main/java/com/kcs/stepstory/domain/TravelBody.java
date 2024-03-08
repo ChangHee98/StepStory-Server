@@ -53,4 +53,9 @@ public class TravelBody {
     public int hashCode() {
         return Objects.hash(getTravelReport(), getBody(), getReadPermission(), getCreatedAt(), getUpdatedAt());
     }
+
+    public void updateTravelBody(String body, int readPermission){
+        this.body = body;
+        this.readPermission = readPermission;
+    }
 }

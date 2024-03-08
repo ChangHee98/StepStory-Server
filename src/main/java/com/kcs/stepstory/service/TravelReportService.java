@@ -82,8 +82,9 @@ public class TravelReportService {
     /*
      * DetailCouse 추가(Post)
      * 게시글 사진 & 코스 확인 페이지
-     * Insert DetailCourse
+     * Insert DetailCourse(수정 필요)
      * */
+    @Transactional
     public void addDetailCourse(AddDetailCourseDto addDetailCourseDto){
         TravelReport travelReport = travelReportRepository.getReferenceById(addDetailCourseDto.travelReportId());
         DetailCourse newDetailCourse = DetailCourse.builder()
@@ -101,7 +102,30 @@ public class TravelReportService {
      * TravelImage 리스트 & User(닉네임, profileImageUrl)
      * 처음 게시글 최종 작성 페이지에 들어왔을 때 service
      *  */
-    public void getWriteTravelImageList(){
+    public WriteReportTravelImageListDto getWriteTravelImageList(Long travelReportId){
+        List<TravelImage> travelImages = travelImageRepository.getTravelImagesByTravelReport(travelReportId);
 
+        List<WriteReportTravelImageDto> writeReportTravelImageDtos = travelImages
+                .stream()
+                .map(WriteReportTravelImageDto::fromEntity)
+                .collect(Collectors.toList());
+        return WriteReportTravelImageListDto.fromEntity(writeReportTravelImageDtos);
     }
+
+    /*
+     * 게시글 최종 작성 페이지(Patch)
+     * Travelreport의 title, TravelreportBody의 body, readPermission update
+     *  */
+    @Transactional
+    public PostWriteTravelReportDto updateFinalTravelReport(PostWriteTravelReportDto postWriteTravelReportDto){
+        TravelReport travelReport = travelReportRepository.getReferenceById(postWriteTravelReportDto.travelReportId());
+        TravelBody travelBody = travelBodyRepository.getReferenceById(postWriteTravelReportDto.travelReportId());
+
+        travelReport.updateTravelReportTitle(postWriteTravelReportDto.title());
+        travelBody.updateTravelBody(postWriteTravelReportDto.body(), postWriteTravelReportDto.readPermission());
+
+        return postWriteTravelReportDto;
+    }
+
+
 }

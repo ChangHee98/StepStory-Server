@@ -4,8 +4,10 @@ import com.kcs.stepstory.annotation.UserId;
 import com.kcs.stepstory.dto.global.ResponseDto;
 import com.kcs.stepstory.dto.request.AddDetailCourseDto;
 import com.kcs.stepstory.dto.request.PostTravelImageListDto;
+import com.kcs.stepstory.dto.request.PostWriteTravelReportDto;
 import com.kcs.stepstory.dto.response.CheckTravelImageListDto;
 import com.kcs.stepstory.dto.response.TravelReportListDto;
+import com.kcs.stepstory.dto.response.WriteReportTravelImageListDto;
 import com.kcs.stepstory.exception.CommonException;
 import com.kcs.stepstory.exception.ErrorCode;
 import com.kcs.stepstory.service.TravelReportService;
@@ -55,6 +57,7 @@ public class TravelReportController {
         return ResponseDto.ok(travelReportService.getCheckTravelImageList(travelReportId));
     }
 
+    @PatchMapping("/api/v1/users/travel-report/detail-course")
     public ResponseDto<PostTravelImageListDto> ReportImagesAndCourses(
             @UserId Long userId,
             @RequestBody PostTravelImageListDto postTravelImageListDto
@@ -62,7 +65,7 @@ public class TravelReportController {
         return ResponseDto.ok(travelReportService.updateImages(postTravelImageListDto));
     }
 
-    @PostMapping("/api/v1/users/travel-report/detail-course")
+    @PostMapping("/api/v1/users/travel-report/detail-course/location")
     public Map<String, String> addDetailCourse(
             @UserId Long userId,
             @RequestBody AddDetailCourseDto addDetailCourseDto
@@ -72,8 +75,25 @@ public class TravelReportController {
         response.put("message","코스가 추가되었습니다.");
 
         return response;
-
     }
 
+    @GetMapping("/api/v1/users/travel-report/view-insert")
+    public ResponseDto<WriteReportTravelImageListDto> viewWriteTravelReportPage(
+            @UserId Long userId,
+            @RequestParam Long travelReportId
+    ){
+        return ResponseDto.ok(travelReportService.getWriteTravelImageList(travelReportId));
+    }
+
+    @PatchMapping("/api/v1/users/travel-report/insert")
+    public Map<String, String> writeFinalTravelReport(
+            @UserId Long userId,
+            @RequestBody PostWriteTravelReportDto postWriteTravelReportDto
+    ){
+        travelReportService.updateFinalTravelReport(postWriteTravelReportDto);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "게시글 작성을 완료했습니다.");
+        return response;
+    }
 
 }

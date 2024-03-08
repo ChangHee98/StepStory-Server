@@ -51,4 +51,8 @@ public class TravelReport {
         this.wantToGoCount = 0L;
     }
 
+    public void updateTravelReportTitle(String title){
+        this.title = title;
+    }
+
 }
