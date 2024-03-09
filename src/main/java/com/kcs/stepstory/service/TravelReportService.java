@@ -19,6 +19,8 @@ public class TravelReportService {
     private final TravelImageRepository travelImageRepository;
     private final DetailCourseRepository detailCourseRepository;
     private final TravelReportRepository travelReportRepository;
+    private final WantToGoRepository wantToGoRepository;
+    private final UserRepository userRepository;
 
     public TravelReportListDto getTravelReportList(String province, String city, String district) {
         List<Long> travelReportIds = stepRepository.findByProvinceAndCityAndDistrict(province, city, district)
@@ -159,4 +161,29 @@ public class TravelReportService {
                 .body(travelBody.getBody())
                 .build();
     }
+
+    /*
+     * 게시물-가고싶어요 버튼 누름(Post)
+     * 가고싶어요 눌러져 있지 않으면 증가 -> WantToGo 테이블에 없으면
+     * 가고싶어요 눌러져 있으면 감소 -> WantTOGo 테이블에서 삭제 -> TravelReport.wantToGo(감소)
+     * Transactional 확인 필요 deleteById와 update가 동시에 진행
+     * */
+    @Transactional
+    public Long pushWantToGo(Long userId, Long travelReportId){
+        User user = userRepository.getReferenceById(userId);
+        TravelReport travelReport = travelReportRepository.getReferenceById(travelReportId);
+        WantToGoId wantToGoId = new WantToGoId(user, travelReport);
+        Boolean wantToGo = wantToGoRepository.existsById(wantToGoId);
+
+        if(wantToGo){
+            wantToGoRepository.deleteById(wantToGoId);
+            travelReport.updateTravelReportWantToGoCount(travelReport.getWantToGoCount()-1);
+            return travelReport.getWantToGoCount();
+        }else{
+            wantToGoRepository.saveAndFlush(new WantToGo(user, travelReport));
+            travelReport.updateTravelReportWantToGoCount(travelReport.getWantToGoCount()+1);
+            return travelReport.getWantToGoCount();
+        }
+    }
+
 }

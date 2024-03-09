@@ -109,4 +109,12 @@ public class TravelReportController {
         return travelReportService.getTravelReport(travelReportId);
     }
 
+    @PostMapping("/api/v1/users/travel-report/want-to-go")
+    public Long pushWantToGoTravelReport(
+            @UserId Long userId,
+            @RequestParam Long travelReportId
+    ){
+        return travelReportService.pushWantToGo(userId, travelReportId);
+    }
+
 }

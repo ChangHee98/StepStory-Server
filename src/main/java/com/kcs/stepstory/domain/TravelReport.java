@@ -55,4 +55,7 @@ public class TravelReport {
         this.title = title;
     }
 
+    public void updateTravelReportWantToGoCount(Long wantToGoCount){
+        this.wantToGoCount = wantToGoCount;
+    }
 }
