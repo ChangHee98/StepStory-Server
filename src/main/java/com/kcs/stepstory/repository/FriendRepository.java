@@ -27,10 +27,12 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
             "from Friend f join f.user1 u  where f.user2 = :userId and f.status = 1")
     List<FriendDto> findByReceiveFriendList(@Param("userId") Long userId);
 
-    // 친구요청 목록 기능
-    @Query("select FriendListDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl)" +
-            "from Friend f join f.user1 u  where f.user1 = :friendId, f.user2 = :userId and f.status = 1")
-    List<Friend> findFriendRequestsByUserId(@Param("userId") Long userId, @Param("friendId") Long friendId, @Param("status") int status);
+    /**
+     * 친구요청 목록조회 기능
+     */
+    @Query("select FriendDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl) " +
+            "from Friend f join f.user1 u where f.user1 = :friendId and f.user2 = :userId and f.status =0")
+    List<FriendDto> findByrequestFriendList(@Param("userId") Long userId, @Param("friendId") Long friendId);
 
 
     /**
@@ -75,18 +77,23 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
 
     /**
      * 친구 닉네임 검색 기능
-     * !!! 닉네임 한글자라도 입력해주면 반환해줘야하므로 like 추가하기
+     * !!! 닉네임 한글자라도 입력하면 반환해줘야하므로 like 추가
      */
     @Query("select FriendDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl) " +
-            "from Friend f join f.user2 u  where f.user1 = :userId and f.user2 = :friendId f.status = 1 or f.user1 = :friendId and f.user2 = :userId  f.status = 1")
-    FriendDto findByFriend(@Param("userId") Long userId, @Param("friendId") Long friendId);
+            "from Friend f join f.user2 u " +
+            "where f.user1 = :userId and f.status = 1 and u.nickname LIKE CONCAT('%', :friendNickname, '%')")
+    List<FriendDto> findBySendFriendNicknameList(@Param("userId") Long userId, @Param("friendNickname") String friendNickname);
 
-    /**
-     * 친구요청 목록조회 기능
-     */
-    @Query("select FriendDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl) " +
-            "from Friend f join f.user1 u where f.user1 = :friendId and f.user2 = :userId and f.status =0")
-    List<FriendDto> findByrequestFriendList(@Param("userId") Long userId, @Param("friendId") Long friendId);
+    @Query("SELECT FriendDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl) " +
+            "FROM Friend f JOIN f.user1 u " +
+            "WHERE f.user2 = :userId AND f.status = 1 AND u.nickname LIKE CONCAT('%', :friendNickname, '%')")
+    List<FriendDto> findByReceiveFriendNicknameList(@Param("userId") Long userId, @Param("friendNickname") String friendNickname);
+
+
+
+
+
+
 
 
 }
