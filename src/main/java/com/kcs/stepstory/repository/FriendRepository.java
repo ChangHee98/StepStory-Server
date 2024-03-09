@@ -14,7 +14,7 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
 
 
     /**
-     *  친구 목록 조회 & 친구 요청 목록 기능 & 친구 닉네임 검색 기능
+     *  친구 목록 조회
      */
 
     @Query("select FriendDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl) " +
@@ -25,6 +25,7 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
     @Query("select FriendDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl) " +
             "from Friend f join f.user1 u  where f.user2 = :userId and f.status = 1")
     List<FriendDto> findByReceiveFriendList(@Param("userId") Long userId);
+
 
     /**
      * 친구요청 목록조회 기능
@@ -45,9 +46,23 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
     /**
      *  친구 상세 정보 확인 기능
      */
-    @Query("select FriendListDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl, u.selfIntro) " +
+    @Query("select FriendDto.fromNicknameAndProfileImgUrlAndSelfIntro(u.nickname, u.profileImgUrl, u.selfIntro) " +
             "from Friend f JOIN f.user2 u  where f.user2 = :userId and f.status = 1")
-    List<Friend> findFriendDetails(@Param("userId") Long userId, @Param("friendId") Long friendId, @Param("status") int status);
+    FriendDto findFriendDetails(@Param("userId") Long userId, @Param("friendId") Long friendId, @Param("status") int status);
+
+    /**
+     * 친구 닉네임 검색 기능
+     * !! 닉네임 한글자라도 입력하면 반환해줘야하므로 like 추가
+     */
+    @Query("select FriendDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl) " +
+            "from Friend f join f.user2 u " +
+            "where f.user1 = :userId and f.status = 1 and u.nickname LIKE CONCAT('%', :friendNickname, '%')")
+    List<FriendDto> findBySendFriendNicknameList(@Param("userId") Long userId, @Param("friendNickname") String friendNickname);
+
+    @Query("SELECT FriendDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl) " +
+            "FROM Friend f JOIN f.user1 u " +
+            "WHERE f.user2 = :userId AND f.status = 1 AND u.nickname LIKE CONCAT('%', :friendNickname, '%')")
+    List<FriendDto> findByReceiveFriendNicknameList(@Param("userId") Long userId, @Param("friendNickname") String friendNickname);
 
 
 
@@ -82,20 +97,6 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
     @Query("select f from Friend f where (f.user1 = :friendId and f.user2 = :userId")
     Friend findIdByUser1Id(@Param("userId") Long userId, @Param("friendId") Long friendId);
 
-
-    /**
-     * 친구 닉네임 검색 기능
-     * !! 닉네임 한글자라도 입력하면 반환해줘야하므로 like 추가
-     */
-    @Query("select FriendDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl) " +
-            "from Friend f join f.user2 u " +
-            "where f.user1 = :userId and f.status = 1 and u.nickname LIKE CONCAT('%', :friendNickname, '%')")
-    List<FriendDto> findBySendFriendNicknameList(@Param("userId") Long userId, @Param("friendNickname") String friendNickname);
-
-    @Query("SELECT FriendDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl) " +
-            "FROM Friend f JOIN f.user1 u " +
-            "WHERE f.user2 = :userId AND f.status = 1 AND u.nickname LIKE CONCAT('%', :friendNickname, '%')")
-    List<FriendDto> findByReceiveFriendNicknameList(@Param("userId") Long userId, @Param("friendNickname") String friendNickname);
 
 
 
