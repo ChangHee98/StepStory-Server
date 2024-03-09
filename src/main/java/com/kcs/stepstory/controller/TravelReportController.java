@@ -8,6 +8,7 @@ import com.kcs.stepstory.dto.request.PostTravelImageListDto;
 import com.kcs.stepstory.dto.request.PostWriteTravelReportDto;
 import com.kcs.stepstory.dto.response.CheckTravelImageListDto;
 import com.kcs.stepstory.dto.response.TravelReportListDto;
+import com.kcs.stepstory.dto.response.ViewTravelReportDto;
 import com.kcs.stepstory.dto.response.WriteReportTravelImageListDto;
 import com.kcs.stepstory.exception.CommonException;
 import com.kcs.stepstory.exception.ErrorCode;
@@ -98,6 +99,14 @@ public class TravelReportController {
         Map<String, String> response = new HashMap<>();
         response.put("message", "게시글 작성을 완료했습니다.");
         return response;
+    }
+
+    @GetMapping("/api/v1/no-auth/travel-report/{provinceId}/")
+    public ViewTravelReportDto viewTravelReport(
+            @UserId Long userId,
+            @RequestParam Long travelReportId
+    ){
+        return travelReportService.getTravelReport(travelReportId);
     }
 
 }

@@ -78,7 +78,6 @@ public class TravelReportService {
         return postTravelImageListDto;
     }
 
-
     /*
      * DetailCouse 추가(Post)
      * 게시글 사진 & 코스 확인 페이지
@@ -128,4 +127,36 @@ public class TravelReportService {
     }
 
 
+    /*
+     * 게시글 상세보기(Get)
+     * Get ViewTravelReport
+     * */
+    public ViewTravelReportDto getTravelReport(Long travelReportId){
+        List<TravelImage> travelImages = travelImageRepository.getTravelImagesByTravelReport(travelReportId);
+        TravelReport travelReport = travelReportRepository.getReferenceById(travelReportId);
+        TravelBody travelBody = travelBodyRepository.getReferenceById(travelReportId);
+
+        List<ViewTravelImageDto> viewTravelImageDtos = travelImages
+                .stream()
+                .map(ViewTravelImageDto::fromEntity)
+                .collect(Collectors.toList());
+
+        ViewTravelImageListDto viewTravelImageListDto = ViewTravelImageListDto.fromEntity(viewTravelImageDtos);
+
+        CommonUserSourseDto commonUserSourseDto = CommonUserSourseDto.fromEntity(travelReport.getUser());
+
+        return ViewTravelReportDto.builder()
+                .viewTravelImageListDto(viewTravelImageListDto)
+                .travelReportId(travelReport.getTravelReportId())
+                .commonUserSourseDto(commonUserSourseDto)
+                .title(travelReport.getTitle())
+                .travelPeriod(travelReport.getTravelPeriod())
+                .travelLocation(travelReport.getTravelLocation())
+                .thumbnailUrl(travelReport.getThumbnailUrl())
+                .createdAt(travelReport.getCreatedAt())
+                .updatedAt(travelReport.getUpdatedAt())
+                .wantToGoCount(travelReport.getWantToGoCount())
+                .body(travelBody.getBody())
+                .build();
+    }
 }
