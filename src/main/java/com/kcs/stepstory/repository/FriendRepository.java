@@ -2,31 +2,29 @@ package com.kcs.stepstory.repository;
 
 import com.kcs.stepstory.domain.Friend;
 import com.kcs.stepstory.dto.response.FriendDto;
-import com.kcs.stepstory.dto.response.FriendListDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.PostMapping;
+
 
 import java.util.List;
 
-@Repository
 public interface FriendRepository extends JpaRepository<Friend, Long> {
 
 
     /**
      *  친구 목록 조회 & 친구 요청 목록 기능 & 친구 닉네임 검색 기능
+     *  user2라는 테이블에
      */
 
-    @Query("select FriendListDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl) " +
+    @Query("select FriendDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl) " +
             "from Friend f join f.user2 u  where f.user1 = :userId and f.status = 1")
-    List<Friend> findBySendFriendList(@Param("userId") Long userId);
+    List<FriendDto> findBySendFriendList(@Param("userId") Long userId);
 
 
-    @Query("select FriendListDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl) " +
-            "from Friend f join f.user2 u  where f.user2 = :userId and f.status = 1")
+    @Query("select FriendDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl) " +
+            "from Friend f join f.user1 u  where f.user2 = :userId and f.status = 1")
     List<FriendDto> findByReceiveFriendList(@Param("userId") Long userId);
 
     // 친구요청 목록 기능
@@ -60,7 +58,6 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
     void insertFriendByUserId(@Param("userId1") Long userId1, @Param("friendId") Long friendId, @Param("status") int status);
 
 
-
     /**
      *  친구 수락 기능
      */
@@ -78,6 +75,7 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
 
     /**
      * 친구 닉네임 검색 기능
+     * !!! 닉네임 한글자라도 입력해주면 반환해줘야하므로 like 추가하기
      */
     @Query("select FriendDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl) " +
             "from Friend f join f.user2 u  where f.user1 = :userId and f.user2 = :friendId f.status = 1 or f.user1 = :friendId and f.user2 = :userId  f.status = 1")
@@ -87,8 +85,8 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
      * 친구요청 목록조회 기능
      */
     @Query("select FriendDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl) " +
-            "from Friend f join f.user2 u where f.user1 = :friendId and f.user2 = :userId and f.status =0")
-    List<Friend> findBySendFriend(@Param("userId") Long userId, @Param("friendId") Long friendId);
+            "from Friend f join f.user1 u where f.user1 = :friendId and f.user2 = :userId and f.status =0")
+    List<FriendDto> findByrequestFriendList(@Param("userId") Long userId, @Param("friendId") Long friendId);
 
 
 }
