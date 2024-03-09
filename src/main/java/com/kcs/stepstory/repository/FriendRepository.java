@@ -31,8 +31,16 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
      * 친구요청 목록조회 기능
      */
     @Query("select FriendDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl) " +
-            "from Friend f join f.user1 u where f.user1 = :friendId and f.user2 = :userId and f.status =0")
-    List<FriendDto> findByrequestFriendList(@Param("userId") Long userId, @Param("friendId") Long friendId);
+            "from Friend f join f.user1 u where f.user2 = :userId and f.status =0")
+    List<FriendDto> findByrequestFriendList(@Param("userId") Long userId);
+
+    /**
+     * 친구요청 목록 count 기능
+     */
+    @Query("SELECT COUNT(f) " +
+            "FROM Friend f " +
+            "WHERE f.user1 = :friendId AND f.user2 = :userId AND f.status = 0")
+    Long countByRequestFriendList(@Param("userId") Long userId, @Param("friendId") Long friendId);
 
 
     /**
@@ -77,7 +85,7 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
 
     /**
      * 친구 닉네임 검색 기능
-     * !!! 닉네임 한글자라도 입력하면 반환해줘야하므로 like 추가
+     * !! 닉네임 한글자라도 입력하면 반환해줘야하므로 like 추가
      */
     @Query("select FriendDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl) " +
             "from Friend f join f.user2 u " +
