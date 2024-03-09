@@ -102,19 +102,20 @@ public class TravelReportController {
     }
 
     @GetMapping("/api/v1/no-auth/travel-report/{provinceId}/")
-    public ViewTravelReportDto viewTravelReport(
+    public ResponseDto<ViewTravelReportDto> viewTravelReport(
             @UserId Long userId,
             @RequestParam Long travelReportId
     ){
-        return travelReportService.getTravelReport(travelReportId);
+        return ResponseDto.ok(travelReportService.getTravelReport(travelReportId));
     }
 
     @PostMapping("/api/v1/users/travel-report/want-to-go")
-    public Long pushWantToGoTravelReport(
+    public ResponseDto<Long> pushWantToGoTravelReport(
             @UserId Long userId,
             @RequestParam Long travelReportId
     ){
-        return travelReportService.pushWantToGo(userId, travelReportId);
+        return ResponseDto.ok(travelReportService.pushWantToGo(userId, travelReportId));
     }
+
 
 }
