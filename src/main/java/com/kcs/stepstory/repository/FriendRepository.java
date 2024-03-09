@@ -44,7 +44,7 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
 
 
     /**
-     *  친구 상세 정보 확인 기능
+     *  친구 상세정보 확인 기능
      */
     @Query("select FriendDto.fromNicknameAndProfileImgUrlAndSelfIntro(u.nickname, u.profileImgUrl, u.selfIntro) " +
             "from Friend f JOIN f.user1 u  where f.user1 = :friendId and f.user2 = :userId and f.status = 1" )
