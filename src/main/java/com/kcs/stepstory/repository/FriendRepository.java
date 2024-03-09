@@ -1,6 +1,7 @@
 package com.kcs.stepstory.repository;
 
 import com.kcs.stepstory.domain.Friend;
+import com.kcs.stepstory.domain.User;
 import com.kcs.stepstory.dto.response.FriendDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -15,7 +16,6 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
 
     /**
      *  친구 목록 조회 & 친구 요청 목록 기능 & 친구 닉네임 검색 기능
-     *  user2라는 테이블에
      */
 
     @Query("select FriendDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl) " +
@@ -53,14 +53,6 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
 
 
     /**
-     *  친구 삭제 기능
-     */
-    @Modifying
-    @Query("delete from Friend f where (f.user1 = :userId and f.user2 = :friendId or f.userId1 = :friendId and f.userId2 = :userId) and f.status = 1")
-    void deleteFriendByUserId(@Param("userId") Long userId, @Param("friendId") Long friendId);
-
-
-    /**
      *  친구 요청 기능
      */
     @Modifying
@@ -69,19 +61,28 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
 
 
     /**
-     *  친구 수락 기능
+     *  친구수락 기능
      */
     @Modifying
     @Query("update Friend f set f.status = 1 WHERE f.user1 = :friendId AND f.user2 = :userId")
     void acceptFriendRequest(@Param("userId") Long userId, @Param("friendId") Long friendId);
 
 
+
+
     /**
-     *  친구요청 거절 기능
+     *  친구삭제 기능 OR 친구요청 거절 기능
+     *  *이랑 같은 의미로 하나의 행에 모든 컬럼을 반환하겠다. 이지만
+     *  지금 f로 반환하는 이유는 -> 엔티티 타입으로 반환이 필요하기 때문
      */
     @Modifying
-    @Query("delete from Friend f where (f.user1 = :friendId and f.user2 = :userId AND f.status = 0")
-    void refuseFriendByUserId(@Param("userId") Long userId, @Param("friendId") Long friendId);
+    @Query("select f from Friend f where (f.user1 = :userId and f.user2 = :friendId")
+    Friend findIdByUser2Id(@Param("userId") Long userId, @Param("friendId") Long friendId);
+
+    @Modifying
+    @Query("select f from Friend f where (f.user1 = :friendId and f.user2 = :userId")
+    Friend findIdByUser1Id(@Param("userId") Long userId, @Param("friendId") Long friendId);
+
 
     /**
      * 친구 닉네임 검색 기능
