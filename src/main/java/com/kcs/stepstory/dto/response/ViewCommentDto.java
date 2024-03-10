@@ -11,7 +11,9 @@ public record ViewCommentDto(
         TravelReport travelReport,
         String content,
         Long parentCommentId,
-        Timestamp createdAt
+        Timestamp createdAt,
+        String nickname,
+        String profileImgUrl
 ) {
     public static ViewCommentDto fromEntity(Comment comment){
         return ViewCommentDto.builder()
@@ -19,6 +21,8 @@ public record ViewCommentDto(
                 .content(comment.getContent())
                 .parentCommentId(comment.getParentCommentId())
                 .createdAt(comment.getCreatedAt())
+                .nickname(comment.getUser().getNickname())
+                .profileImgUrl(comment.getUser().getProfileImgUrl())
                 .build();
     }
 }
