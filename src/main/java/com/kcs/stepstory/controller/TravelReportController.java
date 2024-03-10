@@ -6,6 +6,7 @@ import com.kcs.stepstory.dto.global.ResponseDto;
 import com.kcs.stepstory.dto.request.AddDetailCourseDto;
 import com.kcs.stepstory.dto.request.PostTravelImageListDto;
 import com.kcs.stepstory.dto.request.PostWriteTravelReportDto;
+import com.kcs.stepstory.dto.request.WriteCommentDto;
 import com.kcs.stepstory.dto.response.*;
 import com.kcs.stepstory.exception.CommonException;
 import com.kcs.stepstory.exception.ErrorCode;
@@ -132,5 +133,16 @@ public class TravelReportController {
             @RequestParam Long travelReportId
     ){
         return ResponseDto.ok(travelReportService.viewCommentList(travelReportId));
+    }
+
+    @PostMapping("/api/v1/users/travel-report/comment")
+    public Map<String, String> writeComments(
+            @UserId Long userId,
+            @RequestBody WriteCommentDto writeCommentDto
+    ){
+        travelReportService.writeComment(writeCommentDto, userId);
+        Map<String, String> response = new HashMap<>();
+        response.put("message","댓글 작성이 완료되었습니다.");
+        return response;
     }
 }

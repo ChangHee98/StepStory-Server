@@ -132,7 +132,6 @@ public class TravelReportService {
         return postWriteTravelReportDto;
     }
 
-
     /*
      * 게시글 상세보기(Get)
      * Get ViewTravelReport
@@ -220,5 +219,19 @@ public class TravelReportService {
                 .collect(Collectors.toList());
 
         return ViewCommentListDto.fromEntity(viewCommentDtos);
+    }
+
+    /*
+     * 댓글 작성(Post)
+     * WriteCommentDto를 받아 데이터 처리
+     *  */
+    public void writeComment(WriteCommentDto writeCommentDto, Long userId){
+        Comment comment = Comment.builder()
+                .travelReport(writeCommentDto.travelReport())
+                .user(userRepository.getReferenceById(userId))
+                .content(writeCommentDto.content())
+                .parentCommentId(writeCommentDto.parentCommentId())
+                .build();
+        commentRepository.saveAndFlush(comment);
     }
 }
