@@ -76,8 +76,8 @@ public class TravelReportController {
         return response;
     }
 
-    @GetMapping("/api/v1/users/travel-report/view-insert")
-    public ResponseDto<WriteReportTravelImageListDto> viewWriteTravelReportPage(
+    @GetMapping(value = {"/api/v1/users/travel-report/view-insert"})
+    public ResponseDto<WriteTravelReportDto> viewWriteTravelReportPage(
             @UserId Long userId,
             @RequestParam Long travelReportId
     ){

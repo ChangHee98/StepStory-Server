@@ -107,14 +107,15 @@ public class TravelReportService {
      * TravelImage 리스트 & User(닉네임, profileImageUrl)
      * 처음 게시글 최종 작성 페이지에 들어왔을 때 service
      *  */
-    public WriteReportTravelImageListDto getWriteTravelImageList(Long travelReportId){
+    public WriteTravelReportDto getWriteTravelImageList(Long travelReportId){
         List<TravelImage> travelImages = travelImageRepository.getTravelImagesByTravelReport(travelReportId);
 
         List<WriteReportTravelImageDto> writeReportTravelImageDtos = travelImages
                 .stream()
                 .map(WriteReportTravelImageDto::fromEntity)
                 .collect(Collectors.toList());
-        return WriteReportTravelImageListDto.fromEntity(writeReportTravelImageDtos);
+        WriteReportTravelImageListDto writeReportTravelImageListDto = WriteReportTravelImageListDto.fromEntity(writeReportTravelImageDtos);
+        return WriteTravelReportDto.fromEntity(writeReportTravelImageListDto, travelReportRepository.getReferenceById(travelReportId));
     }
 
     /*
