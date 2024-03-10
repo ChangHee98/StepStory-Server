@@ -76,7 +76,7 @@ public class TravelReportController {
         return response;
     }
 
-    @GetMapping(value = {"/api/v1/users/travel-report/view-insert"})
+    @GetMapping(value = {"/api/v1/users/travel-report/view-insert", "/api/v1/users/travel-report/view-modify"})
     public ResponseDto<WriteTravelReportDto> viewWriteTravelReportPage(
             @UserId Long userId,
             @RequestParam Long travelReportId
@@ -84,7 +84,7 @@ public class TravelReportController {
         return ResponseDto.ok(travelReportService.getWriteTravelImageList(travelReportId));
     }
 
-    @PatchMapping(value = {"/api/v1/users/travel-report/insert", "/api/v1/users/travel-report/temporary"})
+    @PatchMapping(value = {"/api/v1/users/travel-report/insert", "/api/v1/users/travel-report/temporary", "/api/v1/users/travel-report/modify"})
     public Map<String, String> writeFinalTravelReport(
             @UserId Long userId,
             @RequestBody PostWriteTravelReportDto postWriteTravelReportDto,
@@ -99,6 +99,8 @@ public class TravelReportController {
             response.put("message", "게시글 작성을 완료했습니다.");
         }else if(requestUri.equals("/api/v1/users/travel-report/temporary")) {
             response.put("message", "게시글을 임시 저장했습니다.");
+        }else if(requestUri.equals("/api/v1/users/travel-report/modify")){
+            response.put("message", "게시글 수정을 완료했습니다.");
         }else{
             throw new CommonException(ErrorCode.NOT_FOUND_END_POINT);
         }
@@ -134,7 +136,7 @@ public class TravelReportController {
         return response;
     }
 
-    @GetMapping("/api/v1/users/travel-report/view-modify")
+    @GetMapping("/api/v1/users/travel-report/travel-image/view-modify")
     public ResponseDto<ModifyTravelReportFirstPageDto> viewModifyReportFirstPage(
             @UserId Long userId,
             @RequestParam Long travelReportId
