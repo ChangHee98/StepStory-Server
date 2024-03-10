@@ -11,6 +11,7 @@ import com.kcs.stepstory.intercepter.pre.UserIdArgumentResolver;
 import com.kcs.stepstory.service.TravelReportService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -83,16 +84,25 @@ public class TravelReportController {
         return ResponseDto.ok(travelReportService.getWriteTravelImageList(travelReportId));
     }
 
-    @PatchMapping("/api/v1/users/travel-report/insert")
+    @PatchMapping(value = {"/api/v1/users/travel-report/insert", "/api/v1/users/travel-report/temporary"})
     public Map<String, String> writeFinalTravelReport(
             @UserId Long userId,
-            @RequestBody PostWriteTravelReportDto postWriteTravelReportDto
+            @RequestBody PostWriteTravelReportDto postWriteTravelReportDto,
+            HttpServletRequest request
     ){
         travelReportService.updateFinalTravelReport(postWriteTravelReportDto);
 
-
         Map<String, String> response = new HashMap<>();
-        response.put("message", "게시글 작성을 완료했습니다.");
+        String requestUri = request.getRequestURI();
+
+        if(requestUri.equals("/api/v1/users/travel-report/insert")){
+            response.put("message", "게시글 작성을 완료했습니다.");
+        }else if(requestUri.equals("/api/v1/users/travel-report/temporary")) {
+            response.put("message", "게시글을 임시 저장했습니다.");
+        }else{
+            throw new CommonException(ErrorCode.NOT_FOUND_END_POINT);
+        }
+
         return response;
     }
 
