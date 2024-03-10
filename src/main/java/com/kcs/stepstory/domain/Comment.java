@@ -18,12 +18,18 @@ import java.sql.Timestamp;
 public class Comment {
     @Id
     @Column(name = "commentId",nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "travelReportId", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private TravelReport travelReport;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private User user;
 
     @Column(name = "content",nullable = false)
     private String content;
@@ -33,9 +39,12 @@ public class Comment {
     @Column(name = "createdAt",nullable = false)
     private Timestamp createdAt;
 
+
+
     @Builder
-    public Comment(TravelReport travelReport, String content, long parentCommentId){
+    public Comment(TravelReport travelReport, User user, String content, long parentCommentId){
         this.travelReport = travelReport;
+        this.user = user;
         this.content = content;
         this.parentCommentId = parentCommentId;
         this.createdAt = new Timestamp(System.currentTimeMillis());
