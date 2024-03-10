@@ -206,6 +206,31 @@ public class TravelReportService {
     }
 
     /*
+     * 게시글 수정(Get)
+     * 수정 첫번째 페이지
+     * 이미지 업로드, 업로드 된 이미지 삭제, 여행 기간 변경
+     *  */
+    public ModifyTravelReportFirstPageDto modifyTravelReportFirst(Long travelReportId, Long userId){
+        TravelReport travelReport = travelReportRepository.getReferenceById(travelReportId);
+        List<TravelImage> travelImages = travelImageRepository.getTravelImagesByTravelReport(travelReportId);
+
+        if(!userId.equals(travelReport.getUser().getUserId())){
+            throw new CommonException(ErrorCode.ACCESS_DENIED);
+        }
+
+        List<ModifyTravelImageDto> modifyTravelImageDtos = travelImages
+                .stream()
+                .map(ModifyTravelImageDto::fromEntity)
+                .collect(Collectors.toList());
+
+        ModifyTravelImageListDto modifyTravelImageListDto = ModifyTravelImageListDto.builder()
+                .modifyTravelImageDtos(modifyTravelImageDtos)
+                .build();
+
+        return ModifyTravelReportFirstPageDto.fromEntity(modifyTravelImageListDto, travelReport);
+    }
+
+    /*
      * 댓글 조회(Get)
      * travelId를 받아서 해당 게시글의 댓글을 조회하는 기능
      * */
