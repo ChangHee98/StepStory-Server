@@ -117,5 +117,15 @@ public class TravelReportController {
         return ResponseDto.ok(travelReportService.pushWantToGo(userId, travelReportId));
     }
 
+    @DeleteMapping("/api/v1/users/travel-report")
+    public Map<String, Long> deleteTravelReport(
+        @UserId Long userId,
+        @RequestParam Long travelReportId
+    ){
 
+        Map<String, Long> response = new HashMap<>();
+        response.put("travelReportId", travelReportService.deleteTravelReport(userId, travelReportId));
+
+        return response;
+    }
 }

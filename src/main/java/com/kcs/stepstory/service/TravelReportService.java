@@ -3,7 +3,10 @@ package com.kcs.stepstory.service;
 import com.kcs.stepstory.domain.*;
 import com.kcs.stepstory.dto.request.*;
 import com.kcs.stepstory.dto.response.*;
+import com.kcs.stepstory.exception.CommonException;
+import com.kcs.stepstory.exception.ErrorCode;
 import com.kcs.stepstory.repository.*;
+import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -186,4 +189,19 @@ public class TravelReportService {
         }
     }
 
+    /*
+     * 게시글 삭제(Delete)
+     * 권한이 있는지 확인 -> 본인이 쓴 글이 맞는지 확인하고 삭제 진행
+     *  */
+    public Long deleteTravelReport(Long userId, Long travelReportId){
+        TravelReport travelReport = travelReportRepository.getReferenceById(travelReportId);
+
+        if(!userId.equals(travelReport.getUser().getUserId())){
+            throw new CommonException(ErrorCode.NOT_MATCH_USER);
+        }
+
+        travelReportRepository.deleteById(travelReportId);
+
+        return travelReportId;
+    }
 }
