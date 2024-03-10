@@ -48,7 +48,7 @@ public class TravelReportController {
         return ResponseDto.ok(travelReportService.getTravelReportList(province, city, district));
     }
 
-    @GetMapping("/api/v1/travel-report/detail-course/view-check/{travelReportId}")
+    @GetMapping(value = {"/api/v1/travel-report/detail-course/view-check/{travelReportId}","/api/v1/users/travel-report/detail-course/view-modify"})
     public ResponseDto<CheckTravelImageListDto> viewReportImagesAndCourses(
             @UserId Long userId,
             @RequestParam Long travelReportId
@@ -56,7 +56,7 @@ public class TravelReportController {
         return ResponseDto.ok(travelReportService.getCheckTravelImageList(travelReportId));
     }
 
-    @PatchMapping(value = {"/api/v1/users/travel-report/detail-course", "/api/v1/users/travel-report/detail-course/temporary"})
+    @PatchMapping(value = {"/api/v1/users/travel-report/detail-course", "/api/v1/users/travel-report/detail-course/temporary", "/api/v1/users/travel-report/detail-course/modify"})
     public ResponseDto<PostTravelImageListDto> ReportImagesAndCourses(
             @UserId Long userId,
             @RequestBody PostTravelImageListDto postTravelImageListDto
