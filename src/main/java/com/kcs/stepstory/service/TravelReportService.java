@@ -24,6 +24,7 @@ public class TravelReportService {
     private final TravelReportRepository travelReportRepository;
     private final WantToGoRepository wantToGoRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
 
     public TravelReportListDto getTravelReportList(String province, String city, String district) {
         List<Long> travelReportIds = stepRepository.findByProvinceAndCityAndDistrict(province, city, district)
@@ -203,5 +204,21 @@ public class TravelReportService {
         travelReportRepository.deleteById(travelReportId);
 
         return travelReportId;
+    }
+
+    /*
+     * 댓글 조회(Get)
+     * travelId를 받아서 해당 게시글의 댓글을 조회하는 기능
+     * */
+    public ViewCommentListDto viewCommentList(Long travelReportId){
+        TravelReport travelReport = travelReportRepository.getReferenceById(travelReportId);
+        List<Comment> comments = commentRepository.findCommentsByTravelReportOrderByCreatedAtAsc(travelReport);
+
+        List<ViewCommentDto> viewCommentDtos = comments
+                .stream()
+                .map(ViewCommentDto::fromEntity)
+                .collect(Collectors.toList());
+
+        return ViewCommentListDto.fromEntity(viewCommentDtos);
     }
 }

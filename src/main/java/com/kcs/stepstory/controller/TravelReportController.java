@@ -6,10 +6,7 @@ import com.kcs.stepstory.dto.global.ResponseDto;
 import com.kcs.stepstory.dto.request.AddDetailCourseDto;
 import com.kcs.stepstory.dto.request.PostTravelImageListDto;
 import com.kcs.stepstory.dto.request.PostWriteTravelReportDto;
-import com.kcs.stepstory.dto.response.CheckTravelImageListDto;
-import com.kcs.stepstory.dto.response.TravelReportListDto;
-import com.kcs.stepstory.dto.response.ViewTravelReportDto;
-import com.kcs.stepstory.dto.response.WriteReportTravelImageListDto;
+import com.kcs.stepstory.dto.response.*;
 import com.kcs.stepstory.exception.CommonException;
 import com.kcs.stepstory.exception.ErrorCode;
 import com.kcs.stepstory.intercepter.pre.UserIdArgumentResolver;
@@ -127,5 +124,13 @@ public class TravelReportController {
         response.put("travelReportId", travelReportService.deleteTravelReport(userId, travelReportId));
 
         return response;
+    }
+
+    @GetMapping("/api/v1/users/travel-report/comment")
+    public ResponseDto<ViewCommentListDto> viewComments(
+            @UserId Long userId,
+            @RequestParam Long travelReportId
+    ){
+        return ResponseDto.ok(travelReportService.viewCommentList(travelReportId));
     }
 }
