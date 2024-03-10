@@ -15,10 +15,5 @@ public record WriteCommentDto(
         Timestamp createdAt,
         User user
 ) {
-    public static Comment toEntity(WriteCommentDto writeCommentDto){
-        return Comment.builder()
-
-                .build();
-    }
 
 }
