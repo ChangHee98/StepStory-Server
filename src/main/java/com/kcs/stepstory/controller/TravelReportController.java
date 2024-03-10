@@ -3,10 +3,7 @@ package com.kcs.stepstory.controller;
 import com.kcs.stepstory.annotation.UserId;
 import com.kcs.stepstory.domain.User;
 import com.kcs.stepstory.dto.global.ResponseDto;
-import com.kcs.stepstory.dto.request.AddDetailCourseDto;
-import com.kcs.stepstory.dto.request.PostTravelImageListDto;
-import com.kcs.stepstory.dto.request.PostWriteTravelReportDto;
-import com.kcs.stepstory.dto.request.WriteCommentDto;
+import com.kcs.stepstory.dto.request.*;
 import com.kcs.stepstory.dto.response.*;
 import com.kcs.stepstory.exception.CommonException;
 import com.kcs.stepstory.exception.ErrorCode;
@@ -143,6 +140,19 @@ public class TravelReportController {
         travelReportService.writeComment(writeCommentDto, userId);
         Map<String, String> response = new HashMap<>();
         response.put("message","댓글 작성이 완료되었습니다.");
+        return response;
+    }
+
+    @PatchMapping("/api/v1/users/travel-report/comment")
+    public Map<String, String> updateComment(
+            @UserId Long userId,
+            @RequestBody UpdateCommentDto updateCommentDto
+    ){
+
+        travelReportService.updateComment(updateCommentDto, userId);
+        Map<String, String> response = new HashMap<>();
+        response.put("message","댓글 수정이 완료되었습니다.");
+
         return response;
     }
 }

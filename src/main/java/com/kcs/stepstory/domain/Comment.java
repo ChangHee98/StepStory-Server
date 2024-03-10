@@ -49,4 +49,6 @@ public class Comment {
         this.parentCommentId = parentCommentId;
         this.createdAt = new Timestamp(System.currentTimeMillis());
     }
+
+    public void updateComment(String content){this.content = content;}
 }

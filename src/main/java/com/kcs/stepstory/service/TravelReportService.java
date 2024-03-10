@@ -234,4 +234,17 @@ public class TravelReportService {
                 .build();
         commentRepository.saveAndFlush(comment);
     }
+
+    /*
+     * 댓글 수정(Patch)
+     * UpdateCommentDto를 받아 댓글 수정
+     *  */
+    @Transactional
+    public void updateComment(UpdateCommentDto updateCommentDto, Long userId){
+        Comment comment = commentRepository.findCommentByCommentId(updateCommentDto.commentId());
+        if(!userId.equals(comment.getUser().getUserId())){
+            throw new CommonException(ErrorCode.NOT_MATCH_USER);
+        }
+        comment.updateComment(updateCommentDto.content());
+    }
 }
