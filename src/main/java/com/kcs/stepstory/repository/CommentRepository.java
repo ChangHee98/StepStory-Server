@@ -14,4 +14,6 @@ public interface CommentRepository extends JpaRepository<Comment, CommentId> {
     public List<Comment> findCommentsByTravelReportOrderByCreatedAtAsc(TravelReport travelReport);
 
     public Comment findCommentByCommentId(Long commentId);
+
+    public void deleteByCommentId(Long commentId);
 }

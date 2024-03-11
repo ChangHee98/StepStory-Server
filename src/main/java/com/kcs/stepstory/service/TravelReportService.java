@@ -288,5 +288,13 @@ public class TravelReportService {
      * 댓글 삭제(Delete)
      * commentId를 받아 댓글 삭제
      *  */
-//    public
+    @Transactional
+    public void deleteComment(Long commentId, Long userId){
+        Comment comment = commentRepository.findCommentByCommentId(commentId);
+
+        if(!userId.equals(comment.getUser().getUserId())){
+            throw new CommonException(ErrorCode.NOT_MATCH_USER);
+        }
+        commentRepository.deleteByCommentId(commentId);
+    }
 }

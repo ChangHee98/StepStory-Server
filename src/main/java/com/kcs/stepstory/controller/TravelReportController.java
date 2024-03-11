@@ -50,14 +50,6 @@ public class TravelReportController {
         return ResponseDto.ok(travelReportService.getTravelReportList(province, city, district));
     }
 
-//    @GetMapping(value = {"/api/v1/travel-report/detail-course/view-check/{travelReportId}","/api/v1/users/travel-report/detail-course/view-modify"})
-//    public ResponseDto<CheckTravelImageListDto> viewReportImagesAndCourses(
-//            @UserId Long userId,
-//            @RequestParam Long travelReportId
-//    ){
-//        return ResponseDto.ok(travelReportService.getCheckTravelImageList(travelReportId));
-//    }
-
     /*
      * Post_2에서 DetailCourse를 TravelImage에 넣어줄 때 사용
      * */
@@ -88,7 +80,7 @@ public class TravelReportController {
     @GetMapping(value = {"/api/v1/users/travel-report/travel-image/{travelReportId}"})
     public ResponseDto<WriteTravelReportDto> getTravelImagesAndDetailCourses(
             @UserId Long userId,
-            @RequestParam Long travelReportId
+            @PathVariable Long travelReportId
     ){
         return ResponseDto.ok(travelReportService.getTravelImagesAndDetailCourses(travelReportId));
     }
@@ -185,20 +177,16 @@ public class TravelReportController {
             @UserId Long userId,
             @RequestBody UpdateCommentDto updateCommentDto
     ) {
-
         travelReportService.updateComment(updateCommentDto, userId);
         return ResponseDto.ok(null);
     }
 
-    @DeleteMapping("")
-    public Map<String, String> deleteComment(
+    @DeleteMapping("/api/v1/users/travel-report/comment/{commentId}")
+    public ResponseDto<?> deleteComment(
             @UserId Long userId,
-            @RequestBody Long commentId
+            @PathVariable Long commentId
     ){
-
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "댓글 삭제가 완료되었습니다.");
-
-        return response;
+        travelReportService.deleteComment(commentId, userId);
+        return ResponseDto.ok(null);
     }
 }
