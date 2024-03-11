@@ -31,7 +31,7 @@ public class TravelImage {
         @JoinColumn(name = "detailCourseId", nullable = false),
         @JoinColumn(name = "travelReportId", nullable = false)
     })
-    @OnDelete(action = OnDeleteAction.CASCADE)
+
     private DetailCourse detailCourse;
 
     @Builder

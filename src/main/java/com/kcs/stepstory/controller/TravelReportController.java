@@ -1,6 +1,8 @@
 package com.kcs.stepstory.controller;
 
+import com.amazonaws.Response;
 import com.kcs.stepstory.annotation.UserId;
+import com.kcs.stepstory.domain.Comment;
 import com.kcs.stepstory.domain.User;
 import com.kcs.stepstory.dto.global.ResponseDto;
 import com.kcs.stepstory.dto.request.*;
@@ -48,15 +50,18 @@ public class TravelReportController {
         return ResponseDto.ok(travelReportService.getTravelReportList(province, city, district));
     }
 
-    @GetMapping(value = {"/api/v1/travel-report/detail-course/view-check/{travelReportId}","/api/v1/users/travel-report/detail-course/view-modify"})
-    public ResponseDto<CheckTravelImageListDto> viewReportImagesAndCourses(
-            @UserId Long userId,
-            @RequestParam Long travelReportId
-    ){
-        return ResponseDto.ok(travelReportService.getCheckTravelImageList(travelReportId));
-    }
+//    @GetMapping(value = {"/api/v1/travel-report/detail-course/view-check/{travelReportId}","/api/v1/users/travel-report/detail-course/view-modify"})
+//    public ResponseDto<CheckTravelImageListDto> viewReportImagesAndCourses(
+//            @UserId Long userId,
+//            @RequestParam Long travelReportId
+//    ){
+//        return ResponseDto.ok(travelReportService.getCheckTravelImageList(travelReportId));
+//    }
 
-    @PatchMapping(value = {"/api/v1/users/travel-report/detail-course", "/api/v1/users/travel-report/detail-course/temporary", "/api/v1/users/travel-report/detail-course/modify"})
+    /*
+     * Post_2에서 DetailCourse를 TravelImage에 넣어줄 때 사용
+     * */
+    @PatchMapping("/api/v1/users/travel-report/detail-course")
     public ResponseDto<PostTravelImageListDto> ReportImagesAndCourses(
             @UserId Long userId,
             @RequestBody PostTravelImageListDto postTravelImageListDto
@@ -64,114 +69,135 @@ public class TravelReportController {
         return ResponseDto.ok(travelReportService.updateImages(postTravelImageListDto));
     }
 
-    @PostMapping("/api/v1/users/travel-report/detail-course/location")
-    public Map<String, String> addDetailCourse(
+    /*
+     * DetailCourse 추가
+     * UI : Post_2
+     *  */
+    @PostMapping("/api/v1/users/travel-report/detail-course")
+    public ResponseDto<AddDetailCourseDto> addDetailCourse(
             @UserId Long userId,
             @RequestBody AddDetailCourseDto addDetailCourseDto
     ){
-        travelReportService.addDetailCourse(addDetailCourseDto);
-        Map<String, String> response = new HashMap<>();
-        response.put("message","코스가 추가되었습니다.");
-
-        return response;
+        return ResponseDto.ok(travelReportService.addDetailCourse(addDetailCourseDto));
     }
 
-    @GetMapping(value = {"/api/v1/users/travel-report/view-insert", "/api/v1/users/travel-report/view-modify"})
-    public ResponseDto<WriteTravelReportDto> viewWriteTravelReportPage(
+    /*
+       TravelReport와 연결된 TravelImages와 DetailCourses 그리고 thumnailUrl을 불러오는 api
+       UI : Post_2, Post_3
+     * */
+    @GetMapping(value = {"/api/v1/users/travel-report/travel-image/{travelReportId}"})
+    public ResponseDto<WriteTravelReportDto> getTravelImagesAndDetailCourses(
             @UserId Long userId,
             @RequestParam Long travelReportId
     ){
-        return ResponseDto.ok(travelReportService.getWriteTravelImageList(travelReportId));
+        return ResponseDto.ok(travelReportService.getTravelImagesAndDetailCourses(travelReportId));
     }
 
-    @PatchMapping(value = {"/api/v1/users/travel-report/insert", "/api/v1/users/travel-report/temporary", "/api/v1/users/travel-report/modify"})
-    public Map<String, String> writeFinalTravelReport(
+    /*
+     * 게시글 title, body, readPermission Update
+     * UI : Post_3
+     *  */
+    @PatchMapping("/api/v1/users/travel-report")
+    public ResponseDto<PostWriteTravelReportDto> writeFinalTravelReport(
             @UserId Long userId,
-            @RequestBody PostWriteTravelReportDto postWriteTravelReportDto,
-            HttpServletRequest request
+            @RequestBody PostWriteTravelReportDto postWriteTravelReportDto
     ){
-        travelReportService.updateFinalTravelReport(postWriteTravelReportDto);
 
-        Map<String, String> response = new HashMap<>();
-        String requestUri = request.getRequestURI();
-
-        if(requestUri.equals("/api/v1/users/travel-report/insert")){
-            response.put("message", "게시글 작성을 완료했습니다.");
-        }else if(requestUri.equals("/api/v1/users/travel-report/temporary")) {
-            response.put("message", "게시글을 임시 저장했습니다.");
-        }else if(requestUri.equals("/api/v1/users/travel-report/modify")){
-            response.put("message", "게시글 수정을 완료했습니다.");
-        }else{
-            throw new CommonException(ErrorCode.NOT_FOUND_END_POINT);
-        }
-
-        return response;
+        return ResponseDto.ok(travelReportService.updateFinalTravelReport(postWriteTravelReportDto));
     }
 
-    @GetMapping("/api/v1/no-auth/travel-report/{provinceId}/")
+    /*
+     * 게시글 상세보기
+     * */
+    @GetMapping("/api/v1/no-auth/travel-report/{travelReportId}")
     public ResponseDto<ViewTravelReportDto> viewTravelReport(
             @UserId Long userId,
-            @RequestParam Long travelReportId
+            @PathVariable Long travelReportId
     ){
         return ResponseDto.ok(travelReportService.getTravelReport(travelReportId));
     }
 
+    /*
+     * 게시글 상세 보기에서 WantToGo
+     * 이미 WantToGo 눌렀으면 delete
+     * 아니면 insert
+     * */
     @PostMapping("/api/v1/users/travel-report/want-to-go")
     public ResponseDto<Long> pushWantToGoTravelReport(
             @UserId Long userId,
-            @RequestParam Long travelReportId
+            @RequestBody Long travelReportId
     ){
         return ResponseDto.ok(travelReportService.pushWantToGo(userId, travelReportId));
     }
 
-    @DeleteMapping("/api/v1/users/travel-report")
-    public Map<String, Long> deleteTravelReport(
+    /*
+     * 게시글 삭제
+     * */
+    @DeleteMapping("/api/v1/users/travel-report/{travelReportId}")
+    public ResponseDto<?> deleteTravelReport(
         @UserId Long userId,
-        @RequestParam Long travelReportId
+        @PathVariable Long travelReportId
     ){
+        travelReportService.deleteTravelReport(userId, travelReportId);
 
-        Map<String, Long> response = new HashMap<>();
-        response.put("travelReportId", travelReportService.deleteTravelReport(userId, travelReportId));
-
-        return response;
+        return ResponseDto.ok(null);
     }
 
-    @GetMapping("/api/v1/users/travel-report/travel-image/view-modify")
+    /*
+     * 게시글 수정 시 TravelImages, DetailCourses, thumnailUrl을 가져오는 api
+     *  */
+    @GetMapping("/api/v1/users/travel-report/my/travel-image/{travelReportId}")
     public ResponseDto<ModifyTravelReportFirstPageDto> viewModifyReportFirstPage(
             @UserId Long userId,
-            @RequestParam Long travelReportId
+            @PathVariable Long travelReportId
     ){
             return ResponseDto.ok(travelReportService.modifyTravelReportFirst(travelReportId, userId));
     }
 
-    @GetMapping("/api/v1/users/travel-report/comment")
+    /*
+     * 댓글 조회
+     *  */
+    @GetMapping("/api/v1/users/travel-report/comment/{travelReportId}")
     public ResponseDto<ViewCommentListDto> viewComments(
             @UserId Long userId,
-            @RequestParam Long travelReportId
-    ){
+            @PathVariable Long travelReportId
+    ) {
         return ResponseDto.ok(travelReportService.viewCommentList(travelReportId));
     }
 
+    /*
+     * 댓글 작성
+     * */
     @PostMapping("/api/v1/users/travel-report/comment")
-    public Map<String, String> writeComments(
+    public ResponseDto<Comment> writeComments(
             @UserId Long userId,
             @RequestBody WriteCommentDto writeCommentDto
-    ){
-        travelReportService.writeComment(writeCommentDto, userId);
-        Map<String, String> response = new HashMap<>();
-        response.put("message","댓글 작성이 완료되었습니다.");
-        return response;
+    ) {
+        return ResponseDto.created(travelReportService.writeComment(writeCommentDto, userId));
+
     }
 
+    /*
+     * 댓글 업데이트
+     * */
     @PatchMapping("/api/v1/users/travel-report/comment")
-    public Map<String, String> updateComment(
+    public ResponseDto<?> updateComment(
             @UserId Long userId,
             @RequestBody UpdateCommentDto updateCommentDto
-    ){
+    ) {
 
         travelReportService.updateComment(updateCommentDto, userId);
+        return ResponseDto.ok(null);
+    }
+
+    @DeleteMapping("")
+    public Map<String, String> deleteComment(
+            @UserId Long userId,
+            @RequestBody Long commentId
+    ){
+
         Map<String, String> response = new HashMap<>();
-        response.put("message","댓글 수정이 완료되었습니다.");
+        response.put("message", "댓글 삭제가 완료되었습니다.");
 
         return response;
     }

@@ -8,7 +8,4 @@ import java.util.List;
 public record WriteReportTravelImageListDto(
   List<WriteReportTravelImageDto> writeReportTravelImageDtos
 ) {
-    public static WriteReportTravelImageListDto fromEntity(List<WriteReportTravelImageDto> writeReportTravelImageDtos){
-        return new WriteReportTravelImageListDto(writeReportTravelImageDtos);
-    }
 }

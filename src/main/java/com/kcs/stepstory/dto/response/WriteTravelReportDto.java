@@ -8,10 +8,5 @@ public record WriteTravelReportDto(
         WriteReportTravelImageListDto writeReportTravelImageListDto,
         String thumbnailUrl
 ) {
-    public static WriteTravelReportDto fromEntity(WriteReportTravelImageListDto writeReportTravelImageListDto, TravelReport travelReport){
-        return WriteTravelReportDto.builder()
-                .writeReportTravelImageListDto(writeReportTravelImageListDto)
-                .thumbnailUrl(travelReport.getThumbnailUrl())
-                .build();
-    }
+
 }

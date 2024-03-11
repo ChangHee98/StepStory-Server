@@ -9,7 +9,6 @@ import java.util.List;
 
 @Repository
 public interface DetailCourseRepository extends JpaRepository<DetailCourse, DetailCourseId> {
-    public List<DetailCourse> getDetailCoursesByDetailCourse(Long travelReportId);
 
-    DetailCourse findById(Long detailCourseId);
+    DetailCourse findByDetailCourseId(Long detailCourseId);
 }
