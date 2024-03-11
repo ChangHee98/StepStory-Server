@@ -13,10 +13,10 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUserIdAndRefreshTokenAndIsLogin(Long id, String refreshToken, Boolean isLogin);
 
-    @Query("select u.userId as id, u.role as role, u.password as password from User u where u.serialId = :serialId")
+    @Query("select u.userId as userId, u.role as role, u.password as password from User u where u.serialId = :serialId")
     Optional<UserSecurityForm> findSecurityFormBySerialId(String serialId);
 
-    @Query("select u.userId as id, u.role as role, u.password as password from User u where u.userId = :id and u.isLogin = true")
+    @Query("select u.userId as userId, u.role as role, u.password as password from User u where u.userId = :id and u.isLogin = true")
     Optional<UserSecurityForm> findSecurityFormById(Long id);
 
     @Modifying(clearAutomatically = true)

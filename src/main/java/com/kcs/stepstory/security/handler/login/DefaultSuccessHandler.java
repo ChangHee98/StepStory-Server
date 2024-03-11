@@ -65,6 +65,6 @@ public class DefaultSuccessHandler implements AuthenticationSuccessHandler {
         CookieUtil.addCookie(response, "access_token", tokenDto.accessToken());
         CookieUtil.addSecureCookie(response, "refresh_token", tokenDto.refreshToken(), jwtUtil.getRefreshExpiration());
 
-        response.sendRedirect("http://localhost:5173");
+        response.sendRedirect("http://localhost:3000");
     }
 }
