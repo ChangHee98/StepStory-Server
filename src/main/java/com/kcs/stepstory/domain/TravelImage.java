@@ -31,16 +31,20 @@ public class TravelImage {
         @JoinColumn(name = "detailCourseId", nullable = false),
         @JoinColumn(name = "travelReportId", nullable = false)
     })
-    @OnDelete(action = OnDeleteAction.CASCADE)
+
     private DetailCourse detailCourse;
 
     @Builder
-    public TravelImage(TravelReport travelReport, String imageUrl, DetailCourse detailCourse){
+    public TravelImage(Long travelImageId, TravelReport travelReport, String imageUrl, DetailCourse detailCourse){
         this.travelReport = travelReport;
         this.imageUrl = imageUrl;
         this.detailCourse = detailCourse;
     }
 
+    public void updateTravelImage(DetailCourse detailCourse, String imageUrl){
+        this.detailCourse = detailCourse;
+        this.imageUrl = imageUrl;
+    }
 
 
 }
