@@ -79,15 +79,21 @@ public class FriendsService {
     /**
      * 상세 정보 확인 서비스
      */
-    //
+    //        //u.userid를 List 컬렉션에 저장
+    //        List<Long> sendFriendIdList = friendRepository.findBySendFriendList1(userId);
+    //        List<Long> receiveFriendIdList = friendRepository.findByReceiveFriendList1(userId);
+    //        List<FriendDto> friendDtoList = new ArrayList<>();
     @Transactional
     public FriendDto getFriendDetailsUser(Long userId, Long friendId) {
-        FriendDto friend = friendRepository.findBySendFriendDetails(userId, friendId);
-        if(friend == null) {
+        Long friend = friendRepository.findBySendFriendDetails(userId, friendId);
+        if(friendId == null) {
             friend = friendRepository.findByReceiveFriendDetails(userId, friendId);
         }
 
-        return friend;
+        User user = userRepository.getReferenceById(friend);
+        FriendDto friendDto = FriendDto.fromEntityDetails(user);
+
+        return friendDto;
     }
 
 
