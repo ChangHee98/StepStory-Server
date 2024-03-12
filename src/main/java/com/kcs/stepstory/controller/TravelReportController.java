@@ -21,12 +21,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1/no-auth/travel-report")
 @Tag(name = "TravelReport", description = "여행 기록 관련 API")
 @RequiredArgsConstructor
 public class TravelReportController {
     private final TravelReportService travelReportService;
-    @GetMapping("/{provinceId}")
+    @GetMapping("/api/v1/no-auth/travel-report/{provinceId}")
     @Operation(summary = "여행 기록 목록 조회", description = "특정 지역의 여행 기록 목록을 조회합니다.")
     public ResponseDto<TravelReportListDto> getTravelReportList(
             @PathVariable("provinceId") Long provinceId,
