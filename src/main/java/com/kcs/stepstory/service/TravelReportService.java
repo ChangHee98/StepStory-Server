@@ -262,12 +262,22 @@ public class TravelReportService {
      * WriteCommentDto를 받아 데이터 처리
      *  */
     public Comment writeComment(WriteCommentDto writeCommentDto, Long userId){
-        Comment comment = Comment.builder()
-                .travelReport(writeCommentDto.travelReport())
-                .user(userRepository.getReferenceById(userId))
-                .content(writeCommentDto.content())
-                .parentCommentId(writeCommentDto.parentCommentId())
-                .build();
+        Comment comment;
+        if(writeCommentDto.parentCommentId()==null){
+            comment = Comment.builder()
+                    .travelReport(travelReportRepository.getReferenceById(writeCommentDto.travelReportId()))
+                    .user(userRepository.getReferenceById(userId))
+                    .content(writeCommentDto.content())
+                    .build();
+        }else{
+            comment = Comment.builder()
+                    .travelReport(travelReportRepository.getReferenceById(writeCommentDto.travelReportId()))
+                    .user(userRepository.getReferenceById(userId))
+                    .content(writeCommentDto.content())
+                    .parentCommentId(writeCommentDto.parentCommentId())
+                    .build();
+        }
+
         return commentRepository.saveAndFlush(comment);
     }
 

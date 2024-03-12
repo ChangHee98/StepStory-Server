@@ -1,5 +1,6 @@
 package com.kcs.stepstory.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
 import lombok.*;
@@ -18,6 +19,7 @@ public class TravelReport {
     @Column(name = "travelReportId",nullable = false)
     private Long travelReportId;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
