@@ -44,6 +44,29 @@ public class TravelReportService {
         return TravelReportListDto.fromEntity(reportDtos);
     }
 
+    public TravelReportListDto getMyTravelReportList(String province, String city, String district, String nickname) {
+        User user = userRepository.findByNickname(nickname);
+        if (user == null) {
+            throw new CommonException(ErrorCode.NOT_FOUND_USER);
+        }
+
+        List<Long> travelReportIds = stepRepository.findStepsByProvinceAndCityAndDistrictAndUser(province, city, district,user)
+                .stream()
+                .map(Step::getTravelReport)
+                .map(TravelReport::getTravelReportId)
+                .distinct()
+                .collect(Collectors.toList());
+
+        List<TravelBody> filteredBodies = travelBodyRepository.findTravelBodiesByTravelReportIdInAndReadPermissionEquals(travelReportIds, 1);
+
+        List<TravelReportDto> reportDtos = filteredBodies.stream()
+                .map(TravelBody::getTravelReport)
+                .map(TravelReportDto::fromEntity)
+                .collect(Collectors.toList());
+
+        return TravelReportListDto.fromEntity(reportDtos);
+    }
+
     /*
      * 게시글 작성
      * 게시글 사진 & 코스 확인 페이지(Get)
