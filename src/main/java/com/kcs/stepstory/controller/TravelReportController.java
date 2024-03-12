@@ -36,13 +36,13 @@ public class TravelReportController {
         String province;
         switch (provinceId.intValue()){
             case 1:
-                province = "seoul";
+                province = "Seoul";
                 break;
             case 2:
-                province = "busan";
+                province = "Busan";
                 break;
             case 9:
-                province = "gyeonggi";
+                province = "Gyeonggi";
                 break;
             default:
                 throw new CommonException(ErrorCode.BAD_REQUEST_PARAMETER);
