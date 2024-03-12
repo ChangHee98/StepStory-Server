@@ -51,6 +51,7 @@ public class FriendsService {
             friendDtoList.add(friendDto);
         }
 
+        // 친구요청 목록 조회 서비스 로직
         List<Long> requestFriendList = friendRepository.findByrequestFriendList(userId);
         List<FriendDto> requestFriendDtoList = new ArrayList<>();
 
@@ -59,8 +60,8 @@ public class FriendsService {
             FriendDto friendDto = FriendDto.fromEntity(user);
         }
         return FriendListDto.builder()
-                .friendListDtos(friendDtoList)
-                .requestfriendListDtos(requestFriendDtoList) // 친구 요청 목록 추가
+                .friendListDtos(friendDtoList)  // 친구목록 Dtos
+                .requestfriendListDtos(requestFriendDtoList) // 친구 요청 목록 Dtos
                 .build();
     }
 
@@ -79,10 +80,6 @@ public class FriendsService {
     /**
      * 상세 정보 확인 서비스
      */
-    //        //u.userid를 List 컬렉션에 저장
-    //        List<Long> sendFriendIdList = friendRepository.findBySendFriendList1(userId);
-    //        List<Long> receiveFriendIdList = friendRepository.findByReceiveFriendList1(userId);
-    //        List<FriendDto> friendDtoList = new ArrayList<>();
     @Transactional
     public FriendDto getFriendDetailsUser(Long userId, Long friendId) {
         Long friend = friendRepository.findBySendFriendDetails(userId, friendId);
@@ -101,13 +98,26 @@ public class FriendsService {
      *  친구닉네임 조회 서비스
      */
     public FriendListDto getFriendNickNameList(Long userId, String nickName) {
-        List<FriendDto> SendFriendNicknameList = friendRepository.findBySendFriendNicknameList(userId, nickName);
-        List<FriendDto> ReceiveFriendNicknameList = friendRepository.findByReceiveFriendNicknameList(userId, nickName);
+        List<Long> SendFriendNicknameList = friendRepository.findBySendFriendNicknameList(userId, nickName);
+        List<Long> ReceiveFriendNicknameList = friendRepository.findByReceiveFriendNicknameList(userId, nickName);
+        List<FriendDto> friendDtoList = new ArrayList<>();
 
-        List<FriendDto> combinedFriendNicknameList = new ArrayList<>(SendFriendNicknameList);
-        combinedFriendNicknameList.addAll(ReceiveFriendNicknameList);
+        for (long sendId : SendFriendNicknameList) {
+            User user = userRepository.getReferenceById(sendId);
+            FriendDto friendDto = FriendDto.fromEntity(user);
+            friendDtoList.add(friendDto);
+        }
 
-        return FriendListDto.builder().friendListDtos(combinedFriendNicknameList).build();
+        for (long receiveId : ReceiveFriendNicknameList) {
+            User user = userRepository.getReferenceById(receiveId);
+            FriendDto friendDto = FriendDto.fromEntity(user);
+            friendDtoList.add(friendDto);
+        }
+
+        return FriendListDto.builder()
+                .friendListDtos(friendDtoList)
+                .build();
+
     }
 
     /**
