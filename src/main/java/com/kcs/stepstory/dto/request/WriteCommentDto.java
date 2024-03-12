@@ -12,7 +12,6 @@ public record WriteCommentDto(
         TravelReport travelReport,
         String content,
         Long parentCommentId,
-        Timestamp createdAt,
         User user
 ) {
 
