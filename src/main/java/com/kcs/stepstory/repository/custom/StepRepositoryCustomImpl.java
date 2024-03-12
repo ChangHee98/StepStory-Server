@@ -154,6 +154,16 @@ public class StepRepositoryCustomImpl implements StepRepositoryCustom {
                     break;
                 case "Eunpyeong":
                     builder.eunpyeong(count);
+                    break;
+                case "Jongno":
+                    builder.jongno(count);
+                    break;
+                case "Jung":
+                    builder.jung(count);
+                    break;
+                case "Jungnang":
+                    builder.jungnang(count);
+                    break;
             }
         }
         return builder.build();
