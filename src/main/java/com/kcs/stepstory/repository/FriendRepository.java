@@ -1,6 +1,7 @@
 package com.kcs.stepstory.repository;
 
 import com.kcs.stepstory.domain.Friend;
+import com.kcs.stepstory.domain.User;
 import com.kcs.stepstory.dto.response.FriendDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -16,23 +17,21 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
     /**
      *  친구 목록 조회
      */
+    @Query("select u.userId from Friend f join f.user2 u where f.user1= :userId and f.status = 1")
+    List<Long> findBySendFriendList1(@Param("userId") Long userId);
 
-    @Query("select FriendDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl) " +
-            "from Friend f join f.user2 u  where f.user1 = :userId and f.status = 1")
-    List<FriendDto> findBySendFriendList(@Param("userId") Long userId);
-
-
-    @Query("select FriendDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl) " +
-            "from Friend f join f.user1 u  where f.user2 = :userId and f.status = 1")
-    List<FriendDto> findByReceiveFriendList(@Param("userId") Long userId);
-
+    @Query("select u.userId from Friend f join f.user1 u where f.user2= :userId and f.status = 1")
+    List<Long> findByReceiveFriendList1(@Param("userId") Long userId);
 
     /**
      * 친구요청 목록조회 기능
      */
-    @Query("select FriendDto.fromNicknameAndProfileImgUrl(u.nickname, u.profileImgUrl) " +
-            "from Friend f join f.user1 u where f.user2 = :userId and f.status =0")
-    List<FriendDto> findByrequestFriendList(@Param("userId") Long userId);
+    @Query("SELECT u.userId FROM Friend f JOIN f.user1 u WHERE f.user2 = :userId AND f.status = 0")
+    List<Long> findByrequestFriendList(@Param("userId") Long userId);
+
+
+
+
 
     /**
      * 친구요청 목록 count 기능
@@ -92,17 +91,19 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
      *  *이랑 같은 의미로 하나의 행에 모든 컬럼을 반환하겠다. 이지만
      *  지금 f로 반환하는 이유는 -> 엔티티 타입으로 반환이 필요하기 때문
      */
-    @Modifying
-    @Query("select f from Friend f where (f.user1 = :userId and f.user2 = :friendId")
+
+//    @Query("select * from Friend f where (f.user1 = :userId and f.user2 = :friendId")
+//    Friend findIdByUser2Id(@Param("userId") Long userId, @Param("friendId") Long friendId);
+//
+//    @Query("select * from Friend f where (f.user1 = :friendId and f.user2 = :userId")
+//    Friend findIdByUser1Id(@Param("userId") Long userId, @Param("friendId") Long friendId);
+
+
+    @Query("SELECT f FROM Friend f WHERE f.user1 = :userId AND f.user2 = :friendId")
     Friend findIdByUser2Id(@Param("userId") Long userId, @Param("friendId") Long friendId);
 
-    @Modifying
-    @Query("select f from Friend f where (f.user1 = :friendId and f.user2 = :userId")
+    @Query("SELECT f FROM Friend f WHERE f.user1 = :friendId AND f.user2 = :userId")
     Friend findIdByUser1Id(@Param("userId") Long userId, @Param("friendId") Long friendId);
-
-
-
-
 
 
 
