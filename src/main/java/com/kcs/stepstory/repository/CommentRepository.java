@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CommentRepository extends JpaRepository<Comment, CommentId> {
+public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     public List<Comment> findCommentsByTravelReportOrderByCreatedAtAsc(TravelReport travelReport);
 

@@ -261,7 +261,7 @@ public class TravelReportService {
      * 댓글 작성(Post)
      * WriteCommentDto를 받아 데이터 처리
      *  */
-    public Comment writeComment(WriteCommentDto writeCommentDto, Long userId){
+    public Long writeComment(WriteCommentDto writeCommentDto, Long userId){
         Comment comment;
         if(writeCommentDto.parentCommentId()==null){
             comment = Comment.builder()
@@ -277,8 +277,9 @@ public class TravelReportService {
                     .parentCommentId(writeCommentDto.parentCommentId())
                     .build();
         }
+        comment = commentRepository.saveAndFlush(comment);
 
-        return commentRepository.saveAndFlush(comment);
+        return comment.getCommentId();
     }
 
     /*

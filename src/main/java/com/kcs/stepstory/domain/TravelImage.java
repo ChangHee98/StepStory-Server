@@ -28,11 +28,7 @@ public class TravelImage {
     private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumns({
-        @JoinColumn(name = "detailCourseId", nullable = false),
-        @JoinColumn(name = "travelReportId", nullable = false)
-    })
-
+    @JoinColumn(name = "detailCourseId", nullable = false)
     private DetailCourse detailCourse;
 
     @Builder

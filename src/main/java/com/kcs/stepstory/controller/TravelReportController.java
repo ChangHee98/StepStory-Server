@@ -160,7 +160,7 @@ public class TravelReportController {
      * 댓글 작성
      * */
     @PostMapping("/api/v1/users/travel-report/comment")
-    public ResponseDto<Comment> writeComments(
+    public ResponseDto<Long> writeComments(
             @UserId Long userId,
             @RequestBody WriteCommentDto writeCommentDto
     ) {

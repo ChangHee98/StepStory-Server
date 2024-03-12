@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface WantToGoRepository extends JpaRepository<WantToGo, WantToGoId> {
+public interface WantToGoRepository extends JpaRepository<WantToGo, Long> {
     public WantToGo getByUserAndTravelReport(User user, TravelReport travelReport);
 }

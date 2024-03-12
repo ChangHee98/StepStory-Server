@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TravelImageRepository extends JpaRepository<TravelImage, TravelImageId> {
+public interface TravelImageRepository extends JpaRepository<TravelImage, Long> {
     public List<TravelImage> getTravelImagesByTravelReport(TravelReport travelReport);
 
     TravelImage findByTravelImageId(Long travelImageId);
