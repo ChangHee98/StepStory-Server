@@ -31,8 +31,6 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
 
 
 
-
-
     /**
      * 친구요청 목록 count 기능
      */
@@ -45,12 +43,11 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
     /**
      *  친구 상세정보 확인 기능
      */
-    @Query("select FriendDto.fromNicknameAndProfileImgUrlAndSelfIntro(u.nickname, u.profileImgUrl, u.selfIntro) " +
-            "from Friend f JOIN f.user1 u  where f.user1 = :friendId and f.user2 = :userId and f.status = 1" )
-    FriendDto findBySendFriendDetails(@Param("userId") Long userId, @Param("friendId") Long friendId);
-    @Query("select FriendDto.fromNicknameAndProfileImgUrlAndSelfIntro(u.nickname, u.profileImgUrl, u.selfIntro) " +
-            "from Friend f JOIN f.user2 u  where f.user1 = :userId and f.user2 = :friendId and f.status = 1" )
-    FriendDto findByReceiveFriendDetails(@Param("userId") Long userId, @Param("friendId") Long friendId);
+    @Query("select u.userId from Friend f join f.user2 u where f.user1= :userId and f.user2= :friendId and f.status = 1")
+    Long findBySendFriendDetails(@Param("userId") Long userId, @Param("friendId") Long friendId);
+    @Query("select u.userId from Friend f join f.user1 u where f.user2= :userId and f.user1= :userId and f.status = 1")
+    Long findByReceiveFriendDetails(@Param("userId") Long userId, @Param("friendId") Long friendId);
+
 
     /**
      * 친구 닉네임 검색 기능
