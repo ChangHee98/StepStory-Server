@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface StepRepository extends JpaRepository<Step, StepId>, StepRepositoryCustom {
+public interface StepRepository extends JpaRepository<Step, Long>, StepRepositoryCustom {
     List<Step> findByProvinceAndCityAndDistrict(String province, String city, String district);
 }

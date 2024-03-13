@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface DetailCourseRepository extends JpaRepository<DetailCourse, DetailCourseId> {
+public interface DetailCourseRepository extends JpaRepository<DetailCourse, Long> {
 
     DetailCourse findByDetailCourseId(Long detailCourseId);
 }

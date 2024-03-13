@@ -1,5 +1,6 @@
 package com.kcs.stepstory.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -10,19 +11,20 @@ import org.hibernate.annotations.OnDeleteAction;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
-@IdClass(StepId.class)
 @Table(name = "Step")
 public class Step {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "stepId", nullable = false)
     private Long stepId;
-    @Id
+
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="travelReportId", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private TravelReport travelReport;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="userId", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)

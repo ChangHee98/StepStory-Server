@@ -9,11 +9,9 @@ import java.sql.Timestamp;
 
 @Builder
 public record WriteCommentDto(
-        TravelReport travelReport,
+        Long travelReportId,
         String content,
-        Long parentCommentId,
-        Timestamp createdAt,
-        User user
+        Long parentCommentId
 ) {
 
 }

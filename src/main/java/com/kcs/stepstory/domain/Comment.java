@@ -1,5 +1,6 @@
 package com.kcs.stepstory.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -13,19 +14,20 @@ import java.sql.Timestamp;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
-@IdClass(CommentId.class)
 @Table(name = "Comment")
 public class Comment {
     @Id
     @Column(name = "commentId",nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
-    @Id
+
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "travelReportId", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private TravelReport travelReport;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
