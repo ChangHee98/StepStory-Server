@@ -72,26 +72,17 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
     void insertFriendByUserId(@Param("userId1") Long userId1, @Param("friendId") Long friendId, @Param("status") int status);
 
 
-    /**
-     *  친구수락 기능
-     */
-    @Modifying
-    @Query("update Friend f set f.status = 1 WHERE f.user1 = :friendId AND f.user2 = :userId")
-    void acceptFriendRequest(@Param("userId") Long userId, @Param("friendId") Long friendId);
-
-
 
 
     /**
      *  친구삭제 기능 OR 친구요청 거절 기능
-     *  지금 f로 반환하는 이유는 -> 엔티티 타입으로 반환이 필요하기 때문
+     *  친구수락 기능
      */
+    Friend findByUser1AndUser2(User user1, User user2);
 
-    @Query("SELECT f FROM Friend f WHERE f.user1 = :userId AND f.user2 = :friendId")
-    Friend findIdByUser2Id(@Param("userId") Long userId, @Param("friendId") Long friendId);
 
-    @Query("SELECT f FROM Friend f WHERE f.user1 = :friendId AND f.user2 = :userId")
-    Friend findIdByUser1Id(@Param("userId") Long userId, @Param("friendId") Long friendId);
+
+
 
 
 
