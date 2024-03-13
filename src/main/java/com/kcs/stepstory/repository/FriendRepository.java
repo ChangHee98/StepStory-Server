@@ -64,14 +64,6 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
     List<Long> findByReceiveFriendNicknameList(@Param("userId") Long userId, @Param("friendNickname") String friendNickname);
 
 
-    /**
-     *  친구 요청 기능
-     */
-    @Modifying
-    @Query("insert into Friend f (f.user1, f.user2, f.status) values (:userId1, :friendId, :status)")
-    void insertFriendByUserId(@Param("userId1") Long userId1, @Param("friendId") Long friendId, @Param("status") int status);
-
-
 
 
     /**
