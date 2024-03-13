@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -55,9 +56,10 @@ public class TravelReportController {
     @PatchMapping("/api/v1/users/travel-report/detail-course")
     public ResponseDto<PostTravelImageListDto> ReportImagesAndCourses(
             @UserId Long userId,
-            @RequestBody PostTravelImageListDto postTravelImageListDto
+            @RequestBody List<PostTravelImageDto> postTravelImageDtos
             ){
-        return ResponseDto.ok(travelReportService.updateImages(postTravelImageListDto));
+
+        return ResponseDto.ok(travelReportService.updateImagesAndDetailCourse(postTravelImageDtos));
     }
 
     /*

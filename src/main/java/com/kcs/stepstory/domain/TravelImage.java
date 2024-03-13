@@ -38,9 +38,8 @@ public class TravelImage {
         this.detailCourse = detailCourse;
     }
 
-    public void updateTravelImage(DetailCourse detailCourse, String imageUrl){
+    public void updateTravelImage(DetailCourse detailCourse){
         this.detailCourse = detailCourse;
-        this.imageUrl = imageUrl;
     }
 
 

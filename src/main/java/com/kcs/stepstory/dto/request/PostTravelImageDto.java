@@ -9,22 +9,16 @@ import lombok.Builder;
 @Builder
 public record PostTravelImageDto(
         Long travelImageId,
-        DetailCourse detailCourse,
-        String imageUrl
+        Long detailCourseId,
+        int sequence,
+        String locationName
 ){
     public static PostTravelImageDto fromEntity(TravelImage travelImage){
         return PostTravelImageDto.builder()
                 .travelImageId(travelImage.getTravelImageId())
-                .detailCourse(travelImage.getDetailCourse())
-                .imageUrl(travelImage.getImageUrl())
-                .build();
-    }
-
-    public static TravelImage toEntity(PostTravelImageDto postTravelImageDto){
-        return TravelImage.builder()
-                .travelImageId(postTravelImageDto.travelImageId)
-                .detailCourse(postTravelImageDto.detailCourse)
-                .imageUrl(postTravelImageDto.imageUrl)
+                .detailCourseId(travelImage.getDetailCourse().getDetailCourseId())
+                .sequence(travelImage.getDetailCourse().getSequence())
+                .locationName(travelImage.getDetailCourse().getLocationName())
                 .build();
     }
 }

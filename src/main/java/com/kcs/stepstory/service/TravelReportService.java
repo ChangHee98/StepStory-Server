@@ -9,11 +9,13 @@ import com.kcs.stepstory.repository.*;
 import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TravelReportService {
@@ -46,45 +48,24 @@ public class TravelReportService {
 
     /*
      * 게시글 작성
-     * 게시글 사진 & 코스 확인 페이지(Get)
-     * TravelImageList & DetailCourseList 가져오기
-     * Controller에 보낼 Service
-     * */
-//    public CheckTravelImageListDto getCheckTravelImageList(Long travelReportId){
-//        List<TravelImage> travelImages = travelImageRepository.getTravelImagesByTravelReport(travelReportId);
-//
-//        List<CheckTravelImageDto> checkTravelImageListDtos = travelImages
-//                .stream()
-//                .map(CheckTravelImageDto::fromEntity)
-//                .collect(Collectors.toList());
-//        return CheckTravelImageListDto.fromEntity(checkTravelImageListDtos);
-//    }
-
-    /*
-     * 게시글 작성
      * 게시글 사진 & 코스 확인 페이지(Patch)
      * Update TravelImage List
      * Controller에 보낼 Service
      * */
     @Transactional
-    public PostTravelImageListDto updateImages(PostTravelImageListDto postTravelImageListDto){
-
-        List<PostTravelImageDto> postTravelImageDtos = postTravelImageListDto.postTravelImageDtoList()
-                .stream()
-                .toList();
+    public PostTravelImageListDto updateImagesAndDetailCourse(List<PostTravelImageDto> postTravelImageDtos){
 
         for(PostTravelImageDto postTravelImageDto : postTravelImageDtos){
             TravelImage travelImage = travelImageRepository.findByTravelImageId(postTravelImageDto.travelImageId());
-            DetailCourse detailCourse = detailCourseRepository.findByDetailCourseId(postTravelImageDto.detailCourse().getDetailCourseId());
+            DetailCourse detailCourse = detailCourseRepository.findByDetailCourseId(postTravelImageDto.detailCourseId());
             detailCourse.updateDetailCourse(
-                    postTravelImageDto.detailCourse().getTravelDate(),
-                    postTravelImageDto.detailCourse().getGps(),
-                    postTravelImageDto.detailCourse().getSequence(),
-                    postTravelImageDto.detailCourse().getLocationName());
-            travelImage.updateTravelImage(detailCourse, postTravelImageDto.imageUrl());
+                    postTravelImageDto.sequence(),
+                    postTravelImageDto.locationName()
+            );
+            travelImage.updateTravelImage(detailCourse);
         }
 
-        return postTravelImageListDto;
+        return PostTravelImageListDto.fromEntity(postTravelImageDtos);
     }
 
     /*
