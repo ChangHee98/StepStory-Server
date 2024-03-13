@@ -35,4 +35,13 @@ public class Friend {
         this.user2 = user2;
         this.status = status;
     }
+
+
+    /**
+     * 친구 수락 기능 메서드
+     */
+    public void makeFriendRelation() {
+         this.status = 1;
+      }
+
 }
