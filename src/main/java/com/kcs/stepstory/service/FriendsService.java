@@ -134,11 +134,10 @@ public class FriendsService {
     @Transactional
     public void acceptFriendsUser(Long userId, Long friendId) {
         // friendRepository를 이용해 userId와 friendId로 Friend 객체 하나를 찾음
-        /**
-         * Friend friend = friendRepository.find();
-         * friend.makeFriendRelation();
-         */
-        friendRepository.acceptFriendRequest(userId, friendId);
+        User user = userRepository.getReferenceById(userId);
+        User requestUser = userRepository.getReferenceById(friendId);
+        Friend targetFriend = friendRepository.findByUser1AndUser2(requestUser,user);
+        targetFriend.makeFriendRelation();
     }
 
     /**
@@ -146,14 +145,15 @@ public class FriendsService {
      */
     @Transactional
     public void deleteFriendsUser(Long userId, Long friendId) {
-        Friend friend = friendRepository.findIdByUser2Id(userId, friendId);
+        User user = userRepository.getReferenceById(userId);
+        User friendUser = userRepository.getReferenceById(friendId);
+        Friend friend = friendRepository.findByUser1AndUser2(user,friendUser);
         if(friend == null) {
-            friend = friendRepository.findIdByUser1Id(userId, friendId);
+            friend = friendRepository.findByUser1AndUser2(friendUser,user);
         }
 
         // friend = 엔티티로 반환된 값 대입 후 f.엔티티id를 찾아서 deleteById 메서드 실행
-        friendRepository.deleteById(friend.getFriendId());
-
+        friendRepository.delete(friend);
     }
 
 
