@@ -9,29 +9,27 @@ import com.kcs.stepstory.exception.ErrorCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/no-auth/step")
+@RequestMapping("/api/v1")
 @Tag(name = "Step", description = "여행 기록 발자국 관련 API")
 @RequiredArgsConstructor
 public class StepController {
     private final StepService stepService;
-    @GetMapping("/main")
+
+    @GetMapping("/no-auth/step/main")
     @Operation(summary = "전국 지역별 Step 개수 조회", description = "전국 지역별 Step 개수를 조회합니다.")
-    public ResponseDto<StepCountForAllDto> getStepCountForall(){
+    public ResponseDto<StepCountForAllDto> getStepCountForall() {
         return ResponseDto.ok(stepService.getStepCountForAll());
     }
 
-    @GetMapping("/main/{provinceId}")
+    @GetMapping("/no-auth/step/main/{provinceId}")
     @Operation(summary = "특정 지역별 Step 개수 조회", description = "특정 지역별 Step 개수를 조회합니다.")
     public ResponseDto<StepCountDto> getStepCountForProvince(
             @PathVariable("provinceId") Long provinceId
-    ){
-        switch (provinceId.intValue()){
+    ) {
+        switch (provinceId.intValue()) {
             case 1:
                 return ResponseDto.ok(stepService.getStepCountForSeoul());
             case 2:
@@ -70,4 +68,31 @@ public class StepController {
                 throw new CommonException(ErrorCode.BAD_REQUEST_JSON);
         }
     }
+
+    @GetMapping("/users/step/mystory")
+    @Operation(summary = "나의 여행기록으로 기록된 전국 Step 조회", description = "나의 여행기록으로 기록된 전국 Step을 조회합니다.")
+    public ResponseDto<StepCountForAllDto> getMyStepCountForall(
+            @RequestParam("nickname") String nickname
+    ) {
+        return ResponseDto.ok(stepService.getMyStepCountForAll(nickname));
+    }
+
+    @GetMapping("/users/step/mystory/{provinceId}")
+    @Operation(summary = "나의 여행기록으로 기록된 특정 지역 Step 조회", description = "나의 여행기록으로 기록된 특정 지역 Step을 조회합니다.")
+    public ResponseDto<StepCountDto> getMyStepCountForProvince(
+            @RequestParam("nickname") String nickname,
+            @PathVariable("provinceId") Long provinceId
+    ) {
+        switch (provinceId.intValue()) {
+            case 1:
+                return ResponseDto.ok(stepService.getMyStepCountForSeoul(nickname));
+            case 2:
+                return ResponseDto.ok(stepService.getMyStepCountForBusan(nickname));
+            case 9:
+                return ResponseDto.ok(stepService.getMyStepCountForGyeonggi(nickname));
+            default:
+                throw new CommonException(ErrorCode.BAD_REQUEST_JSON);
+        }
+    }
 }
+

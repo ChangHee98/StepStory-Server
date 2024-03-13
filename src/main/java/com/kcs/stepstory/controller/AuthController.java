@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1")
 public class AuthController {
     private final AuthService authService;
 
@@ -41,7 +41,7 @@ public class AuthController {
         return ResponseDto.ok(null);
     }
 
-    @PostMapping("/reissue")
+    @PostMapping("/auth/reissue")
     public ResponseDto<?> reissue(
             HttpServletRequest request,
             HttpServletResponse response,

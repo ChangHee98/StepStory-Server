@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface TravelBodyRepository extends JpaRepository<TravelBody, Long> {
-    List<TravelBody> findByTravelReportIdInAndReadPermissionEquals(List<Long> travelReportIds, int readPermission);
+    List<TravelBody> findTravelBodiesByTravelReportIdInAndReadPermissionEquals(List<Long> travelReportIds, int readPermission);
 }
