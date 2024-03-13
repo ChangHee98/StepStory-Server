@@ -124,8 +124,17 @@ public class FriendsService {
      *  친구 요청 서비스
      */
     @Transactional
-    public void requestFriendsUser(Long userId, Long friendId, int status) {
-        friendRepository.insertFriendByUserId(userId, friendId, status);
+    public Friend requestFriendsUser(Long userId, Long friendId) {
+        User user = userRepository.getReferenceById(userId);
+        User requestUser = userRepository.getReferenceById(friendId);
+        //친구 요청 기능을 구현하기 위해 생성자로 생성
+        Friend friend = Friend.builder()
+                .user1(user)
+                .user2(requestUser)
+                .status(0)
+                .build();
+        return friend;
+
     }
 
     /**
@@ -139,6 +148,9 @@ public class FriendsService {
         Friend targetFriend = friendRepository.findByUser1AndUser2(requestUser,user);
         targetFriend.makeFriendRelation();
     }
+
+
+
 
     /**
      *  친구 삭제 서비스 OR 친구 거절 서비스
