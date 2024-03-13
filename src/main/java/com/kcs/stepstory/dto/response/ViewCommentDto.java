@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 
 @Builder
 public record ViewCommentDto(
-        TravelReport travelReport,
+        Long travelReportId,
         String content,
         Long parentCommentId,
         Timestamp createdAt,
@@ -17,7 +17,7 @@ public record ViewCommentDto(
 ) {
     public static ViewCommentDto fromEntity(Comment comment){
         return ViewCommentDto.builder()
-                .travelReport(comment.getTravelReport())
+                .travelReportId(comment.getTravelReport().getTravelReportId())
                 .content(comment.getContent())
                 .parentCommentId(comment.getParentCommentId())
                 .createdAt(comment.getCreatedAt())

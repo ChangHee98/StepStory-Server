@@ -1,5 +1,6 @@
 package com.kcs.stepstory.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -12,7 +13,6 @@ import java.sql.Timestamp;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
-@IdClass(DetailCourseId.class)
 @Table(name = "DetailCourse")
 public class DetailCourse {
 
@@ -20,7 +20,8 @@ public class DetailCourse {
     @Column(name = "detailCourseId",nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long detailCourseId;
-    @Id
+
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "travelReportId", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -44,9 +45,7 @@ public class DetailCourse {
         this.locationName = locationName;
     }
 
-    public void updateDetailCourse(Timestamp travelDate, String gps, int sequence, String locationName){
-        this.travelDate = travelDate;
-        this.gps = gps;
+    public void updateDetailCourse(int sequence, String locationName){
         this.sequence = sequence;
         this.locationName = locationName;
     }
