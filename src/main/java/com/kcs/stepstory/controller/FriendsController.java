@@ -24,7 +24,6 @@ public class FriendsController {
      */
     @GetMapping("")
     public ResponseDto<FriendListDto> getAllFriendList(@UserId Long userId) {
-
         return ResponseDto.ok(friendsService.getAllFriendList(userId));
     }
 
@@ -64,7 +63,7 @@ public class FriendsController {
      */
     @PostMapping("")
     public Map<String, String> requestFrined(@UserId Long userId, @RequestBody Long friendId) {
-        friendsService.requestFriendsUser(userId, friendId, 0);
+        friendsService.requestFriendsUser(userId, friendId);
         Map<String, String> response = new HashMap<>();
         response.put("message", "친구 요청이 성공적으로 전송되었습니다.");
         return response;
