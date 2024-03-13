@@ -9,11 +9,13 @@ import com.kcs.stepstory.repository.*;
 import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TravelReportService {
@@ -27,14 +29,37 @@ public class TravelReportService {
     private final CommentRepository commentRepository;
 
     public TravelReportListDto getTravelReportList(String province, String city, String district) {
-        List<Long> travelReportIds = stepRepository.findByProvinceAndCityAndDistrict(province, city, district)
+        List<Long> travelReportIds = stepRepository.findStepsByProvinceAndCityAndDistrict(province, city, district)
                 .stream()
                 .map(Step::getTravelReport)
                 .map(TravelReport::getTravelReportId)
                 .distinct()
                 .collect(Collectors.toList());
 
-        List<TravelBody> filteredBodies = travelBodyRepository.findByTravelReportIdInAndReadPermissionEquals(travelReportIds, 1);
+        List<TravelBody> filteredBodies = travelBodyRepository.findTravelBodiesByTravelReportIdInAndReadPermissionEquals(travelReportIds, 1);
+
+        List<TravelReportDto> reportDtos = filteredBodies.stream()
+                .map(TravelBody::getTravelReport)
+                .map(TravelReportDto::fromEntity)
+                .collect(Collectors.toList());
+                
+        return TravelReportListDto.fromEntity(reportDtos);
+    }
+
+    public TravelReportListDto getMyTravelReportList(String province, String city, String district, String nickname) {
+        User user = userRepository.findByNickname(nickname);
+        if (user == null) {
+            throw new CommonException(ErrorCode.NOT_FOUND_USER);
+        }
+
+        List<Long> travelReportIds = stepRepository.findStepsByProvinceAndCityAndDistrictAndUser(province, city, district,user)
+                .stream()
+                .map(Step::getTravelReport)
+                .map(TravelReport::getTravelReportId)
+                .distinct()
+                .collect(Collectors.toList());
+
+        List<TravelBody> filteredBodies = travelBodyRepository.findTravelBodiesByTravelReportIdInAndReadPermissionEquals(travelReportIds, 1);
 
         List<TravelReportDto> reportDtos = filteredBodies.stream()
                 .map(TravelBody::getTravelReport)
@@ -46,45 +71,24 @@ public class TravelReportService {
 
     /*
      * 게시글 작성
-     * 게시글 사진 & 코스 확인 페이지(Get)
-     * TravelImageList & DetailCourseList 가져오기
-     * Controller에 보낼 Service
-     * */
-//    public CheckTravelImageListDto getCheckTravelImageList(Long travelReportId){
-//        List<TravelImage> travelImages = travelImageRepository.getTravelImagesByTravelReport(travelReportId);
-//
-//        List<CheckTravelImageDto> checkTravelImageListDtos = travelImages
-//                .stream()
-//                .map(CheckTravelImageDto::fromEntity)
-//                .collect(Collectors.toList());
-//        return CheckTravelImageListDto.fromEntity(checkTravelImageListDtos);
-//    }
-
-    /*
-     * 게시글 작성
      * 게시글 사진 & 코스 확인 페이지(Patch)
      * Update TravelImage List
      * Controller에 보낼 Service
      * */
     @Transactional
-    public PostTravelImageListDto updateImages(PostTravelImageListDto postTravelImageListDto){
-
-        List<PostTravelImageDto> postTravelImageDtos = postTravelImageListDto.postTravelImageDtoList()
-                .stream()
-                .toList();
+    public PostTravelImageListDto updateImagesAndDetailCourse(List<PostTravelImageDto> postTravelImageDtos){
 
         for(PostTravelImageDto postTravelImageDto : postTravelImageDtos){
             TravelImage travelImage = travelImageRepository.findByTravelImageId(postTravelImageDto.travelImageId());
-            DetailCourse detailCourse = detailCourseRepository.findByDetailCourseId(postTravelImageDto.detailCourse().getDetailCourseId());
+            DetailCourse detailCourse = detailCourseRepository.findByDetailCourseId(postTravelImageDto.detailCourseId());
             detailCourse.updateDetailCourse(
-                    postTravelImageDto.detailCourse().getTravelDate(),
-                    postTravelImageDto.detailCourse().getGps(),
-                    postTravelImageDto.detailCourse().getSequence(),
-                    postTravelImageDto.detailCourse().getLocationName());
-            travelImage.updateTravelImage(detailCourse, postTravelImageDto.imageUrl());
+                    postTravelImageDto.sequence(),
+                    postTravelImageDto.locationName()
+            );
+            travelImage.updateTravelImage(detailCourse);
         }
 
-        return postTravelImageListDto;
+        return PostTravelImageListDto.fromEntity(postTravelImageDtos);
     }
 
     /*
@@ -113,7 +117,7 @@ public class TravelReportService {
      * 처음 게시글 최종 작성 페이지에 들어왔을 때 service
      *  */
     public WriteTravelReportDto getTravelImagesAndDetailCourses(Long travelReportId){
-        List<TravelImage> travelImages = travelImageRepository.getTravelImagesByTravelReport(travelReportRepository.getReferenceById(travelReportId));
+        List<TravelImage> travelImages = travelImageRepository.findTravelImagesByTravelReport(travelReportRepository.getReferenceById(travelReportId));
 
         List<WriteReportTravelImageDto> writeReportTravelImageDtos = travelImages
                 .stream()
@@ -261,14 +265,25 @@ public class TravelReportService {
      * 댓글 작성(Post)
      * WriteCommentDto를 받아 데이터 처리
      *  */
-    public Comment writeComment(WriteCommentDto writeCommentDto, Long userId){
-        Comment comment = Comment.builder()
-                .travelReport(writeCommentDto.travelReport())
-                .user(userRepository.getReferenceById(userId))
-                .content(writeCommentDto.content())
-                .parentCommentId(writeCommentDto.parentCommentId())
-                .build();
-        return commentRepository.saveAndFlush(comment);
+    public Long writeComment(WriteCommentDto writeCommentDto, Long userId){
+        Comment comment;
+        if(writeCommentDto.parentCommentId()==null){
+            comment = Comment.builder()
+                    .travelReport(travelReportRepository.getReferenceById(writeCommentDto.travelReportId()))
+                    .user(userRepository.getReferenceById(userId))
+                    .content(writeCommentDto.content())
+                    .build();
+        }else{
+            comment = Comment.builder()
+                    .travelReport(travelReportRepository.getReferenceById(writeCommentDto.travelReportId()))
+                    .user(userRepository.getReferenceById(userId))
+                    .content(writeCommentDto.content())
+                    .parentCommentId(writeCommentDto.parentCommentId())
+                    .build();
+        }
+        comment = commentRepository.saveAndFlush(comment);
+
+        return comment.getCommentId();
     }
 
     /*

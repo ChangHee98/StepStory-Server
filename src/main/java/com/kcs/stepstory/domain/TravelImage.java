@@ -1,5 +1,6 @@
 package com.kcs.stepstory.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -10,14 +11,14 @@ import org.hibernate.annotations.OnDeleteAction;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
-@IdClass(TravelImageId.class)
 @Table(name = "TravelImage")
 public class TravelImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "travelImageId",nullable = false)
     private Long travelImageId;
-    @Id
+
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "travelReportId", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -26,12 +27,8 @@ public class TravelImage {
     @Column(name = "imageUrl",nullable = false)
     private String imageUrl;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumns({
-        @JoinColumn(name = "detailCourseId", nullable = false),
-        @JoinColumn(name = "travelReportId", nullable = false)
-    })
-
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "detailCourseId", nullable = false)
     private DetailCourse detailCourse;
 
     @Builder
@@ -41,9 +38,8 @@ public class TravelImage {
         this.detailCourse = detailCourse;
     }
 
-    public void updateTravelImage(DetailCourse detailCourse, String imageUrl){
+    public void updateTravelImage(DetailCourse detailCourse){
         this.detailCourse = detailCourse;
-        this.imageUrl = imageUrl;
     }
 
 

@@ -1,9 +1,6 @@
 package com.kcs.stepstory.service;
 
-import com.kcs.stepstory.dto.response.StepCountDto;
-import com.kcs.stepstory.dto.response.StepCountForAllDto;
-import com.kcs.stepstory.dto.response.StepCountForBusanDto;
-import com.kcs.stepstory.dto.response.StepCountForSeoulDto;
+import com.kcs.stepstory.dto.response.*;
 import com.kcs.stepstory.repository.StepRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -67,4 +64,18 @@ public class StepService {
     public StepCountForSeoulDto getStepCountForJeju(){
         return stepRepository.countStepsForJeju();
     }*/
+
+    // -------------------------------------마이스토리 관련 -------------------------------------
+    public StepCountForAllDto getMyStepCountForAll(String nickname){
+        return stepRepository.countMyStepsForAllRegions(nickname);
+    }
+    public StepCountForSeoulDto getMyStepCountForSeoul(String nickname){
+        return stepRepository.countMyStepsForSeoul(nickname);
+    }
+    public StepCountForBusanDto getMyStepCountForBusan(String nickname){
+        return stepRepository.countMyStepsForBusan(nickname);
+    }
+    public StepCountForGyeonggiDto getMyStepCountForGyeonggi(String nickname){
+        return stepRepository.countMyStepsForGyeonggi(nickname);
+    }
 }

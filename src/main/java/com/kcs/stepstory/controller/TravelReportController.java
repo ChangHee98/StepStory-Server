@@ -18,15 +18,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1/no-auth/travel-report")
 @Tag(name = "TravelReport", description = "여행 기록 관련 API")
 @RequiredArgsConstructor
 public class TravelReportController {
     private final TravelReportService travelReportService;
-    @GetMapping("/{provinceId}")
+    @GetMapping("/api/v1/no-auth/travel-report-list/{provinceId}")
     @Operation(summary = "여행 기록 목록 조회", description = "특정 지역의 여행 기록 목록을 조회합니다.")
     public ResponseDto<TravelReportListDto> getTravelReportList(
             @PathVariable("provinceId") Long provinceId,
@@ -36,18 +36,43 @@ public class TravelReportController {
         String province;
         switch (provinceId.intValue()){
             case 1:
-                province = "seoul";
+                province = "Seoul";
                 break;
             case 2:
-                province = "busan";
+                province = "Busan";
                 break;
             case 9:
-                province = "gyeonggi";
+                province = "Gyeonggi";
                 break;
             default:
                 throw new CommonException(ErrorCode.BAD_REQUEST_PARAMETER);
         }
         return ResponseDto.ok(travelReportService.getTravelReportList(province, city, district));
+    }
+
+    @GetMapping("/api/v1/users/travel-report/mystory/{provinceId}")
+    @Operation(summary = "여행 기록 목록 조회", description = "특정 지역의 여행 기록 목록을 조회합니다.")
+    public ResponseDto<TravelReportListDto> getMyTravelReportList(
+            @PathVariable("provinceId") Long provinceId,
+            @RequestParam("nickname") String nickname,
+            @RequestParam(value = "city", required = false) String city,
+            @RequestParam(value = "disctrict", required = false) String district
+    ){
+        String province;
+        switch (provinceId.intValue()){
+            case 1:
+                province = "Seoul";
+                break;
+            case 2:
+                province = "Busan";
+                break;
+            case 9:
+                province = "Gyeonggi";
+                break;
+            default:
+                throw new CommonException(ErrorCode.BAD_REQUEST_PARAMETER);
+        }
+        return ResponseDto.ok(travelReportService.getMyTravelReportList(province, city, district, nickname));
     }
 
     /*
@@ -56,9 +81,10 @@ public class TravelReportController {
     @PatchMapping("/api/v1/users/travel-report/detail-course")
     public ResponseDto<PostTravelImageListDto> ReportImagesAndCourses(
             @UserId Long userId,
-            @RequestBody PostTravelImageListDto postTravelImageListDto
+            @RequestBody List<PostTravelImageDto> postTravelImageDtos
             ){
-        return ResponseDto.ok(travelReportService.updateImages(postTravelImageListDto));
+
+        return ResponseDto.ok(travelReportService.updateImagesAndDetailCourse(postTravelImageDtos));
     }
 
     /*
@@ -103,7 +129,6 @@ public class TravelReportController {
      * */
     @GetMapping("/api/v1/no-auth/travel-report/{travelReportId}")
     public ResponseDto<ViewTravelReportDto> viewTravelReport(
-            @UserId Long userId,
             @PathVariable Long travelReportId
     ){
         return ResponseDto.ok(travelReportService.getTravelReport(travelReportId));
@@ -114,10 +139,10 @@ public class TravelReportController {
      * 이미 WantToGo 눌렀으면 delete
      * 아니면 insert
      * */
-    @PostMapping("/api/v1/users/travel-report/want-to-go")
+    @PostMapping("/api/v1/users/travel-report/want-to-go/{travelReportId}")
     public ResponseDto<Long> pushWantToGoTravelReport(
             @UserId Long userId,
-            @RequestBody Long travelReportId
+            @PathVariable Long travelReportId
     ){
         return ResponseDto.ok(travelReportService.pushWantToGo(userId, travelReportId));
     }
@@ -161,7 +186,7 @@ public class TravelReportController {
      * 댓글 작성
      * */
     @PostMapping("/api/v1/users/travel-report/comment")
-    public ResponseDto<Comment> writeComments(
+    public ResponseDto<Long> writeComments(
             @UserId Long userId,
             @RequestBody WriteCommentDto writeCommentDto
     ) {
