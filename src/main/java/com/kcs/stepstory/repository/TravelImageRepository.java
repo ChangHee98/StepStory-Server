@@ -12,5 +12,7 @@ import java.util.List;
 public interface TravelImageRepository extends JpaRepository<TravelImage, Long> {
     public List<TravelImage> getTravelImagesByTravelReport(TravelReport travelReport);
 
+    public List<TravelImage> findTravelImagesByTravelReport(TravelReport travelReport);
+
     TravelImage findByTravelImageId(Long travelImageId);
 }

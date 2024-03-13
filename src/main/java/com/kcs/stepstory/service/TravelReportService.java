@@ -94,7 +94,7 @@ public class TravelReportService {
      * 처음 게시글 최종 작성 페이지에 들어왔을 때 service
      *  */
     public WriteTravelReportDto getTravelImagesAndDetailCourses(Long travelReportId){
-        List<TravelImage> travelImages = travelImageRepository.getTravelImagesByTravelReport(travelReportRepository.getReferenceById(travelReportId));
+        List<TravelImage> travelImages = travelImageRepository.findTravelImagesByTravelReport(travelReportRepository.getReferenceById(travelReportId));
 
         List<WriteReportTravelImageDto> writeReportTravelImageDtos = travelImages
                 .stream()

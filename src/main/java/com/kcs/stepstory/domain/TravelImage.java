@@ -27,7 +27,7 @@ public class TravelImage {
     @Column(name = "imageUrl",nullable = false)
     private String imageUrl;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "detailCourseId", nullable = false)
     private DetailCourse detailCourse;
 

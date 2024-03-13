@@ -1,5 +1,6 @@
 package com.kcs.stepstory.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -17,10 +18,12 @@ public class Friend {
     @Column(name="friendId", nullable = false)
     private Long friendId;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="userId1", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user1;
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="userId2", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
