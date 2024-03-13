@@ -1,9 +1,11 @@
 package com.kcs.stepstory.controller;
 
+import com.kcs.stepstory.annotation.UserId;
 import com.kcs.stepstory.dto.global.ResponseDto;
 import com.kcs.stepstory.dto.response.StepCountDto;
 import com.kcs.stepstory.dto.response.StepCountForAllDto;
 import com.kcs.stepstory.exception.CommonException;
+import com.kcs.stepstory.service.MyStepService;
 import com.kcs.stepstory.service.StepService;
 import com.kcs.stepstory.exception.ErrorCode;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,18 +17,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/no-auth/step")
+@RequestMapping("/api/v1/")
 @Tag(name = "Step", description = "여행 기록 발자국 관련 API")
 @RequiredArgsConstructor
 public class StepController {
     private final StepService stepService;
-    @GetMapping("/main")
+    private final MyStepService myStepService;
+    @GetMapping("/no-auth/step/main")
     @Operation(summary = "전국 지역별 Step 개수 조회", description = "전국 지역별 Step 개수를 조회합니다.")
     public ResponseDto<StepCountForAllDto> getStepCountForall(){
         return ResponseDto.ok(stepService.getStepCountForAll());
     }
 
-    @GetMapping("/main/{provinceId}")
+    @GetMapping("/no-auth/step/main/{provinceId}")
     @Operation(summary = "특정 지역별 Step 개수 조회", description = "특정 지역별 Step 개수를 조회합니다.")
     public ResponseDto<StepCountDto> getStepCountForProvince(
             @PathVariable("provinceId") Long provinceId
@@ -69,5 +72,16 @@ public class StepController {
             default:
                 throw new CommonException(ErrorCode.BAD_REQUEST_JSON);
         }
+    }
+
+    /**
+     *
+     * 마이스로티 - 발자국 ㅈ
+     */
+    @GetMapping("users/step/my/main")
+    public ResponseDto<StepCountForAllDto> getMyStepCountForAll(
+            @UserId Long userId
+    ){
+        return ResponseDto.ok(myStepService.getMyStepCountForAll(userId));
     }
 }
