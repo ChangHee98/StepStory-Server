@@ -1,5 +1,6 @@
 package com.kcs.stepstory.controller;
 
+import com.kcs.stepstory.annotation.UserId;
 import com.kcs.stepstory.dto.global.ResponseDto;
 import com.kcs.stepstory.dto.response.StepCountDto;
 import com.kcs.stepstory.dto.response.StepCountForAllDto;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class StepController {
     private final StepService stepService;
-
     @GetMapping("/no-auth/step/main")
     @Operation(summary = "전국 지역별 Step 개수 조회", description = "전국 지역별 Step 개수를 조회합니다.")
     public ResponseDto<StepCountForAllDto> getStepCountForall() {
