@@ -8,8 +8,12 @@ import com.kcs.stepstory.dto.response.FriendListDto;
 import com.kcs.stepstory.repository.FriendRepository;
 import com.kcs.stepstory.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -125,8 +129,11 @@ public class FriendsService {
      */
     @Transactional
     public Friend requestFriendsUser(Long userId, Long friendId) {
+
         User user = userRepository.getReferenceById(userId);
         User requestUser = userRepository.getReferenceById(friendId);
+
+
         //친구 요청 기능을 구현하기 위해 생성자로 생성
         Friend friend = Friend.builder()
                 .user1(user)
@@ -137,6 +144,8 @@ public class FriendsService {
         return friend;
 
     }
+
+
 
     /**
      *  친구 수락 서비스
