@@ -43,9 +43,9 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
     /**
      *  친구 상세정보 확인 기능
      */
-    @Query("select u.userId from Friend f join f.user2 u where f.user1= :userId and f.user2= :friendId and f.status = 1")
+    @Query("select u.userId from Friend f join f.user2 u where f.user1.id = :userId and f.user2.id = :friendId and f.status = 1")
     Long findBySendFriendDetails(@Param("userId") Long userId, @Param("friendId") Long friendId);
-    @Query("select u.userId from Friend f join f.user1 u where f.user2= :userId and f.user1= :friendId and f.status = 1")
+    @Query("select u.userId from Friend f join f.user1 u where f.user2.id = :userId and f.user1.id = :friendId and f.status = 1")
     Long findByReceiveFriendDetails(@Param("userId") Long userId, @Param("friendId") Long friendId);
 
 
