@@ -133,6 +133,7 @@ public class FriendsService {
                 .user2(requestUser)
                 .status(0)
                 .build();
+        friendRepository.save(friend);
         return friend;
 
     }
