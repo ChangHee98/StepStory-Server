@@ -62,12 +62,12 @@ public class FriendsController {
      * 친구 요청 기능 매핑
      */
     @PostMapping("")
-    public Map<String, String> requestFrined(@UserId Long userId, @RequestBody Long friendId) {
+    public Map<String, String> requestFriend(@UserId Long userId, @RequestBody Map<String, Long> requestBody) {
+        Long friendId = requestBody.get("friendId");
         friendsService.requestFriendsUser(userId, friendId);
         Map<String, String> response = new HashMap<>();
         response.put("message", "친구 요청이 성공적으로 전송되었습니다.");
         return response;
-
     }
 
     /**
