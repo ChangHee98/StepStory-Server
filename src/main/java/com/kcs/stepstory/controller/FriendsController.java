@@ -2,6 +2,7 @@ package com.kcs.stepstory.controller;
 
 import com.kcs.stepstory.annotation.UserId;
 import com.kcs.stepstory.dto.global.ResponseDto;
+import com.kcs.stepstory.dto.response.FriendDetailDto;
 import com.kcs.stepstory.dto.response.FriendDto;
 import com.kcs.stepstory.dto.response.FriendListDto;
 import com.kcs.stepstory.service.FriendsService;
@@ -39,11 +40,17 @@ public class FriendsController {
     /**
      * 친구 상세정보 확인 서비스 매핑
      */
+//    @GetMapping("/{friendId}")
+//    public ResponseDto<FriendDto> getFriendDetails(@UserId Long userId, @PathVariable Long friendId) {
+//        FriendDetailDto friendDetails = friendsService.getFriendDetailsUser(userId, friendId);
+//        return ResponseDto.ok(friendDetails);
+//    }
     @GetMapping("/{friendId}")
-    public ResponseDto<FriendDto> getFriendDetails(@UserId Long userId, @PathVariable Long friendId) {
-        FriendDto friendDetails = friendsService.getFriendDetailsUser(userId, friendId);
+    public ResponseDto<FriendDetailDto> getFriendDetails(@UserId Long userId, @PathVariable Long friendId) {
+        FriendDetailDto friendDetails = friendsService.getFriendDetailsUser(userId, friendId);
         return ResponseDto.ok(friendDetails);
     }
+
 
 
 
