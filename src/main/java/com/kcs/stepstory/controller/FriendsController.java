@@ -40,13 +40,8 @@ public class FriendsController {
     /**
      * 친구 상세정보 확인 서비스 매핑
      */
-//    @GetMapping("/{friendId}")
-//    public ResponseDto<FriendDto> getFriendDetails(@UserId Long userId, @PathVariable Long friendId) {
-//        FriendDetailDto friendDetails = friendsService.getFriendDetailsUser(userId, friendId);
-//        return ResponseDto.ok(friendDetails);
-//    }
-    @GetMapping("/{friendId}")
-    public ResponseDto<FriendDetailDto> getFriendDetails(@UserId Long userId, @PathVariable Long friendId) {
+    @GetMapping("/detail/{friendId}")
+    public ResponseDto<FriendDetailDto> getFriendDetails(@UserId Long userId, @PathVariable("friendId") Long friendId) {
         FriendDetailDto friendDetails = friendsService.getFriendDetailsUser(userId, friendId);
         return ResponseDto.ok(friendDetails);
     }
