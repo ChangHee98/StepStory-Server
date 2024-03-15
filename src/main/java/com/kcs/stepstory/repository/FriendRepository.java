@@ -71,8 +71,8 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
      *  친구수락 기능
      */
     Friend findByUser1AndUser2(User user1, User user2);
-
-
+    // 친구 요청 기능 예외처리 메서드
+    boolean existsByUser1UserIdAndUser2UserIdAndStatus(Long userId1, Long userId2, Integer status);
 
 
 
