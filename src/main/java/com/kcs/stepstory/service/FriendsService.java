@@ -3,6 +3,7 @@ package com.kcs.stepstory.service;
 
 import com.kcs.stepstory.domain.Friend;
 import com.kcs.stepstory.domain.User;
+import com.kcs.stepstory.dto.response.FriendDetailDto;
 import com.kcs.stepstory.dto.response.FriendDto;
 import com.kcs.stepstory.dto.response.FriendListDto;
 import com.kcs.stepstory.exception.CommonException;
@@ -64,6 +65,7 @@ public class FriendsService {
         for (Long requestId : requestFriendList) {
             User user = userRepository.getReferenceById(requestId);
             FriendDto friendDto = FriendDto.fromEntity(user);
+            requestFriendDtoList.add(friendDto);
         }
         return FriendListDto.builder()
                 .friendListDtos(friendDtoList)  // 친구목록 Dtos
@@ -87,16 +89,16 @@ public class FriendsService {
      * 상세 정보 확인 서비스
      */
     @Transactional
-    public FriendDto getFriendDetailsUser(Long userId, Long friendId) {
+    public FriendDetailDto getFriendDetailsUser(Long userId, Long friendId) {
         Long friend = friendRepository.findBySendFriendDetails(userId, friendId);
         if(friendId == null) {
             friend = friendRepository.findByReceiveFriendDetails(userId, friendId);
         }
 
         User user = userRepository.getReferenceById(friend);
-        FriendDto friendDto = FriendDto.fromEntityDetails(user);
+        FriendDetailDto friendDetailDto = FriendDetailDto.fromEntityDetails(user);
 
-        return friendDto;
+        return friendDetailDto;
     }
 
 
