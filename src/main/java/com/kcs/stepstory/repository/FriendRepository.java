@@ -17,16 +17,16 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
     /**
      *  친구 목록 조회
      */
-    @Query("select u.userId from Friend f join f.user2 u where f.user1= :userId and f.status = 1")
+    @Query("select u.userId from Friend f join f.user2 u where f.user1.id = :userId and f.status = 1")
     List<Long> findBySendFriendList1(@Param("userId") Long userId);
 
-    @Query("select u.userId from Friend f join f.user1 u where f.user2= :userId and f.status = 1")
+    @Query("select u.userId from Friend f join f.user1 u where f.user2.id = :userId and f.status = 1")
     List<Long> findByReceiveFriendList1(@Param("userId") Long userId);
 
     /**
      * 친구요청 목록조회 기능
      */
-    @Query("select u.userId from Friend f join f.user1 u where f.user2 = :userId and f.status = 0")
+    @Query("select u.userId from Friend f join f.user1 u where f.user2.id = :userId and f.status = 0")
     List<Long> findByrequestFriendList(@Param("userId") Long userId);
 
 
