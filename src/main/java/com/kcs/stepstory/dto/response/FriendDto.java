@@ -13,8 +13,7 @@ import java.util.Optional;
 @Builder
 public record FriendDto (
     String nickname,
-    String profileImgUrl,
-    String selfIntro
+    String profileImgUrl
 ){
 
 
@@ -31,12 +30,6 @@ public record FriendDto (
                 .build();
     }
 
-    public static FriendDto fromEntityDetails(User user) {
-        return FriendDto.builder()
-                .nickname(user.getNickname())
-                .profileImgUrl(user.getProfileImgUrl())
-                .selfIntro(user.getSelfIntro())
-                .build();
-    }
+
 
 }
