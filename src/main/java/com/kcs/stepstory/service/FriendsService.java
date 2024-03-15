@@ -5,6 +5,8 @@ import com.kcs.stepstory.domain.Friend;
 import com.kcs.stepstory.domain.User;
 import com.kcs.stepstory.dto.response.FriendDto;
 import com.kcs.stepstory.dto.response.FriendListDto;
+import com.kcs.stepstory.exception.CommonException;
+import com.kcs.stepstory.exception.ErrorCode;
 import com.kcs.stepstory.repository.FriendRepository;
 import com.kcs.stepstory.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -129,12 +131,28 @@ public class FriendsService {
      */
     @Transactional
     public Friend requestFriendsUser(Long userId, Long friendId) {
-
         User user = userRepository.getReferenceById(userId);
         User requestUser = userRepository.getReferenceById(friendId);
 
+        if (user == null || requestUser == null) {
+            throw new CommonException(ErrorCode.NOT_FOUND_USER);
+        }
 
-        //친구 요청 기능을 구현하기 위해 생성자로 생성
+        if (userId.equals(friendId)) {
+            throw new CommonException(ErrorCode.BAD_REQUEST_PARAMETER);
+        }
+
+        // 중복된 친구 요청 처리
+        if (friendRepository.existsByUser1UserIdAndUser2UserIdAndStatus(userId, friendId, 0) ||
+                friendRepository.existsByUser1UserIdAndUser2UserIdAndStatus(friendId, userId, 0)) {
+            throw new CommonException(ErrorCode.BAD_REQUEST_PARAMETER);
+        }
+        if (friendRepository.existsByUser1UserIdAndUser2UserIdAndStatus(userId, friendId, 1) ||
+                friendRepository.existsByUser1UserIdAndUser2UserIdAndStatus(friendId, userId, 1)) {
+            throw new CommonException(ErrorCode.BAD_REQUEST_PARAMETER);
+        }
+
+        // 친구 요청 기능을 구현하기 위해 생성자로 생성
         Friend friend = Friend.builder()
                 .user1(user)
                 .user2(requestUser)
@@ -142,7 +160,6 @@ public class FriendsService {
                 .build();
         friendRepository.save(friend);
         return friend;
-
     }
 
 
