@@ -87,18 +87,7 @@ public class StepController {
      *
      * MyStoryPage 발자국 조회 - 서울 기능
      */
-//    @GetMapping("users/step/my/{provinceName}")
-//    public ResponseDto<StepCountForSeoulDto> getMyStepCountForSeoul(@UserId Long userId, @PathVariable String provinceName) {
-//        if (provinceName.equals("Seoul")) {
-//            return ResponseDto.ok(myStepService.getMyStepCountForSeoul(userId, provinceName));
-//        } else if (provinceName.equals("Gyeonggi")) {
-//            return ResponseDto.ok(myStepService.getMyStepCountForGyeonggi(userId, provinceName));
-//        } else if (provinceName.equals("Busan")) {
-//            return null;
-//        } else {
-//            throw new CommonException(ErrorCode.BAD_REQUEST_JSON);
-//        }
-//    }
+
 
     @GetMapping("users/step/my/{provinceName}")
     public ResponseEntity<ResponseDto<?>> getMyStepCount(@UserId Long userId, @PathVariable String provinceName) {
@@ -109,8 +98,7 @@ public class StepController {
         } else if (provinceName.equals("Gyeonggi")) {
             responseDto = ResponseDto.ok(myStepService.getMyStepCountForGyeonggi(userId, provinceName));
         } else if (provinceName.equals("Busan")) {
-            // Add logic for Busan if needed
-            responseDto = null; // Placeholder
+            responseDto = ResponseDto.ok(myStepService.getMyStepCountForBusan(userId, provinceName));
         } else {
             throw new CommonException(ErrorCode.BAD_REQUEST_JSON);
         }
