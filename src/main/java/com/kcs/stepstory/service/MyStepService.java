@@ -1,10 +1,7 @@
 package com.kcs.stepstory.service;
 
 import com.kcs.stepstory.domain.Step;
-import com.kcs.stepstory.dto.response.FriendListDto;
-import com.kcs.stepstory.dto.response.StepCountForAllDto;
-import com.kcs.stepstory.dto.response.StepCountForGyeonggiDto;
-import com.kcs.stepstory.dto.response.StepCountForSeoulDto;
+import com.kcs.stepstory.dto.response.*;
 import com.kcs.stepstory.repository.MyStepRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -258,6 +255,65 @@ public class MyStepService {
                 .build();
     }
 
+
+    /**
+     * 발자국 조회 - 부산  서비스 로직
+     */
+    public StepCountForBusanDto getMyStepCountForBusan(Long userId, String province) {
+        List<Step> stepList = myStepRepository.findBySeoulListForMyStep(userId, province);
+        StepCountForBusanDto totalStepCount = StepCountForBusanDto.builder()
+                .jung(0)
+                .dong(0)
+                .seo(0)
+                .nam(0)
+                .buk(0)
+                .yeongdo(0)
+                .busanjin(0)
+                .dongrae(0)
+                .haeundae(0)
+                .saha(0)
+                .geumjeong(0)
+                .gangseo(0)
+                .yeonje(0)
+                .suyeong(0)
+                .sasang(0)
+                .gijang(0)
+                .build();
+
+
+        // for loop: fromAllArea()를 사용하여 Dto로 변환하고, allStepAaccumulate()를 사용하여 누적 카운트
+        for (Step step : stepList) {
+            StepCountForBusanDto stepDto = StepCountForBusanDto.fromBusanArea(step);
+            totalStepCount = BusanStepAccumulate(totalStepCount, stepDto);
+        }
+
+        return totalStepCount;
+    }
+
+
+    /**
+     * 발자국 조회 - 부산
+     */
+    private StepCountForBusanDto BusanStepAccumulate(StepCountForBusanDto totalStepCount, StepCountForBusanDto stepCount) {
+        return StepCountForBusanDto.builder()
+                .jung(totalStepCount.jung() + stepCount.jung())
+                .dong(totalStepCount.dong() + stepCount.dong())
+                .seo(totalStepCount.seo() + stepCount.seo())
+                .nam(totalStepCount.nam() + stepCount.nam())
+                .buk(totalStepCount.buk() + stepCount.buk())
+                .yeongdo(totalStepCount.yeongdo() + stepCount.yeongdo())
+                .busanjin(totalStepCount.busanjin() + stepCount.busanjin())
+                .dongrae(totalStepCount.dongrae() + stepCount.dongrae())
+                .haeundae(totalStepCount.haeundae() + stepCount.haeundae())
+                .saha(totalStepCount.saha() + stepCount.saha())
+                .geumjeong(totalStepCount.geumjeong() + stepCount.geumjeong())
+                .gangseo(totalStepCount.gangseo() + stepCount.gangseo())
+                .yeonje(totalStepCount.yeonje() + stepCount.yeonje())
+                .suyeong(totalStepCount.suyeong() + stepCount.suyeong())
+                .sasang(totalStepCount.sasang() + stepCount.sasang())
+                .gijang(totalStepCount.gijang() + stepCount.gijang())
+                .build();
+    }
 
 
 
