@@ -6,6 +6,7 @@ import com.kcs.stepstory.domain.User;
 import com.kcs.stepstory.dto.response.FriendDetailDto;
 import com.kcs.stepstory.dto.response.FriendDto;
 import com.kcs.stepstory.dto.response.FriendListDto;
+import com.kcs.stepstory.dto.response.FriendSearchListDto;
 import com.kcs.stepstory.exception.CommonException;
 import com.kcs.stepstory.exception.ErrorCode;
 import com.kcs.stepstory.repository.FriendRepository;
@@ -105,7 +106,7 @@ public class FriendsService {
     /**
      *  친구닉네임 조회 서비스
      */
-    public FriendListDto getFriendNickNameList(Long userId, String nickName) {
+    public FriendSearchListDto getFriendNickNameList(Long userId, String nickName) {
         List<Long> SendFriendNicknameList = friendRepository.findBySendFriendNicknameList(userId, nickName);
         List<Long> ReceiveFriendNicknameList = friendRepository.findByReceiveFriendNicknameList(userId, nickName);
         List<FriendDto> friendDtoList = new ArrayList<>();
@@ -122,8 +123,11 @@ public class FriendsService {
             friendDtoList.add(friendDto);
         }
 
-        return FriendListDto.builder()
-                .friendListDtos(friendDtoList)
+//        return FriendListDto.builder()
+//                .friendListDtos(friendDtoList)
+//                .build();
+        return FriendSearchListDto.builder()
+                .friendSearchListDtos(friendDtoList)
                 .build();
 
     }
