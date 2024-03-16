@@ -30,7 +30,8 @@ public interface MyStepRepository extends JpaRepository<Step, StepId> {
      *  특정 user에 대한 모든 객체 반환
      */
     @Query("SELECT s FROM Step s WHERE s.user.id = :userId AND s.province = :province")
-    List<Step> findBySeoulListForMyStep(@Param("userId") Long userId, @Param("userId") String province);
+    List<Step> findBySeoulListForMyStep(@Param("userId") Long userId, @Param("province") String province);
+
 
 }
 
