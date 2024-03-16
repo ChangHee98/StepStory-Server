@@ -69,7 +69,7 @@ public class FriendsService {
         }
         return FriendListDto.builder()
                 .friendListDtos(friendDtoList)  // 친구목록 Dtos
-                .requestfriendListDtos(requestFriendDtoList) // 친구 요청 목록 Dtos
+                .requestFriendListDtos(requestFriendDtoList) // 친구 요청 목록 Dtos
                 .build();
     }
 
