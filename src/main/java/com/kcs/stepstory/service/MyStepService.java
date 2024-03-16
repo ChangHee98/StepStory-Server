@@ -136,6 +136,9 @@ public class MyStepService {
         return totalStepCount;
     }
 
+    /**
+     * 발자국 조회 - 서울  서비스 로직
+     */
     private StepCountForSeoulDto  seoulStepAaccumulate(StepCountForSeoulDto totalStepCount, StepCountForSeoulDto stepCount) {
         return StepCountForSeoulDto.builder()
                 .gangnam(totalStepCount.gangnam() + stepCount.gangnam())
@@ -165,5 +168,7 @@ public class MyStepService {
                 .jungnang(totalStepCount.jungnang() + stepCount.jungnang())
                 .build();
     }
+
+
 
 }
