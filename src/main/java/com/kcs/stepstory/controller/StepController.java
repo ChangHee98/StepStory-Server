@@ -12,6 +12,7 @@ import com.kcs.stepstory.exception.ErrorCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -86,18 +87,41 @@ public class StepController {
      *
      * MyStoryPage 발자국 조회 - 서울 기능
      */
-    @GetMapping("users/step/my/{provinceName}")
-    public ResponseDto<StepCountForSeoulDto> getMyStepCountForSeoul(@UserId Long userId, @RequestParam String province) {
-        if(province.equals("Seoul")) {
-            return ResponseDto.ok(myStepService.getMyStepCountForSeoul(userId, province));
-        }else{
-            return null;
-        }
-        //        } else if ( ) {
-//            return ResponseDto.ok(myStepService.경기도메서드(userId);
-//
+//    @GetMapping("users/step/my/{provinceName}")
+//    public ResponseDto<StepCountForSeoulDto> getMyStepCountForSeoul(@UserId Long userId, @PathVariable String provinceName) {
+//        if (provinceName.equals("Seoul")) {
+//            return ResponseDto.ok(myStepService.getMyStepCountForSeoul(userId, provinceName));
+//        } else if (provinceName.equals("Gyeonggi")) {
+//            return ResponseDto.ok(myStepService.getMyStepCountForGyeonggi(userId, provinceName));
+//        } else if (provinceName.equals("Busan")) {
+//            return null;
+//        } else {
+//            throw new CommonException(ErrorCode.BAD_REQUEST_JSON);
 //        }
+//    }
+
+    @GetMapping("users/step/my/{provinceName}")
+    public ResponseEntity<ResponseDto<?>> getMyStepCount(@UserId Long userId, @PathVariable String provinceName) {
+        ResponseDto<?> responseDto;
+
+        if (provinceName.equals("Seoul")) {
+            responseDto = ResponseDto.ok(myStepService.getMyStepCountForSeoul(userId, provinceName));
+        } else if (provinceName.equals("Gyeonggi")) {
+            responseDto = ResponseDto.ok(myStepService.getMyStepCountForGyeonggi(userId, provinceName));
+        } else if (provinceName.equals("Busan")) {
+            // Add logic for Busan if needed
+            responseDto = null; // Placeholder
+        } else {
+            throw new CommonException(ErrorCode.BAD_REQUEST_JSON);
+        }
+        return ResponseEntity.ok(responseDto);
     }
+
+
+
+
+
+
 
 
 }
