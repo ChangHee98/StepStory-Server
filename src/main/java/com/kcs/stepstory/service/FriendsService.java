@@ -78,8 +78,8 @@ public class FriendsService {
     /**
      * 친구요청 목록 Count 서비스
      */
-    public Long getCountFriendList(Long userId, Long friendId) {
-        Long requestFriendList = friendRepository.countByRequestFriendList(userId, friendId);
+    public Long getCountFriendList(Long userId) {
+        Long requestFriendList = friendRepository.countByRequestFriendList(userId);
 
         return requestFriendList;
     }
