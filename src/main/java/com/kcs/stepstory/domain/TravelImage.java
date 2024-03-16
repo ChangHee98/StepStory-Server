@@ -32,7 +32,7 @@ public class TravelImage {
     private DetailCourse detailCourse;
 
     @Builder
-    public TravelImage(Long travelImageId, TravelReport travelReport, String imageUrl, DetailCourse detailCourse){
+    public TravelImage(TravelReport travelReport, String imageUrl, DetailCourse detailCourse){
         this.travelReport = travelReport;
         this.imageUrl = imageUrl;
         this.detailCourse = detailCourse;
