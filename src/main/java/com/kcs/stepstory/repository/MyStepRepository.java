@@ -26,7 +26,7 @@ public interface MyStepRepository extends JpaRepository<Step, StepId> {
 
 
     /**
-     *  발자국 조회 - 서울
+     *  발자국 조회 - 서울 + 경기
      *  특정 user에 대한 모든 객체 반환
      */
     @Query("SELECT s FROM Step s WHERE s.user.id = :userId AND s.province = :province")
