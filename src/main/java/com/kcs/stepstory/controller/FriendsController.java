@@ -31,8 +31,8 @@ public class FriendsController {
     /**
      * 친구요청 목록 Count 서비스 매핑
      */    @GetMapping("/count")
-    public ResponseDto<Long> getrequestCount(@UserId Long userId, @PathVariable Long friendId) {
-        return ResponseDto.ok(friendsService.getCountFriendList(userId, friendId));
+    public ResponseDto<Long> getrequestCount(@UserId Long userId) {
+        return ResponseDto.ok(friendsService.getCountFriendList(userId));
     }
 
 
