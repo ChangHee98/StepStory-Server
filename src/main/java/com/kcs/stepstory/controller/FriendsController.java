@@ -76,7 +76,8 @@ public class FriendsController {
      * 친구 수락 기능 매핑
      */
     @PatchMapping("")
-    public Map<String, String> acceptFrined(@UserId Long userId, @RequestBody Long friendId) {
+    public Map<String, String> acceptFrined(@UserId Long userId, @RequestBody Map<String, Long> requestBody) {
+        Long friendId = requestBody.get("friendId");
         friendsService.acceptFriendsUser(userId, friendId);
         Map<String, String> response = new HashMap<>();
         response.put("message", "친구요청이 수락되었습니다.");
