@@ -55,12 +55,12 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
      */
     @Query("select u.userId " +
             "from Friend f join f.user1 u " +
-            "where f.user2 = :userId and f.status = 1 and u.nickname LIKE CONCAT('%', :friendNickname, '%')")
+            "where f.user2.id = :userId and f.status = 1 and u.nickname LIKE CONCAT('%', :friendNickname, '%')")
     List<Long> findBySendFriendNicknameList(@Param("userId") Long userId, @Param("friendNickname") String friendNickname);
 
     @Query("select u.userId " +
             "from Friend f join f.user2 u " +
-            "where f.user1 = :userId and f.status = 1 and u.nickname LIKE CONCAT('%', :friendNickname, '%')")
+            "where f.user1.id = :userId and f.status = 1 and u.nickname LIKE CONCAT('%', :friendNickname, '%')")
     List<Long> findByReceiveFriendNicknameList(@Param("userId") Long userId, @Param("friendNickname") String friendNickname);
 
 
