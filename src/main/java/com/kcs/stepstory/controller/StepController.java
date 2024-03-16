@@ -4,7 +4,9 @@ import com.kcs.stepstory.annotation.UserId;
 import com.kcs.stepstory.dto.global.ResponseDto;
 import com.kcs.stepstory.dto.response.StepCountDto;
 import com.kcs.stepstory.dto.response.StepCountForAllDto;
+import com.kcs.stepstory.dto.response.StepCountForSeoulDto;
 import com.kcs.stepstory.exception.CommonException;
+import com.kcs.stepstory.service.MyStepService;
 import com.kcs.stepstory.service.StepService;
 import com.kcs.stepstory.exception.ErrorCode;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,14 +15,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/")
 @Tag(name = "Step", description = "여행 기록 발자국 관련 API")
 @RequiredArgsConstructor
 public class StepController {
     private final StepService stepService;
+    private final MyStepService myStepService;
     @GetMapping("/no-auth/step/main")
     @Operation(summary = "전국 지역별 Step 개수 조회", description = "전국 지역별 Step 개수를 조회합니다.")
-    public ResponseDto<StepCountForAllDto> getStepCountForall() {
+    public ResponseDto<StepCountForAllDto> getStepCountForall(){
         return ResponseDto.ok(stepService.getStepCountForAll());
     }
 
@@ -28,8 +31,8 @@ public class StepController {
     @Operation(summary = "특정 지역별 Step 개수 조회", description = "특정 지역별 Step 개수를 조회합니다.")
     public ResponseDto<StepCountDto> getStepCountForProvince(
             @PathVariable("provinceId") Long provinceId
-    ) {
-        switch (provinceId.intValue()) {
+    ){
+        switch (provinceId.intValue()){
             case 1:
                 return ResponseDto.ok(stepService.getStepCountForSeoul());
             case 2:
@@ -69,30 +72,32 @@ public class StepController {
         }
     }
 
-    @GetMapping("/users/step/mystory")
-    @Operation(summary = "나의 여행기록으로 기록된 전국 Step 조회", description = "나의 여행기록으로 기록된 전국 Step을 조회합니다.")
-    public ResponseDto<StepCountForAllDto> getMyStepCountForall(
-            @RequestParam("nickname") String nickname
-    ) {
-        return ResponseDto.ok(stepService.getMyStepCountForAll(nickname));
+    /**
+     *
+     * MyStoryPage 발자국 조회 - 전체 기능
+     * /api/v1/users/step/mystory
+     */
+    @GetMapping("users/step/my/main")
+    public ResponseDto<StepCountForAllDto> getMyStepCountForAll(@UserId Long userId) {
+        return ResponseDto.ok(myStepService.getMyStepCountForAll(userId));
     }
 
-    @GetMapping("/users/step/mystory/{provinceId}")
-    @Operation(summary = "나의 여행기록으로 기록된 특정 지역 Step 조회", description = "나의 여행기록으로 기록된 특정 지역 Step을 조회합니다.")
-    public ResponseDto<StepCountDto> getMyStepCountForProvince(
-            @RequestParam("nickname") String nickname,
-            @PathVariable("provinceId") Long provinceId
-    ) {
-        switch (provinceId.intValue()) {
-            case 1:
-                return ResponseDto.ok(stepService.getMyStepCountForSeoul(nickname));
-            case 2:
-                return ResponseDto.ok(stepService.getMyStepCountForBusan(nickname));
-            case 9:
-                return ResponseDto.ok(stepService.getMyStepCountForGyeonggi(nickname));
-            default:
-                throw new CommonException(ErrorCode.BAD_REQUEST_JSON);
+    /**
+     *
+     * MyStoryPage 발자국 조회 - 서울 기능
+     */
+    @GetMapping("users/step/my/{provinceName}")
+    public ResponseDto<StepCountForSeoulDto> getMyStepCountForSeoul(@UserId Long userId, @RequestParam String province) {
+        if(province.equals("Seoul")) {
+            return ResponseDto.ok(myStepService.getMyStepCountForSeoul(userId, province));
+        }else{
+            return null;
         }
+        //        } else if ( ) {
+//            return ResponseDto.ok(myStepService.경기도메서드(userId);
+//
+//        }
     }
-}
 
+
+}
