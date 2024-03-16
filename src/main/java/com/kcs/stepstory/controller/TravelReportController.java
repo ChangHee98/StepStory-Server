@@ -1,6 +1,7 @@
 package com.kcs.stepstory.controller;
 
 import com.amazonaws.Response;
+import com.drew.imaging.ImageProcessingException;
 import com.kcs.stepstory.annotation.UserId;
 import com.kcs.stepstory.domain.Comment;
 import com.kcs.stepstory.domain.User;
@@ -16,7 +17,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +29,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class TravelReportController {
     private final TravelReportService travelReportService;
+
     @GetMapping("/api/v1/no-auth/travel-report-list/{provinceId}")
     @Operation(summary = "여행 기록 목록 조회", description = "특정 지역의 여행 기록 목록을 조회합니다.")
     public ResponseDto<TravelReportListDto> getTravelReportList(
@@ -206,6 +210,9 @@ public class TravelReportController {
         return ResponseDto.ok(null);
     }
 
+    /*
+     * 댓글 삭제
+     * */
     @DeleteMapping("/api/v1/users/travel-report/comment/{commentId}")
     public ResponseDto<?> deleteComment(
             @UserId Long userId,
@@ -213,5 +220,30 @@ public class TravelReportController {
     ){
         travelReportService.deleteComment(commentId, userId);
         return ResponseDto.ok(null);
+    }
+
+    /*
+     * 사진 업로드 -> 메타데이터 주기
+     * */
+    @GetMapping("/api/v1/users/travel-report/meta")
+    public UploadImageMetaDataDto metadataList(
+            @UserId Long userId,
+            @RequestBody List<MultipartFile> multipartFiles
+    ){
+        try {
+           return travelReportService.getUploadImageMetaData(multipartFiles);
+        } catch (IOException | ImageProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /*
+     * 사진 업로드 후 게시글 작성(완료버튼 누름)
+     * */
+    public void writeFirstReportStep(
+            @UserId Long userId
+    ){
+
+
     }
 }

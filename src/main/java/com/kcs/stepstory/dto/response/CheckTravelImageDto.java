@@ -19,11 +19,4 @@ public record CheckTravelImageDto(
                 .build();
     }
 
-    public static TravelImage toEntity(CheckTravelImageDto checkTravelImageDto){
-        return TravelImage.builder()
-                .travelImageId(checkTravelImageDto.travelImageId())
-                .detailCourse(checkTravelImageDto.detailCourse)
-                .imageUrl(checkTravelImageDto.imageUrl)
-                .build();
-    }
 }

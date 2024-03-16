@@ -1,5 +1,10 @@
 package com.kcs.stepstory.service;
 
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.imaging.ImageProcessingException;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.exif.ExifIFD0Directory;
+import com.drew.metadata.exif.GpsDirectory;
 import com.kcs.stepstory.domain.*;
 import com.kcs.stepstory.dto.request.*;
 import com.kcs.stepstory.dto.response.*;
@@ -11,8 +16,17 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -311,5 +325,145 @@ public class TravelReportService {
             throw new CommonException(ErrorCode.NOT_MATCH_USER);
         }
         commentRepository.deleteByCommentId(commentId);
+    }
+
+    /*
+     * 업로드 된 메타데이터를 확인하여 gps랑 시작, 마지막 날짜 반환
+     * 메타데이터 확인
+     * */
+    public ImageMetaDataListDto getUploadTravelImageMeta(List<MultipartFile> multipartFiles) throws IOException, ImageProcessingException {
+        Timestamp startDay = new Timestamp(System.currentTimeMillis());
+        Timestamp endDay = Timestamp.valueOf("1970-01-01 00:00:00");
+
+        List<ImageMetaDataDto> imageMetaDataDtos = new ArrayList<>();
+
+        for(MultipartFile multipartFile : multipartFiles){
+            Metadata metadata = ImageMetadataReader.readMetadata(multipartFile.getInputStream());
+            GpsDirectory gpsDirectory = metadata.getFirstDirectoryOfType(GpsDirectory.class);
+            ExifIFD0Directory directory = metadata.getFirstDirectoryOfType(ExifIFD0Directory.class);
+            String pdsLat = "";
+            String pdsLon = "";
+            String latAndLon = "";
+            Timestamp imageDate = null;
+
+            if(gpsDirectory == null && directory == null){
+                log.info("gps 및 date의 정보 없음");
+                continue;
+            }
+
+            if(directory != null){
+                Date date = directory.getDate(ExifIFD0Directory.TAG_DATETIME, TimeZone.getTimeZone("Asia/Seoul"));
+                if(date == null){
+                    continue;
+                }
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String dateString = dateFormat.format(date);
+                imageDate = Timestamp.valueOf(dateString);
+
+                if(imageDate.before(startDay)){
+                    startDay = imageDate;
+                }
+                if(imageDate.after(endDay)){
+                    endDay = imageDate;
+                }
+
+            }else{
+                log.info("travelDate 메타 데이터 없음");
+            }
+
+            if(gpsDirectory.containsTag(GpsDirectory.TAG_LATITUDE) && gpsDirectory.containsTag(GpsDirectory.TAG_LONGITUDE)){
+                pdsLat = String.valueOf(gpsDirectory.getGeoLocation().getLatitude());   // 위도
+                pdsLon = String.valueOf(gpsDirectory.getGeoLocation().getLongitude());  // 경도
+
+                latAndLon = pdsLat + ", " + pdsLon;
+            }else{
+                log.info("위치 메타데이터 없음");
+            }
+
+            ImageMetaDataDto imageMetaDataDto = ImageMetaDataDto.builder()
+                    .gps(latAndLon)
+                    .travelDate(imageDate)
+                    .build();
+            imageMetaDataDtos.add(imageMetaDataDto);
+        }// for
+
+        return ImageMetaDataListDto.builder()
+                .imageMetaDataDtos(imageMetaDataDtos)
+                .startDay(startDay.toString())
+                .endDay(endDay.toString())
+                .build();
+    }
+
+    /*
+     * 메타데이터를 반환해주는 메소드
+     * gps와 startDay, endDay 반환
+     * */
+    public UploadImageMetaDataDto getUploadImageMetaData(List<MultipartFile> multipartFiles) throws IOException, ImageProcessingException {
+        ImageMetaDataListDto imageMetaDataListDto = getUploadTravelImageMeta(multipartFiles);
+        List<String> gpsList = new ArrayList<>();
+        for(ImageMetaDataDto imageMetaDataDto : imageMetaDataListDto.imageMetaDataDtos()){
+            gpsList.add(imageMetaDataDto.gps());
+        }
+        return UploadImageMetaDataDto.builder()
+                .gps(gpsList)
+                .startDay(imageMetaDataListDto.startDay())
+                .endDay(imageMetaDataListDto.endDay())
+                .build();
+    }
+
+    /*
+     * 사진 업로드 후 게시글 작성(완료버튼 누름)
+     * */
+    @Transactional
+    public void postTravelReportFirst(
+            Long userId,
+            List<MultipartFile> multipartFiles
+    ) throws ImageProcessingException, IOException {
+
+//        ImageMetaDataListDto imageMetaDataListDto = getUploadTravelImageMeta(multipartFiles);
+//
+//        User user = userRepository.getReferenceById(userId);
+//        String[] location = travelLocation.split(" ");
+//
+//        TravelReport travelReport = travelReportRepository.saveAndFlush(TravelReport.builder()
+//                .user(user)
+//                .title("")
+//                .travelPeriod(travelPeriod)
+//                .travelLocation(travelLocation)
+//                .thumbnailUrl()
+//                .build());
+//
+//        travelBodyRepository.saveAndFlush(TravelBody.builder()
+//                .travelReport(travelReport)
+//                .body("")
+//                .readPermission(1)
+//                .build());
+//
+//        stepRepository.saveAndFlush(Step.builder()
+//                .travelReport(travelReport)
+//                .user(user)
+//                .province(location[0])
+//                .city(location[1])
+//                .district(location[2])
+//                .build());
+//
+////      S3에 MultipartFile을 저장한 후 업로드 된 데이터를 기반하여 DetailCourse를 뽑아낸다.
+//        detailCourseRepository.saveAndFlush(DetailCourse.builder()
+//                        .travelReport(travelReport)
+//                        .travelDate()
+//                        .gps()
+//                        .sequence()
+//                        .locationName()
+//                .build());
+//
+////      S3에 MultipartFile을 저장한 후 S3에 주소를 가져와 imageUrl에 넣어준다.
+//        travelImageRepository.saveAndFlush(TravelImage.builder()
+//                .travelReport(travelReport)
+//                .imageUrl()
+//                .detailCourse()
+//                .build());
+
+
+
     }
 }
