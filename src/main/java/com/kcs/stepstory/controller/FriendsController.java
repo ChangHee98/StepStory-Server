@@ -5,6 +5,7 @@ import com.kcs.stepstory.dto.global.ResponseDto;
 import com.kcs.stepstory.dto.response.FriendDetailDto;
 import com.kcs.stepstory.dto.response.FriendDto;
 import com.kcs.stepstory.dto.response.FriendListDto;
+import com.kcs.stepstory.dto.response.FriendSearchListDto;
 import com.kcs.stepstory.service.FriendsService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -52,10 +53,10 @@ public class FriendsController {
     /**
      * 친구닉네임 검색 서비스 매핑
      */
-    @GetMapping("/{nickname}")
-    public ResponseDto<FriendListDto> getFriend(@UserId Long userId, @PathVariable String nickName) {
+    @GetMapping("/search/{nickname}")
+    public ResponseDto<FriendSearchListDto> getFriend(@UserId Long userId, @PathVariable String nickname) {
 
-        FriendListDto requestFriendNickName = friendsService.getFriendNickNameList(userId, nickName);
+        FriendSearchListDto requestFriendNickName = friendsService.getFriendNickNameList(userId, nickname);
         return ResponseDto.ok(requestFriendNickName);
     }
 
@@ -96,9 +97,6 @@ public class FriendsController {
         response.put("message", "친구 삭제 완료되었습니다.");
         return response;
     }
-
-
-
 
 
 
