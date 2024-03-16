@@ -3,6 +3,7 @@ package com.kcs.stepstory.service;
 import com.kcs.stepstory.domain.Step;
 import com.kcs.stepstory.dto.response.FriendListDto;
 import com.kcs.stepstory.dto.response.StepCountForAllDto;
+import com.kcs.stepstory.dto.response.StepCountForGyeonggiDto;
 import com.kcs.stepstory.dto.response.StepCountForSeoulDto;
 import com.kcs.stepstory.repository.MyStepRepository;
 import lombok.RequiredArgsConstructor;
@@ -137,7 +138,7 @@ public class MyStepService {
     }
 
     /**
-     * 발자국 조회 - 서울  서비스 로직
+     * 발자국 조회 - 서울  서비스  조회 누적 메서드
      */
     private StepCountForSeoulDto  seoulStepAaccumulate(StepCountForSeoulDto totalStepCount, StepCountForSeoulDto stepCount) {
         return StepCountForSeoulDto.builder()
@@ -168,6 +169,97 @@ public class MyStepService {
                 .jungnang(totalStepCount.jungnang() + stepCount.jungnang())
                 .build();
     }
+
+    /**
+     * 발자국 조회 - 경기  서비스 로직
+     */
+    public StepCountForGyeonggiDto getMyStepCountForGyeonggi(Long userId, String province) {
+        List<Step> stepList = myStepRepository.findBySeoulListForMyStep(userId, province);
+        StepCountForGyeonggiDto totalStepCount = StepCountForGyeonggiDto.builder()
+                .suwon(0)
+                .seongnam(0)
+                .yongin(0)
+                .anyang(0)
+                .ansan(0)
+                .gwacheon(0)
+                .gwangmyeong(0)
+                .gwangju(0)
+                .gunpo(0)
+                .bucheon(0)
+                .siheung(0)
+                .gimpo(0)
+                .anseong(0)
+                .osan(0)
+                .uiwang(0)
+                .icheon(0)
+                .pyeongtaek(0)
+                .hanam(0)
+                .hwaseong(0)
+                .yeoju(0)
+                .yangpyeong(0)
+                .goyang(0)
+                .guri(0)
+                .namyangju(0)
+                .dongducheon(0)
+                .yangju(0)
+                .uijeongbu(0)
+                .paju(0)
+                .pocheon(0)
+                .yeoncheon(0)
+                .gapyeong(0)
+                .build();
+
+
+        // for loop: fromAllArea()를 사용하여 Dto로 변환하고, allStepAaccumulate()를 사용하여 누적 카운트
+        for (Step step : stepList) {
+            StepCountForGyeonggiDto stepDto = StepCountForGyeonggiDto.fromGyeonggiArea(step);
+            totalStepCount = gyeonggiStepAccumulate(totalStepCount, stepDto);
+        }
+
+        return totalStepCount;
+    }
+
+    /**
+     * 발자국 조회 - 경기  조회 누적 메서드
+     */
+    private StepCountForGyeonggiDto gyeonggiStepAccumulate(StepCountForGyeonggiDto totalStepCount, StepCountForGyeonggiDto stepCount) {
+        return StepCountForGyeonggiDto.builder()
+                .suwon(totalStepCount.suwon() + stepCount.suwon())
+                .seongnam(totalStepCount.seongnam() + stepCount.seongnam())
+                .yongin(totalStepCount.yongin() + stepCount.yongin())
+                .anyang(totalStepCount.anyang() + stepCount.anyang())
+                .ansan(totalStepCount.ansan() + stepCount.ansan())
+                .gwacheon(totalStepCount.gwacheon() + stepCount.gwacheon())
+                .gwangmyeong(totalStepCount.gwangmyeong() + stepCount.gwangmyeong())
+                .gwangju(totalStepCount.gwangju() + stepCount.gwangju())
+                .gunpo(totalStepCount.gunpo() + stepCount.gunpo())
+                .bucheon(totalStepCount.bucheon() + stepCount.bucheon())
+                .siheung(totalStepCount.siheung() + stepCount.siheung())
+                .gimpo(totalStepCount.gimpo() + stepCount.gimpo())
+                .anseong(totalStepCount.anseong() + stepCount.anseong())
+                .osan(totalStepCount.osan() + stepCount.osan())
+                .uiwang(totalStepCount.uiwang() + stepCount.uiwang())
+                .icheon(totalStepCount.icheon() + stepCount.icheon())
+                .pyeongtaek(totalStepCount.pyeongtaek() + stepCount.pyeongtaek())
+                .hanam(totalStepCount.hanam() + stepCount.hanam())
+                .hwaseong(totalStepCount.hwaseong() + stepCount.hwaseong())
+                .yeoju(totalStepCount.yeoju() + stepCount.yeoju())
+                .yangpyeong(totalStepCount.yangpyeong() + stepCount.yangpyeong())
+                .goyang(totalStepCount.goyang() + stepCount.goyang())
+                .guri(totalStepCount.guri() + stepCount.guri())
+                .namyangju(totalStepCount.namyangju() + stepCount.namyangju())
+                .dongducheon(totalStepCount.dongducheon() + stepCount.dongducheon())
+                .yangju(totalStepCount.yangju() + stepCount.yangju())
+                .uijeongbu(totalStepCount.uijeongbu() + stepCount.uijeongbu())
+                .paju(totalStepCount.paju() + stepCount.paju())
+                .pocheon(totalStepCount.pocheon() + stepCount.pocheon())
+                .yeoncheon(totalStepCount.yeoncheon() + stepCount.yeoncheon())
+                .gapyeong(totalStepCount.gapyeong() + stepCount.gapyeong())
+                .build();
+    }
+
+
+
 
 
 
