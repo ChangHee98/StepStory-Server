@@ -11,5 +11,5 @@ import java.util.List;
  */
 public record FriendListDto(
         List<FriendDto> friendListDtos,
-        List<FriendDto> requestfriendListDtos
+        List<FriendDto> requestFriendListDtos
 ){}

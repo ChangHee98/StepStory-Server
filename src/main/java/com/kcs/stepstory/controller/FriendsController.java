@@ -2,8 +2,10 @@ package com.kcs.stepstory.controller;
 
 import com.kcs.stepstory.annotation.UserId;
 import com.kcs.stepstory.dto.global.ResponseDto;
+import com.kcs.stepstory.dto.response.FriendDetailDto;
 import com.kcs.stepstory.dto.response.FriendDto;
 import com.kcs.stepstory.dto.response.FriendListDto;
+import com.kcs.stepstory.dto.response.FriendSearchListDto;
 import com.kcs.stepstory.service.FriendsService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +32,8 @@ public class FriendsController {
     /**
      * 친구요청 목록 Count 서비스 매핑
      */    @GetMapping("/count")
-    public ResponseDto<Long> getrequestCount(@UserId Long userId, @PathVariable Long friendId) {
-        return ResponseDto.ok(friendsService.getCountFriendList(userId, friendId));
+    public ResponseDto<Long> getrequestCount(@UserId Long userId) {
+        return ResponseDto.ok(friendsService.getCountFriendList(userId));
     }
 
 
@@ -39,21 +41,22 @@ public class FriendsController {
     /**
      * 친구 상세정보 확인 서비스 매핑
      */
-    @GetMapping("/{friendId}")
-    public ResponseDto<FriendDto> getFriendDetails(@UserId Long userId, @PathVariable Long friendId) {
-        FriendDto friendDetails = friendsService.getFriendDetailsUser(userId, friendId);
+    @GetMapping("/detail/{friendId}")
+    public ResponseDto<FriendDetailDto> getFriendDetails(@UserId Long userId, @PathVariable("friendId") Long friendId) {
+        FriendDetailDto friendDetails = friendsService.getFriendDetailsUser(userId, friendId);
         return ResponseDto.ok(friendDetails);
     }
+
 
 
 
     /**
      * 친구닉네임 검색 서비스 매핑
      */
-    @GetMapping("/{nickname}")
-    public ResponseDto<FriendListDto> getFriend(@UserId Long userId, @PathVariable String nickName) {
+    @GetMapping("/search/{nickname}")
+    public ResponseDto<FriendSearchListDto> getFriend(@UserId Long userId, @PathVariable String nickname) {
 
-        FriendListDto requestFriendNickName = friendsService.getFriendNickNameList(userId, nickName);
+        FriendSearchListDto requestFriendNickName = friendsService.getFriendNickNameList(userId, nickname);
         return ResponseDto.ok(requestFriendNickName);
     }
 
@@ -62,19 +65,20 @@ public class FriendsController {
      * 친구 요청 기능 매핑
      */
     @PostMapping("")
-    public Map<String, String> requestFrined(@UserId Long userId, @RequestBody Long friendId) {
+    public Map<String, String> requestFriend(@UserId Long userId, @RequestBody Map<String, Long> requestBody) {
+        Long friendId = requestBody.get("friendId");
         friendsService.requestFriendsUser(userId, friendId);
         Map<String, String> response = new HashMap<>();
         response.put("message", "친구 요청이 성공적으로 전송되었습니다.");
         return response;
-
     }
 
     /**
      * 친구 수락 기능 매핑
      */
     @PatchMapping("")
-    public Map<String, String> acceptFrined(@UserId Long userId, @RequestBody Long friendId) {
+    public Map<String, String> acceptFrined(@UserId Long userId, @RequestBody Map<String, Long> requestBody) {
+        Long friendId = requestBody.get("friendId");
         friendsService.acceptFriendsUser(userId, friendId);
         Map<String, String> response = new HashMap<>();
         response.put("message", "친구요청이 수락되었습니다.");
@@ -93,9 +97,6 @@ public class FriendsController {
         response.put("message", "친구 삭제 완료되었습니다.");
         return response;
     }
-
-
-
 
 
 

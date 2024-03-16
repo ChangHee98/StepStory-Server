@@ -3,13 +3,21 @@ package com.kcs.stepstory.service;
 
 import com.kcs.stepstory.domain.Friend;
 import com.kcs.stepstory.domain.User;
+import com.kcs.stepstory.dto.response.FriendDetailDto;
 import com.kcs.stepstory.dto.response.FriendDto;
 import com.kcs.stepstory.dto.response.FriendListDto;
+import com.kcs.stepstory.dto.response.FriendSearchListDto;
+import com.kcs.stepstory.exception.CommonException;
+import com.kcs.stepstory.exception.ErrorCode;
 import com.kcs.stepstory.repository.FriendRepository;
 import com.kcs.stepstory.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -58,10 +66,11 @@ public class FriendsService {
         for (Long requestId : requestFriendList) {
             User user = userRepository.getReferenceById(requestId);
             FriendDto friendDto = FriendDto.fromEntity(user);
+            requestFriendDtoList.add(friendDto);
         }
         return FriendListDto.builder()
                 .friendListDtos(friendDtoList)  // 친구목록 Dtos
-                .requestfriendListDtos(requestFriendDtoList) // 친구 요청 목록 Dtos
+                .requestFriendListDtos(requestFriendDtoList) // 친구 요청 목록 Dtos
                 .build();
     }
 
@@ -70,8 +79,8 @@ public class FriendsService {
     /**
      * 친구요청 목록 Count 서비스
      */
-    public Long getCountFriendList(Long userId, Long friendId) {
-        Long requestFriendList = friendRepository.countByRequestFriendList(userId, friendId);
+    public Long getCountFriendList(Long userId) {
+        Long requestFriendList = friendRepository.countByRequestFriendList(userId);
 
         return requestFriendList;
     }
@@ -81,23 +90,23 @@ public class FriendsService {
      * 상세 정보 확인 서비스
      */
     @Transactional
-    public FriendDto getFriendDetailsUser(Long userId, Long friendId) {
+    public FriendDetailDto getFriendDetailsUser(Long userId, Long friendId) {
         Long friend = friendRepository.findBySendFriendDetails(userId, friendId);
         if(friendId == null) {
             friend = friendRepository.findByReceiveFriendDetails(userId, friendId);
         }
 
         User user = userRepository.getReferenceById(friend);
-        FriendDto friendDto = FriendDto.fromEntityDetails(user);
+        FriendDetailDto friendDetailDto = FriendDetailDto.fromEntityDetails(user);
 
-        return friendDto;
+        return friendDetailDto;
     }
 
 
     /**
      *  친구닉네임 조회 서비스
      */
-    public FriendListDto getFriendNickNameList(Long userId, String nickName) {
+    public FriendSearchListDto getFriendNickNameList(Long userId, String nickName) {
         List<Long> SendFriendNicknameList = friendRepository.findBySendFriendNicknameList(userId, nickName);
         List<Long> ReceiveFriendNicknameList = friendRepository.findByReceiveFriendNicknameList(userId, nickName);
         List<FriendDto> friendDtoList = new ArrayList<>();
@@ -114,8 +123,11 @@ public class FriendsService {
             friendDtoList.add(friendDto);
         }
 
-        return FriendListDto.builder()
-                .friendListDtos(friendDtoList)
+//        return FriendListDto.builder()
+//                .friendListDtos(friendDtoList)
+//                .build();
+        return FriendSearchListDto.builder()
+                .friendSearchListDtos(friendDtoList)
                 .build();
 
     }
@@ -127,15 +139,36 @@ public class FriendsService {
     public Friend requestFriendsUser(Long userId, Long friendId) {
         User user = userRepository.getReferenceById(userId);
         User requestUser = userRepository.getReferenceById(friendId);
-        //친구 요청 기능을 구현하기 위해 생성자로 생성
+
+        if (user == null || requestUser == null) {
+            throw new CommonException(ErrorCode.NOT_FOUND_USER);
+        }
+
+        if (userId.equals(friendId)) {
+            throw new CommonException(ErrorCode.BAD_REQUEST_PARAMETER);
+        }
+
+        // 중복된 친구 요청 처리
+        if (friendRepository.existsByUser1UserIdAndUser2UserIdAndStatus(userId, friendId, 0) ||
+                friendRepository.existsByUser1UserIdAndUser2UserIdAndStatus(friendId, userId, 0)) {
+            throw new CommonException(ErrorCode.BAD_REQUEST_PARAMETER);
+        }
+        if (friendRepository.existsByUser1UserIdAndUser2UserIdAndStatus(userId, friendId, 1) ||
+                friendRepository.existsByUser1UserIdAndUser2UserIdAndStatus(friendId, userId, 1)) {
+            throw new CommonException(ErrorCode.BAD_REQUEST_PARAMETER);
+        }
+
+        // 친구 요청 기능을 구현하기 위해 생성자로 생성
         Friend friend = Friend.builder()
                 .user1(user)
                 .user2(requestUser)
                 .status(0)
                 .build();
+        friendRepository.save(friend);
         return friend;
-
     }
+
+
 
     /**
      *  친구 수락 서비스
