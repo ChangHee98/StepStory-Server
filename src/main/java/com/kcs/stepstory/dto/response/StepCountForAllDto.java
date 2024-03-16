@@ -92,7 +92,6 @@ public record StepCountForAllDto (
             default:
                 break;
         }
-        log.info(builder.toString());
         return builder.build();
     }
 
