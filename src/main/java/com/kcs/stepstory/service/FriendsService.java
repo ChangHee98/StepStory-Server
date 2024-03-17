@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -123,9 +124,6 @@ public class FriendsService {
             friendDtoList.add(friendDto);
         }
 
-//        return FriendListDto.builder()
-//                .friendListDtos(friendDtoList)
-//                .build();
         return FriendSearchListDto.builder()
                 .friendSearchListDtos(friendDtoList)
                 .build();

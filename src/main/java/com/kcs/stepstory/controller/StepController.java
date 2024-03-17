@@ -4,9 +4,7 @@ import com.kcs.stepstory.annotation.UserId;
 import com.kcs.stepstory.dto.global.ResponseDto;
 import com.kcs.stepstory.dto.response.StepCountDto;
 import com.kcs.stepstory.dto.response.StepCountForAllDto;
-import com.kcs.stepstory.dto.response.StepCountForSeoulDto;
 import com.kcs.stepstory.exception.CommonException;
-import com.kcs.stepstory.service.MyStepService;
 import com.kcs.stepstory.service.StepService;
 import com.kcs.stepstory.exception.ErrorCode;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class StepController {
     private final StepService stepService;
-    private final MyStepService myStepService;
     @GetMapping("/no-auth/step/main")
     @Operation(summary = "전국 지역별 Step 개수 조회", description = "전국 지역별 Step 개수를 조회합니다.")
     public ResponseDto<StepCountForAllDto> getStepCountForall(){
@@ -73,37 +70,7 @@ public class StepController {
         }
     }
 
-    /**
-     *
-     * MyStoryPage 발자국 조회 - 전체 기능
-     * /api/v1/users/step/mystory
-     */
-    @GetMapping("users/step/my/main")
-    public ResponseDto<StepCountForAllDto> getMyStepCountForAll(@UserId Long userId) {
-        return ResponseDto.ok(myStepService.getMyStepCountForAll(userId));
-    }
 
-    /**
-     *
-     * MyStoryPage 발자국 조회 - 서울 기능
-     */
-
-
-    @GetMapping("users/step/my/{provinceName}")
-    public ResponseEntity<ResponseDto<?>> getMyStepCount(@UserId Long userId, @PathVariable String provinceName) {
-        ResponseDto<?> responseDto;
-
-        if (provinceName.equals("Seoul")) {
-            responseDto = ResponseDto.ok(myStepService.getMyStepCountForSeoul(userId, provinceName));
-        } else if (provinceName.equals("Gyeonggi")) {
-            responseDto = ResponseDto.ok(myStepService.getMyStepCountForGyeonggi(userId, provinceName));
-        } else if (provinceName.equals("Busan")) {
-            responseDto = ResponseDto.ok(myStepService.getMyStepCountForBusan(userId, provinceName));
-        } else {
-            throw new CommonException(ErrorCode.BAD_REQUEST_JSON);
-        }
-        return ResponseEntity.ok(responseDto);
-    }
 
 
 
