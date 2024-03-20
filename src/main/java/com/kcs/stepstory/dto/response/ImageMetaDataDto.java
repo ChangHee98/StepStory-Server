@@ -6,7 +6,8 @@ import java.sql.Timestamp;
 
 @Builder
 public record ImageMetaDataDto(
-        String gps,
+        Double latitude,
+        Double longitude,
         Timestamp travelDate
 ) {
 

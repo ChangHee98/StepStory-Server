@@ -3,8 +3,6 @@ package com.kcs.stepstory.dto.response;
 import com.kcs.stepstory.domain.User;
 import lombok.Builder;
 
-import java.util.Optional;
-
 
 /**
  * DTO 계층 구현

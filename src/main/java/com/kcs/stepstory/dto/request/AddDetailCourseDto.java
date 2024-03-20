@@ -8,15 +8,17 @@ import java.sql.Timestamp;
 @Builder
 public record AddDetailCourseDto(
         Timestamp travelDate,
-        String gps,
-        int sequence,
+        Double latitude,
+        Double longitude,
+        Integer sequence,
         String locationName,
         Long travelReportId
 ) {
     public static AddDetailCourseDto fromEntity(DetailCourse detailCourse){
         return AddDetailCourseDto.builder()
                 .travelDate(detailCourse.getTravelDate())
-                .gps(detailCourse.getGps())
+                .latitude(detailCourse.getLatitude())
+                .longitude(detailCourse.getLongitude())
                 .sequence(detailCourse.getSequence())
                 .locationName(detailCourse.getLocationName())
                 .travelReportId(detailCourse.getTravelReport().getTravelReportId())
