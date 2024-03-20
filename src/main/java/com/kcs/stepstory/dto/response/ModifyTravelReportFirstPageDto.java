@@ -6,8 +6,6 @@ import lombok.Builder;
 @Builder
 public record ModifyTravelReportFirstPageDto(
         ModifyTravelImageListDto modifyTravelImageListDto,
-        String travelPeriod,
-        String travelLocation,
         String thumbnailUrl
 ) {
     public static ModifyTravelReportFirstPageDto fromEntity(
@@ -16,8 +14,6 @@ public record ModifyTravelReportFirstPageDto(
     ){
         return ModifyTravelReportFirstPageDto.builder()
                 .modifyTravelImageListDto(modifyTravelImageListDto)
-                .travelPeriod(travelReport.getTravelPeriod())
-                .travelLocation(travelReport.getTravelLocation())
                 .thumbnailUrl(travelReport.getThumbnailUrl())
                 .build();
     }

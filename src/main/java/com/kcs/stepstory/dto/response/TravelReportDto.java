@@ -8,8 +8,6 @@ import java.sql.Timestamp;
 public record TravelReportDto(
         Long travelReportId,
         String title,
-        String travelPeriod,
-        String travelLocation,
         String thumbnailUrl,
         Timestamp createdAt,
         Timestamp updatedAt,
@@ -19,8 +17,6 @@ public record TravelReportDto(
         return TravelReportDto.builder()
                 .travelReportId(travelReport.getTravelReportId())
                 .title(travelReport.getTitle())
-                .travelPeriod(travelReport.getTravelPeriod())
-                .travelLocation(travelReport.getTravelLocation())
                 .thumbnailUrl(travelReport.getThumbnailUrl())
                 .createdAt(travelReport.getCreatedAt())
                 .updatedAt(travelReport.getUpdatedAt())
