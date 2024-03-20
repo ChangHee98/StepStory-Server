@@ -15,7 +15,9 @@ import com.kcs.stepstory.service.TravelReportService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -55,7 +57,7 @@ public class TravelReportController {
     }
 
     @GetMapping("/api/v1/users/travel-report/mystory/{provinceId}")
-    @Operation(summary = "여행 기록 목록 조회", description = "특정 지역의 여행 기록 목록을 조회합니다.")
+    @Operation(summary = "내 여행 기록 목록 조회", description = "특정 지역의 '내' 여행 기록 목록을 조회합니다.")
     public ResponseDto<TravelReportListDto> getMyTravelReportList(
             @PathVariable("provinceId") Long provinceId,
             @RequestParam("nickname") String nickname,
@@ -83,6 +85,7 @@ public class TravelReportController {
      * Post_2에서 DetailCourse를 TravelImage에 넣어줄 때 사용
      * */
     @PatchMapping("/api/v1/users/travel-report/detail-course")
+    @Operation(summary = "Detail 코스와 TravelImage 연결", description = "Detail 코스와 TravelImage를 연결합니다.")
     public ResponseDto<PostTravelImageListDto> ReportImagesAndCourses(
             @UserId Long userId,
             @RequestBody List<PostTravelImageDto> postTravelImageDtos
@@ -226,12 +229,12 @@ public class TravelReportController {
      * 사진 업로드 -> 메타데이터 주기
      * */
     @GetMapping("/api/v1/users/travel-report/meta")
-    public UploadImageMetaDataDto metadataList(
+    public ResponseDto<?> metadataList(
             @UserId Long userId,
             @RequestBody List<MultipartFile> multipartFiles
     ){
         try {
-           return travelReportService.getUploadImageMetaData(multipartFiles);
+           return ResponseDto.ok(travelReportService.getUploadTravelImageMeta(multipartFiles));
         } catch (IOException | ImageProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -240,10 +243,13 @@ public class TravelReportController {
     /*
      * 사진 업로드 후 게시글 작성(완료버튼 누름)
      * */
-    public void writeFirstReportStep(
-            @UserId Long userId
-    ){
-
-
+    @PostMapping(value = "/api/v1/users/travel-report/travel-image", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseDto<?> writeFirstReportStep(
+            @UserId Long userId,
+            @RequestPart(value = "message", required = false)
+            @Valid UploadTravelImageDto requestDto,
+            @RequestPart(value = "file", required = false)
+            List<MultipartFile> multipartFiles) throws ImageProcessingException, IOException {
+        return ResponseDto.created(travelReportService.writeFirstReportStep(userId, requestDto, multipartFiles));
     }
 }
