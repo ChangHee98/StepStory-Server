@@ -2,9 +2,11 @@ package com.kcs.stepstory.utility;
 
 import com.kcs.stepstory.exception.CommonException;
 import com.kcs.stepstory.exception.ErrorCode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import com.amazonaws.services.s3.AmazonS3Client;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -18,11 +20,18 @@ import java.util.UUID;
 public class ImageUtil {
     private final String IMAGE_CONTENT_PREFIX = "image/";
 
+
     @Value("${spring.image.path}")
     private String resourcePath;
 
     @Value("${server.https-address}")
     private String serverUrl;
+    @Autowired
+    private AmazonS3Client amazonS3Client;
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucketName;
+    @Value("${cloud.aws.s3.url}")
+    private String bucketUrl;
 
     public String decodeAndUploadBase64(String base64Image) {
         byte[] imageBytes = Base64.getDecoder().decode(base64Image);
@@ -41,10 +50,8 @@ public class ImageUtil {
         return uuid + ".png";
     }
 
-
-    public String uploadImageFile(MultipartFile file) {
+    public String uploadProfileImageFile(MultipartFile file, Long userId) {
         final String contentType = file.getContentType();
-
         assert contentType != null;
         String type = "." + contentType.substring(contentType.indexOf("/") + 1);
 
@@ -53,15 +60,35 @@ public class ImageUtil {
         }
 
         String uuid = UUID.randomUUID().toString();
+        String fileName = "user_" + userId + "/" + uuid + type;
 
         try {
-            file.transferTo(
-                    new File(resourcePath + uuid + type));
+            amazonS3Client.putObject(bucketName, fileName, file.getInputStream(), null);
         } catch (IOException e) {
             throw new CommonException(ErrorCode.UPLOAD_FILE_ERROR);
         }
 
-//        return serverUrl + "/images/" + uuid + ".png";
-        return uuid + type;
+        return bucketUrl + fileName;
+    }
+
+    public String uploadTravelImageFile(MultipartFile file, Long userId) {
+        final String contentType = file.getContentType();
+        assert contentType != null;
+        String type = "." + contentType.substring(contentType.indexOf("/") + 1);
+
+        if (!contentType.startsWith(IMAGE_CONTENT_PREFIX)) {
+            throw new CommonException(ErrorCode.MISSING_REQUEST_PARAMETER);
+        }
+
+        String uuid = UUID.randomUUID().toString();
+        String fileName = "user_" + userId + "_report" + "/" + uuid + type;
+
+        try {
+            amazonS3Client.putObject(bucketName, fileName, file.getInputStream(), null);
+        } catch (IOException e) {
+            throw new CommonException(ErrorCode.UPLOAD_FILE_ERROR);
+        }
+
+        return bucketUrl + fileName;
     }
 }
