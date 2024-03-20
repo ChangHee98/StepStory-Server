@@ -30,9 +30,27 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_USER));
 
-        String profileImageName = imageUtil.uploadImageFile(imgFile);
+        String profileImageName = null;
+        if (imgFile != null && !imgFile.isEmpty()) {
+            profileImageName = imageUtil.uploadProfileImageFile(imgFile, userId);
+        }
 
-        user.updateInfo(requestDto.nickname(), requestDto.selfIntro(), profileImageName);
+        // 이미지 파일과 닉네임이 모두 제공된 경우
+        if (profileImageName != null && requestDto != null) {
+            user.updateInfo(requestDto, profileImageName);
+        }
+        // 닉네임만 제공된 경우
+        else if (requestDto != null) {
+            user.updateInfoOnlyMessage(requestDto);
+        }
+        // 이미지 파일만 제공된 경우
+        else if (profileImageName != null) {
+            user.updateInfoOnlyImage(profileImageName);
+        }
+        // 아무것도 제공되지 않은 경우
+        else {
+            throw new CommonException(ErrorCode.BAD_REQUEST_JSON);
+        }
     }
 
     public boolean checkDuplicate(String nickname) {
