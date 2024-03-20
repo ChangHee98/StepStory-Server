@@ -67,6 +67,7 @@ dependencies {
     // MetaData
     6
     implementation 'com.drewnoakes:metadata-extractor:2.19.0'
+    implementation 'org.apache.commons:commons-imaging:1.0-alpha2'
 }
 
 tasks.named('test') {
