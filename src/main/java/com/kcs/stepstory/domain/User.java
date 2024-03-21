@@ -1,5 +1,6 @@
 package com.kcs.stepstory.domain;
 
+import com.kcs.stepstory.dto.request.UserUpdateDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -84,17 +85,39 @@ public class User {
         this.refreshToken = refreshToken;
     }
 
-    public void updateInfo(String nickname, String selfIntro, String profileImageName) {
-        if (nickname != null && (!Objects.equals(this.nickname, nickname))) {
-            this.nickname = nickname;
+    public void updateInfoOnlyMessage(UserUpdateDto userUpdateDto) {
+        if (userUpdateDto.nickname() != null && userUpdateDto.selfIntro() != null) {
+            this.nickname = userUpdateDto.nickname();
+            this.selfIntro = userUpdateDto.selfIntro();
         }
+        else if (userUpdateDto.nickname() != null) {
+            this.nickname = userUpdateDto.nickname();
+        }
+        else if (userUpdateDto.selfIntro() != null) {
+            this.selfIntro = userUpdateDto.selfIntro();
+        } else throw new IllegalArgumentException("닉네임 또는 자기소개가 필요합니다.");
+    }
 
+    public void updateInfoOnlyImage(String profileImageName) {
         if (profileImageName != null && (!Objects.equals(this.profileImgUrl, profileImageName))) {
             this.profileImgUrl = profileImageName;
         }
+    }
 
-        if (!Objects.equals(this.selfIntro, selfIntro)) {
-            this.selfIntro = selfIntro;
+    public void updateInfo (UserUpdateDto userUpdateDto, String profileImageName) {
+        if (userUpdateDto.nickname() != null && userUpdateDto.selfIntro() != null) {
+            this.nickname = userUpdateDto.nickname();
+            this.selfIntro = userUpdateDto.selfIntro();
+        }
+        else if (userUpdateDto.nickname() != null) {
+            this.nickname = userUpdateDto.nickname();
+        }
+        else if (userUpdateDto.selfIntro() != null) {
+            this.selfIntro = userUpdateDto.selfIntro();
+        } else throw new IllegalArgumentException("닉네임 또는 자기소개가 필요합니다.");
+
+        if (profileImageName != null && (!Objects.equals(this.profileImgUrl, profileImageName))) {
+            this.profileImgUrl = profileImageName;
         }
     }
 

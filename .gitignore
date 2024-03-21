@@ -3,11 +3,14 @@
 
 #SpringBoot
 *.application.yml
-*.lock
+src/main/resources/application.yml
+src/main/resources/application-dev.yml
+src/main/resources/application-local.yml
 *.bin
 *.probe
 *.properties
 *.build.bin
+.gradle/*
 
 ### Django ###
 *.log

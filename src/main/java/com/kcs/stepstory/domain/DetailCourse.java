@@ -27,26 +27,33 @@ public class DetailCourse {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private TravelReport travelReport;
 
-    @Column(name = "travelDate",nullable = false)
+    @Column(name = "travelDate",nullable = true)
     private Timestamp travelDate;
-    @Column(name = "gps",nullable = false)
-    private String gps;
-    @Column(name = "sequence",nullable = false)
-    private int sequence;
+    @Column(name = "latitude",nullable = true)
+    private Double latitude;
+    @Column(name = "longitude",nullable = true)
+    private Double longitude;
+    @Column(name = "sequence",nullable = true)
+    private Integer sequence;
     @Column(name = "locationName",nullable = true)
     private String locationName;
 
     @Builder
-    public DetailCourse(TravelReport travelReport, Timestamp travelDate, String gps, int sequence, String locationName){
+    public DetailCourse(TravelReport travelReport, Timestamp travelDate, Double latitude, Double longitude, Integer sequence, String locationName){
         this.travelReport = travelReport;
         this.travelDate = travelDate;
-        this.gps = gps;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.sequence = sequence;
         this.locationName = locationName;
     }
 
-    public void updateDetailCourse(int sequence, String locationName){
+    public void updateDetailCourse(Integer sequence, String locationName){
         this.sequence = sequence;
         this.locationName = locationName;
+    }
+
+    public void updateSequence(Integer sequence){
+        this.sequence = sequence;
     }
 }

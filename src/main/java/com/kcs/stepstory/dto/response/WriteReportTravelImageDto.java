@@ -17,10 +17,4 @@ public record WriteReportTravelImageDto(
                 .detailCourse(travelImage.getDetailCourse())
                 .build();
     }
-
-//    public static TravelImage toEntity(WriteReportPageDto writeReportPageDto){
-//        return TravelImage.builder()
-//                .
-//                .build();
-//    }
 }

@@ -5,10 +5,11 @@ import lombok.Builder;
 import java.sql.Timestamp;
 
 @Builder
-public record ImageMetaDataDto(
+public record ImageUrlAndMetaDataDto(
+        String imageUrl,
+        Timestamp travelDate,
         Double latitude,
-        Double longitude,
-        Timestamp travelDate
+        Double longitude
 ) {
 
 }

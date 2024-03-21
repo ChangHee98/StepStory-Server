@@ -27,10 +27,6 @@ public class TravelReport {
 
     @Column(name = "title",nullable = false)
     private String title;
-    @Column(name = "travelPeriod",nullable = false)
-    private String travelPeriod;
-    @Column(name = "travelLocation",nullable = false)
-    private String travelLocation;
     @Column(name = "thumbnailUrl",nullable = false)
     private String thumbnailUrl;
     @CreationTimestamp
@@ -43,11 +39,9 @@ public class TravelReport {
     private Long wantToGoCount;
 
     @Builder
-    public TravelReport(User user, String title, String travelPeriod, String travelLocation, String thumbnailUrl){
+    public TravelReport(User user, String title, String thumbnailUrl){
         this.user = user;
         this.title = title;
-        this.travelPeriod = travelPeriod;
-        this.travelLocation = travelLocation;
         this.thumbnailUrl = thumbnailUrl;
         this.createdAt = new Timestamp(System.currentTimeMillis());
         this.wantToGoCount = 0L;

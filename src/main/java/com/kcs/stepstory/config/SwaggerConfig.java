@@ -47,6 +47,10 @@ public class SwaggerConfig {
                 .servers(List.of(
                         new io.swagger.v3.oas.models.servers.Server()
                                 .url("http://localhost:8080")
-                                .description("Local Server")));
+                                .description("Local Server"),
+                        new io.swagger.v3.oas.models.servers.Server()
+                                .url("https://stepstory.site")
+                                .description("Remote Server")));
+
     }
 }

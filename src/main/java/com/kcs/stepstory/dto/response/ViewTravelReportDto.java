@@ -12,8 +12,6 @@ public record ViewTravelReportDto(
         Long travelReportId,
         CommonUserSourseDto commonUserSourseDto,
         String title,
-        String travelPeriod,
-        String travelLocation,
         String thumbnailUrl,
         Timestamp createdAt,
         Timestamp updatedAt,
@@ -26,8 +24,6 @@ public record ViewTravelReportDto(
                 .travelReportId(travelReport.getTravelReportId())
                 .commonUserSourseDto(commonUserSourseDto)
                 .title(travelReport.getTitle())
-                .travelPeriod(travelReport.getTravelPeriod())
-                .travelLocation(travelReport.getTravelLocation())
                 .thumbnailUrl(travelReport.getThumbnailUrl())
                 .createdAt(travelReport.getCreatedAt())
                 .updatedAt(travelReport.getUpdatedAt())

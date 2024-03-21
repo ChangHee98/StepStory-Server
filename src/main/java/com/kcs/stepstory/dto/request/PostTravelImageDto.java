@@ -1,8 +1,6 @@
 package com.kcs.stepstory.dto.request;
 
-import com.kcs.stepstory.domain.DetailCourse;
 import com.kcs.stepstory.domain.TravelImage;
-import com.kcs.stepstory.dto.response.CheckTravelImageDto;
 import lombok.Builder;
 
 

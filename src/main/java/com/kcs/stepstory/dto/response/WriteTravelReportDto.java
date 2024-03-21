@@ -8,5 +8,5 @@ public record WriteTravelReportDto(
         WriteReportTravelImageListDto writeReportTravelImageListDto,
         String thumbnailUrl
 ) {
-
+    
 }
