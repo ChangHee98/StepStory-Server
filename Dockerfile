@@ -1,7 +1,7 @@
 FROM openjdk:17-alpine
 
 
-WORKDIR /backend
+WORKDIR /app
 VOLUME /tmp
 ARG JAR_FILE=/build/libs/*.jar
 COPY ${JAR_FILE} app.jar
