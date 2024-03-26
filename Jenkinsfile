@@ -35,12 +35,12 @@ pipeline {
         stage('Stop and Remove Previous Container') {
             steps {
                 script {
-                    def containerStatus = sh(script: 'docker ps -q -f name=BackendContainer', returnStdout: true).trim()
-                    if (containerStatus) {
-                        sh "docker stop BackendContainer || true"
-                        sh "docker rm BackendContainer || true"
+                    def containerId = sh(script: 'docker ps -a -q -f name=BackendContainer', returnStdout: true).trim()
+                    if (containerId) {
+                        sh "docker stop $containerId || true"
+                        sh "docker rm $containerId || true"
                     } else {
-                        echo "No previous container running"
+                        echo "No previous container found"
                     }
                 }
             }
