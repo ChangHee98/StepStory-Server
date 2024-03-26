@@ -9,4 +9,5 @@ RUN mkdir -p resources && \
     mkdir -p resources/images && \
     mkdir -p resources/logs
 
-ENTRYPOINT ["nohup", "java", "-jar", "app.jar", "--spring.profiles.active=dev"]
+ENTRYPOINT ["nohup", "java", "-jar", "app.jar", "&"]
+CMD ["--spring.profiles.active=dev"]
