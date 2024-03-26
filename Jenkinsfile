@@ -34,7 +34,7 @@ pipeline {
 
         stage('Run Docker Container') {
             steps {
-                sh "docker run -d --name BackendContainer -p 8080:8080 leeinhong9512/openjdk:17-alpine"
+                sh "docker run -d --name BackendContainer -p 8081:8081 leeinhong9512/openjdk:17-alpine"
             }
         }
     }
