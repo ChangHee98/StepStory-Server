@@ -1,8 +1,11 @@
 FROM openjdk:17-alpine
 
+
+WORKDIR /app
 VOLUME /tmp
 ARG JAR_FILE=/build/libs/*.jar
 COPY ${JAR_FILE} app.jar
+
 
 ENTRYPOINT ["nohup", "java", "-jar", "app.jar", "&", --spring.profiles.active=dev"]
 CMD ["mkdir", "resources"]
