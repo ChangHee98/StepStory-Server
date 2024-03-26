@@ -22,13 +22,19 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh "docker build -t leeinhong9512/openjdk:17-oracle ."
+                sh "docker build -t leeinhong9512/openjdk:17-alpine ."
             }
         }
 
         stage('Push Docker Image') {
             steps {
-                sh "docker push leeinhong9512/openjdk:17-oracle"
+                sh "docker push leeinhong9512/openjdk:17-alpine"
+            }
+        }
+
+        stage('Run Docker Container') {
+            steps {
+                sh "docker run -d --name BackendContainer -p 8080:8080 leeinhong9512/openjdk:17-alpine"
             }
         }
     }
