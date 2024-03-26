@@ -32,9 +32,23 @@ pipeline {
             }
         }
 
+        stage('Stop and Remove Previous Container') {
+            steps {
+                script {
+                    def containerStatus = sh(script: 'docker ps -q -f name=BackendContainer', returnStdout: true).trim()
+                    if (containerStatus) {
+                        sh "docker stop BackendContainer || true"
+                        sh "docker rm BackendContainer || true"
+                    } else {
+                        echo "No previous container running"
+                    }
+                }
+            }
+        }
+
         stage('Run Docker Container') {
             steps {
-                sh "docker run -d --name BackendContainer -p 8081:8081 leeinhong9512/openjdk:17-alpine"
+                sh "docker run -d --name BackendContainer -p 8080:8080 leeinhong9512/openjdk:17-alpine"
             }
         }
     }
