@@ -46,6 +46,8 @@ public class TravelReportService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final ImageUtil imageUtil;
+    private final FriendRepository friendRepository;
+
 
     public TravelReportListDto getTravelReportList(String province, String city, String district) {
         List<Long> travelReportIds = stepRepository.findStepsByProvinceAndCityAndDistrict(province, city, district)
@@ -65,7 +67,7 @@ public class TravelReportService {
         return TravelReportListDto.fromEntity(reportDtos);
     }
 
-    public TravelReportListDto getMyTravelReportList(String province, String city, String district, String nickname) {
+    public TravelReportListDto getMyTravelReportList(String province, String city, String district, String nickname, Long userId) {
         User user = userRepository.findByNickname(nickname);
         if (user == null) {
             throw new CommonException(ErrorCode.NOT_FOUND_USER);
@@ -78,7 +80,19 @@ public class TravelReportService {
                 .distinct()
                 .collect(Collectors.toList());
 
-        List<TravelBody> filteredBodies = travelBodyRepository.findTravelBodiesByTravelReportIdInAndReadPermissionEquals(travelReportIds, 1);
+        List<TravelBody> filteredBodies;
+
+        // 본인, 친구 관계, 친구가 아닌 관계
+        if(user.getUserId().equals(userId)){
+            filteredBodies = travelBodyRepository.findTravelBodiesByTravelReportIdIn(travelReportIds);
+        }else if(
+                friendRepository.existsByUser1UserIdAndUser2UserIdAndStatus(user.getUserId(), userId, 1) || friendRepository.existsByUser1UserIdAndUser2UserIdAndStatus(userId, user.getUserId(), 1)
+        ){
+            int[] onlyFriend = {1, 2};
+            filteredBodies = travelBodyRepository.findTravelBodiesByTravelReportIdInAndReadPermissionIsIn(travelReportIds, onlyFriend);
+        }else{
+            filteredBodies = travelBodyRepository.findTravelBodiesByTravelReportIdInAndReadPermissionEquals(travelReportIds, 1);
+        }
 
         List<TravelReportDto> reportDtos = filteredBodies.stream()
                 .map(TravelBody::getTravelReport)

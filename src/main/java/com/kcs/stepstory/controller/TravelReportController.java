@@ -59,10 +59,11 @@ public class TravelReportController {
     @GetMapping("/api/v1/users/travel-report/mystory/{provinceId}")
     @Operation(summary = "내 여행 기록 목록 조회", description = "특정 지역의 '내' 여행 기록 목록을 조회합니다.")
     public ResponseDto<TravelReportListDto> getMyTravelReportList(
+            @UserId Long userId,
             @PathVariable("provinceId") Long provinceId,
             @RequestParam("nickname") String nickname,
             @RequestParam(value = "city", required = false) String city,
-            @RequestParam(value = "disctrict", required = false) String district
+            @RequestParam(value = "district", required = false) String district
     ){
         String province;
         switch (provinceId.intValue()){
@@ -78,7 +79,7 @@ public class TravelReportController {
             default:
                 throw new CommonException(ErrorCode.BAD_REQUEST_PARAMETER);
         }
-        return ResponseDto.ok(travelReportService.getMyTravelReportList(province, city, district, nickname));
+        return ResponseDto.ok(travelReportService.getMyTravelReportList(province, city, district, nickname, userId));
     }
 
     /*
