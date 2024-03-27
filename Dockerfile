@@ -1,12 +1,13 @@
 FROM openjdk:17-alpine
 
 WORKDIR /app
+VOLUME /tmp
+ARG JAR_FILE=/build/libs/*.jar
+COPY ${JAR_FILE} app.jar
 
-ARG JAR_PATH=./build/libs
+RUN mkdir -p resources && \
+    mkdir -p resources/images && \
+    mkdir -p resources/logs
 
-COPY ${JAR_PATH}/StepStory-Server-0.0.1-SNAPSHOT.jar ./app.jar
-
-CMD ["mkdir", "resources"]
-CMD ["mkdir", "./resources/images"]
-CMD ["mkdir", "./resources/logs"]
-CMD ["java","-jar","./app.jar","--spring.profiles.active=dev"]
+ENTRYPOINT ["nohup", "java", "-jar", "app.jar", "&"]
+CMD ["--spring.profiles.active=dev"]
